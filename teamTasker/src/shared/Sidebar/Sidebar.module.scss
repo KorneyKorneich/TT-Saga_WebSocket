@@ -1,0 +1,18 @@
+.wrapper{
+  padding: 20px 20px 0 10px;
+  max-width: 250px;
+  background: var(--background-light);
+  min-height: 100vh;
+  border-right: 1px solid var(--text-color-dark);
+
+  .logo{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+
+    h1{
+      margin: 0;
+    }
+  }
+}
