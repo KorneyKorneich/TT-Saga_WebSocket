@@ -5,3 +5,12 @@
     background: var(--background-dark);
     color: var(--text-color-light)
 }
+
+.pageContent{
+    display: flex;
+    width: 100%;
+}
+
+.tasks{
+    padding: 10px;
+}
