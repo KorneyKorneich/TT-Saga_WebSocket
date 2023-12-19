@@ -3,6 +3,7 @@ import styles from './UserLogin.module.scss';
 import {Button, Input} from "src/shared";
 import {useAppDispatch} from "src/hooks/storeHooks.ts";
 import {userLogin} from "src/entities/User/lib/services/userLogin.ts";
+import {useNavigate} from "react-router-dom";
 
 
 
@@ -11,6 +12,7 @@ export const UserLogin = () => {
     const [password, setPassword] = useState('');
 
     const dispatch = useAppDispatch();
+    const navigate = useNavigate()
 
     const handleClick = async () => {
         const userPayload = {
@@ -20,6 +22,7 @@ export const UserLogin = () => {
         await dispatch(userLogin(userPayload));
         setPassword('');
         setUsername('');
+        navigate('/')
     }
 
     return (

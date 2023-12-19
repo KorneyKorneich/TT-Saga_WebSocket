@@ -7,6 +7,8 @@ import {useAppDispatch} from "src/hooks/storeHooks.ts";
 import {useEffect} from "react";
 import {userAuth} from "src/entities/User/lib/services/userAuth.ts";
 import {useSelector} from "react-redux";
+import {Link} from "react-router-dom";
+import {SingIn} from "src/pages";
 
 function App() {
     const Theme = useTheme();
@@ -29,8 +31,9 @@ function App() {
             <Sidebar />
             <div className={styles.tasks}>Hello</div>
             {state.user.data.isAuth && <div>{state.user.data.username}</div>}
-            <UserRegistration/>
-            <UserLogin />
+            {/*<UserRegistration />*/}
+            {/*<UserLogin />*/}
+            <Link to={'/singIn'} >Sing In</Link>
         </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import {UserSchema, UserSliceSchema} from "src/entities/User/lib/types/user.ts";
+import {UserSliceSchema} from "src/entities/User/lib/types/user.ts";
 import {AppDispatch} from "src/App/providers/storeProvider/store.ts";
 
 

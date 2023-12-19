@@ -4,14 +4,14 @@ import {Input} from "src/shared";
 import {useAppDispatch} from "src/hooks/storeHooks.ts";
 import {userReg} from "src/entities/User/lib/services/userReg.ts";
 import {Button} from "src/shared/Button/Button.tsx";
-
-
+import { useNavigate } from "react-router-dom";
 
 export const UserRegistration = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const handleClick = async () => {
         const userPayload = {
@@ -21,6 +21,7 @@ export const UserRegistration = () => {
         await dispatch(userReg(userPayload));
         setPassword('');
         setUsername('');
+         navigate("/login")
     }
 
     return (
