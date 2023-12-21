@@ -20,9 +20,12 @@ export const UserLogin = () => {
             password: password
         };
         await dispatch(userLogin(userPayload));
-        setPassword('');
-        setUsername('');
-        navigate('/')
+
+        if(username !== '' && password !== '') navigate('/')
+        else {
+            setPassword('');
+            setUsername('');
+        }
     }
 
     return (

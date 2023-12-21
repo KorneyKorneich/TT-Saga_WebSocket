@@ -10,12 +10,12 @@ export const userReg = createAsyncThunk<UserSchema, UserRegistrationData, ThunkC
             rejectWithValue,
         } = thunkAPI;
 
-        if(!userdata) {
-            return rejectWithValue('No userdata');
+        if(userdata.username === '' || userdata.password === '') {
+            console.log("err")
+            return rejectWithValue('No username or password');
         }
-
         try {
-
+            console.log(userdata)
             const response = await axios.post('http://localhost:4000/api/registration', userdata);
             if(!response){
                 throw new Error();
@@ -28,7 +28,7 @@ export const userReg = createAsyncThunk<UserSchema, UserRegistrationData, ThunkC
             console.log(data);
             return data;
         } catch (e) {
-            return rejectWithValue('Something went wrong')
+            return rejectWithValue('This user is already exist')
         }
 
     }

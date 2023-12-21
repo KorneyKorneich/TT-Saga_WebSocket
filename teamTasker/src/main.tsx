@@ -9,23 +9,37 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import {Login, SingIn} from "src/pages";
+import {LandingPage, Login, SingIn} from "src/pages";
 
 
 
 const router = createBrowserRouter([
     {
-        path: "/",
-        element: <App/>
+        path: '/',
+        element: <App/>,
+        children: [
+            {
+                path: 'authorization',
+                children:[
+                    {
+                        path: 'login',
+                        element: <Login />
+                    },
+                    {
+                        path: 'singIn',
+                        element: <SingIn />
+                    },
+                ]
+            },
+            {
+                path: '/hello',
+                element: <LandingPage />
+            }
+        ]
     },
-    {
-        path: "login",
-        element: <Login />
-    },
-    {
-        path: 'singIn',
-        element: <SingIn />
-    }
+
+
+
 ])
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

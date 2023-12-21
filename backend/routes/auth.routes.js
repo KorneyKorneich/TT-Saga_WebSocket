@@ -31,8 +31,13 @@ router.post('/registration',
 
             const hashPassword = await bcrypt.hash(password, 8);
             const user = new User({ username, password: hashPassword });
+            const token = jwt.sign({ id: user.id }, config.get('secretKey'), { expiresIn: '1h' });
             await user.save();
-            return res.json({ message: "User was created" });
+            return res.json({
+                id: user.id,
+                username: user.username,
+                token,
+            });
 
         } catch (e) {
             console.error(e);

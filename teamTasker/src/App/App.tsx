@@ -8,32 +8,22 @@ import {useEffect} from "react";
 import {userAuth} from "src/entities/User/lib/services/userAuth.ts";
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
-import {SingIn} from "src/pages";
+import {Outlet} from "react-router-dom";
+import {LandingPage, SingIn} from "src/pages";
 
 function App() {
     const Theme = useTheme();
-    const dispatch = useAppDispatch();
-    const state = useSelector(getState);
 
 
-    useEffect(() => {
-        dispatch(userAuth())
-    }, [dispatch]);
-
-    console.log(state.user);
-    console.log(state.user.data.isAuth);
-    console.log(state.user.data.username);
+    // console.log(state.user);
+    // console.log(state.user.data.isAuth);
+    // console.log(state.user.data.username);
 
   return (
     <div className={`${styles.app} ${Theme.theme}`} >
         <Header />
         <div className={styles.pageContent}>
-            <Sidebar />
-            <div className={styles.tasks}>Hello</div>
-            {state.user.data.isAuth && <div>{state.user.data.username}</div>}
-            {/*<UserRegistration />*/}
-            {/*<UserLogin />*/}
-            <Link to={'/singIn'} >Sing In</Link>
+            <Outlet />
         </div>
     </div>
   )

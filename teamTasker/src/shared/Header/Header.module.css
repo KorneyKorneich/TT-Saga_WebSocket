@@ -11,6 +11,8 @@
     background: var(--background-light);
     /*border-left: 1px solid var(--text-color-dark);*/
     /*border-bottom: 1px solid var(--text-color-dark);*/
+    color: var(--text-color-light)
+
 }
 
 .logo{

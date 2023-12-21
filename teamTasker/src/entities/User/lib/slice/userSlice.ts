@@ -26,6 +26,7 @@ export const userSlice = createSlice({
         builder
             .addCase(userReg.pending, (state) => {
                 state.isLoading = true;
+                state.error = undefined;
             })
             .addCase(userReg.fulfilled, (state, action) => {
                 state.isLoading = false;
@@ -36,6 +37,7 @@ export const userSlice = createSlice({
             .addCase(userReg.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload as string;
+                console.log('записал ошибку')
             });
 
         // Handling userLogin actions

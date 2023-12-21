@@ -8,6 +8,7 @@ interface SingInProps {
 
 
 export const SingIn = memo(() => {
+
     return (
         <div>
             <UserRegistration />
