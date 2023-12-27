@@ -25,6 +25,7 @@ export const userReg = createAsyncThunk<UserSchema, UserRegistrationData, ThunkC
                 return rejectWithValue('Incorrect login')
             }
             localStorage.setItem('token', data.token);
+            console.log(localStorage.getItem('token'))
             console.log(data);
             return data;
         } catch (e) {

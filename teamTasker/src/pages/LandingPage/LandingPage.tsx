@@ -21,7 +21,6 @@ export const LandingPage = memo(()=> {
         <>
             <div className={styles.tasks}>Hello</div>
             {state.user.data.isAuth && <div>{state.user.data.username}</div>}
-            <Link to={'/authorization/singIn'} >Sing In</Link>
         </>
 
     )

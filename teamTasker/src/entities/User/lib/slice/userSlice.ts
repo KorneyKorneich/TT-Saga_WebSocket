@@ -67,7 +67,6 @@ export const userSlice = createSlice({
                 state.data.isAuth = true;
                 state.data.id = action.payload.id;
                 state.error = undefined
-                console.log(action.payload);
             })
             .addCase(userAuth.rejected, (state, action) => {
                 state.isLoading = false;
