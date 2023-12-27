@@ -33,11 +33,11 @@ export const UserRegistration = memo(() => {
 
         await dispatch(userReg(userPayload)).then((res) => {
             // console.log('dispatch, error', error)
+            setPassword('');
+            setUsername('');
             console.log(userPayload);
             if (res.meta.requestStatus === "fulfilled") {
-                console.log("he he")
-                setPassword('');
-                setUsername('');
+                // console.log("he he")
                onSuccess();
             }
         });
@@ -46,7 +46,7 @@ export const UserRegistration = memo(() => {
 
     useEffect(() => {
         if(error) {
-            alert("not hehe")
+            // alert("not hehe")
             console.log(error)
         }
     }, [error]);

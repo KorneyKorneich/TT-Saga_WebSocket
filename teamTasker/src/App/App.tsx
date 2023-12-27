@@ -28,7 +28,7 @@ function App() {
 
     useEffect(() => {
         dispatch(userAuth())
-    }, []);
+    }, [dispatch]);
 
     const state = useSelector(getState)
     console.log(state.user);

@@ -21,18 +21,22 @@
     justify-content: space-around;
     align-items: center;
     gap: 10px;
+    cursor: pointer;
 }
 h1{
     margin: 0;
 }
 
-.createNew {
+.createNew, .link {
+
     background: var(--primary-color);
     border-radius: 40px;
     color: var(--text-color-light);
     height: 40px;
     border: none;
     transition: background 0.3s, color 0.3s; /* Adding transition for smooth effect */
+
+
 
     &:hover {
         cursor: pointer;
@@ -43,6 +47,19 @@ h1{
     &:active {
         background: var(--primary-color-active); /* Change to your desired active color */
         color: var(--text-color-active); /* Change to your desired active text color */
+    }
+}
+
+.link{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 5rem;
+}
+
+.authedPanel{
+    & span{
+        margin-right: 10px;
     }
 }
 

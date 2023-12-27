@@ -23,7 +23,7 @@ export const userAuth = createAsyncThunk<UserSchema, void, ThunkConfig<string>>(
         } catch (e) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
-            alert(e.response.data.message);
+            // alert(e.response.data.message);
             localStorage.removeItem('token');
             return rejectWithValue('Something went wrong')
         }
