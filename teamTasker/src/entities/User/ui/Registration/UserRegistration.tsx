@@ -1,25 +1,24 @@
-import {memo, useCallback, useEffect, useState} from 'react';
-import styles from './UserRegistration.module.scss';
-import { Input } from 'src/shared';
-import { useAppDispatch } from 'src/hooks/storeHooks.ts';
-import { userReg } from 'src/entities/User/lib/services/userReg.ts';
-import { Button } from 'src/shared/Button/Button.tsx';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { getState } from 'src/entities/User';
+import {memo, useEffect, useState} from "react";
+import styles from "./UserRegistration.module.scss";
+import { Input } from "src/shared";
+import { useAppDispatch } from "src/hooks/storeHooks.ts";
+import { userReg } from "src/entities/User/lib/services/userReg.ts";
+import { Button } from "src/shared/Button/Button.tsx";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {getErrors} from "src/entities/User/lib/selectors/getErrors.ts";
 import {userAuth} from "src/entities/User/lib/services/userAuth.ts";
 
 export const UserRegistration = memo(() => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     // const state = useSelector(getState);
     const error = useSelector(getErrors);
     const onSuccess = async () => {
-        await dispatch(userAuth()).then(() => navigate('/'))
+        await dispatch(userAuth()).then(() => navigate("/"))
     }
 
     const handleClick = async () => {
@@ -33,8 +32,8 @@ export const UserRegistration = memo(() => {
 
         await dispatch(userReg(userPayload)).then((res) => {
             // console.log('dispatch, error', error)
-            setPassword('');
-            setUsername('');
+            setPassword("");
+            setUsername("");
             console.log(userPayload);
             if (res.meta.requestStatus === "fulfilled") {
                 // console.log("he he")
@@ -56,18 +55,18 @@ export const UserRegistration = memo(() => {
             <h1>Registration</h1>
             <div className={styles.username}>
                 <Input
-                    placeholder={'Type your username'}
+                    placeholder={"Type your username"}
                     value={username}
                     setValue={setUsername}
-                    type={'text'}
+                    type={"text"}
                 />
             </div>
             <div className={styles.password}>
                 <Input
-                    placeholder={'Type your password'}
+                    placeholder={"Type your password"}
                     value={password}
                     setValue={setPassword}
-                    type={'password'}
+                    type={"password"}
                 />
             </div>
             <Button onClick={handleClick}>

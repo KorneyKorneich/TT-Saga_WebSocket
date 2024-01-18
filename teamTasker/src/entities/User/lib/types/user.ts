@@ -1,11 +1,11 @@
-// import {ProjectSchema} from "src/schemas/config.ts";
+import {ProjectSchema} from "src/entities/Project/lib/types/project.ts";
 
 export interface UserSchema{
     id: string,
     username: string;
     token?: string;
     isAuth?: boolean;
-    // projectList?: ProjectSchema[]
+    projectList?: ProjectSchema[]
 }
 
 export interface UserSliceSchema {

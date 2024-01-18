@@ -1,5 +1,6 @@
 import {UserSliceSchema} from "src/entities/User/lib/types/user.ts";
 import {AppDispatch} from "src/App/providers/storeProvider/store.ts";
+import {ProjectSchema} from "src/entities/Project/lib/types/project.ts";
 
 
 export interface stateSchema {
@@ -9,28 +10,23 @@ export interface stateSchema {
 }
 
 export interface ThunkConfig<T> {
-    dispatch: AppDispatch
+    // dispatch: AppDispatch
     state: stateSchema
     rejectValue: T
 }
 
 
 export enum Flags {
-    TODO = 'todo',
-    IN_PROGRESS = 'in_progress',
-    DONE = 'done',
+    TODO = "todo",
+    IN_PROGRESS = "in_progress",
+    DONE = "done",
 }
 
 
 
 
 
-export interface ProjectSchema {
-    id: number,
-    text: string
-    // taskList: TaskSchema[];
-    // creator: UserSchema
-}
+
 
 export interface TaskSchema {
     id: number,

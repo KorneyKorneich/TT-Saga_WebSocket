@@ -1,10 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit'
-import {projectReducer} from "src/features";
+import { configureStore } from "@reduxjs/toolkit"
 import {userReducer} from "src/entities/User/lib/slice/userSlice.ts";
+import {projectsReducer} from "src/entities/Project/lib/slice/projectSlice.ts";
 
 export const store = configureStore({
     reducer: {
-        project: projectReducer,
+        projects: projectsReducer,
         user: userReducer,
     },
 })
