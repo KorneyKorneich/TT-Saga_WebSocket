@@ -1,0 +1,18 @@
+.regForm {
+  background: var(--background-light);
+  border-radius: 15px;
+  padding: 20px;
+  margin-top: 20px;
+
+  .password, .username, button{
+    margin-top: 10px;
+  }
+
+  input{
+    width: 94%;
+  }
+
+  button{
+    width: 100%;
+  }
+}
