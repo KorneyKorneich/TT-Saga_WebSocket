@@ -3,5 +3,16 @@
     min-width: 320px;
     min-height: 100vh;
     background: var(--background-dark);
-    color: var(--text-color-light)
+    color: var(--text-color-light);
+}
+
+.pageContent{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.tasks{
+    padding: 10px;
 }

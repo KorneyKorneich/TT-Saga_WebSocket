@@ -14,4 +14,9 @@
 
 body{
   margin: 0;
+  color: #2C2C38;
+
+  a{
+    color: var(--text-color-light)
+  }
 }
