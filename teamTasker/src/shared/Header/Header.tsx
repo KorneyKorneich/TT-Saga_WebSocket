@@ -62,6 +62,11 @@ export const Header = () => {
                             + show state
                         </Button>
                     </div>
+                    <div className={styles.authedPanel}>
+                        <Button className={styles.createNew} onClick={() => navigate('/workspace')}>
+                            To workspace
+                        </Button>
+                    </div>
                 </>
 
             }

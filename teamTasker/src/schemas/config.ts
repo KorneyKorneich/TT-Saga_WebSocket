@@ -1,11 +1,11 @@
 import {UserSliceSchema} from "src/entities/User/lib/types/user.ts";
 import {AppDispatch} from "src/App/providers/storeProvider/store.ts";
-import {ProjectSchema} from "src/entities/Project/lib/types/project.ts";
+import {ProjectSchema, ProjectSliceSchema} from "src/entities/Project/lib/types/project.ts";
 
 
 export interface stateSchema {
     user: UserSliceSchema,
-    projects: ProjectSchema[],
+    projects: ProjectSliceSchema,
 
 }
 
