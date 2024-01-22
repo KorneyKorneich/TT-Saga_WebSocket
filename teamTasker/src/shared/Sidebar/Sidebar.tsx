@@ -5,12 +5,13 @@ import {getState} from "src/entities/Project/lib/selectors/getState.ts";
 import {useAppDispatch} from "src/hooks/storeHooks.ts";
 import {getProjectById} from "src/entities/Project/lib/services/getProjectById.ts";
 import {getId, getIsAuth} from "src/entities/User";
-import {useEffect, useState} from "react";
+import {memo, useEffect} from "react";
 import {Button} from "src/shared";
 import {getProjects} from "src/entities/Project/lib/selectors/getProjects.ts";
+import {Link} from "react-router-dom";
 
 
-export const Sidebar =  () => {
+export const Sidebar =  memo(() => {
     const state = useSelector(getState);
     const dispatch = useAppDispatch()
     const userId = useSelector(getId);
@@ -37,14 +38,17 @@ export const Sidebar =  () => {
             <Button onClick={handleClick}>Show state</Button>
             { projects && projects.map((el) => {
                 return(
-                    <div key={el.id}>
-                        {el.text}
+                    <div>
+                        <Link key={el.id} to={`workspace/${el._id}`}>
+                            {el.text}
+                        </Link>
                     </div>
+
                 )
             })}
         </div>
     );
-};
+});
 
 
 

@@ -43,10 +43,16 @@ function App() {
 
     return (
         <div className={`${styles.app} ${Theme.theme}`}>
-            <Header/>
-            <div className={styles.pageContent}>
-                <Outlet/>
+            <div className={styles.header}>
+                <Header/>
             </div>
+            <div className={styles.page}>
+                {window.document.location.href.includes("workspace") && <Sidebar />}
+                <div className={styles.pageContent}>
+                    <Outlet/>
+                </div>
+            </div>
+
         </div>
     )
 }

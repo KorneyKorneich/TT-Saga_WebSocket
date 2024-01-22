@@ -2,7 +2,7 @@ import {TaskSchema} from "src/schemas/config.ts";
 import {UserSchema} from "src/entities/User/lib/types/user.ts";
 
 export interface ProjectSchema {
-    id: string;
+    _id: string;
     text: string;
     taskList: TaskSchema[];
     creator: UserSchema;
