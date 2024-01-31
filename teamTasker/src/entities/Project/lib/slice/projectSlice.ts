@@ -1,6 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {ProjectSliceSchema} from "../types/project.ts";
 import {getProjectById} from "src/entities/Project/lib/services/getProjectById.ts";
+import {ProjectSliceSchema} from "src/schemas/config.ts";
+import {addTasksToProject} from "src/entities/Project/lib/services/addTasksToProject.ts";
+import {getTasksByProjectId} from "src/entities/Project/lib/services/getTasksByProjectId.ts";
+import {createProject} from "src/entities/Project/lib/services/createProject.ts";
 
 
 
@@ -24,11 +27,71 @@ export const projectsSlice = createSlice({
             })
             .addCase(getProjectById.fulfilled, (state, action) => {
                 state.isLoading = false;
-                console.log(action.payload)
+                // console.log(action.payload)
                 state.projects = action.payload;
                 state.error = undefined
             })
             .addCase(getProjectById.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+                console.log("записал ошибку")
+            });
+
+        builder
+            .addCase(createProject.pending, (state) => {
+                state.isLoading = true;
+                state.error = undefined;
+            })
+            .addCase(createProject.fulfilled, (state, action) => {
+                state.isLoading = false;
+                // console.log(action.payload)
+                state.projects.push(action.payload);
+                state.error = undefined
+            })
+            .addCase(createProject.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+                console.log("записал ошибку")
+            });
+
+        builder
+            .addCase(addTasksToProject.pending, (state) => {
+                state.isLoading = true;
+                state.error = undefined;
+            })
+            .addCase(addTasksToProject.fulfilled, (state, action) => {
+                state.isLoading = false;
+                // console.log(action.payload)
+                const projectIndex = state.projects
+                    .findIndex((el) => el._id === action.payload.projectId);
+                        state.projects[projectIndex] = action.payload.project
+                state.error = undefined
+            })
+            .addCase(addTasksToProject.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+                console.log("записал ошибку")
+            });
+
+        builder
+            .addCase(getTasksByProjectId.pending, (state) => {
+                state.isLoading = true;
+                state.error = undefined;
+            })
+            .addCase(getTasksByProjectId.fulfilled, (state, action) => {
+                state.isLoading = false;
+                console.log(action.payload)
+                const projectIndex = state.projects.findIndex((el) => el._id === action.payload.projectId);
+
+                if (projectIndex !== -1) {
+                    // Нашли проект в массиве
+                    state.projects[projectIndex].taskList = action.payload.taskList;
+                } else {
+                    // Если проект не найден, можно рассмотреть вариант добавления его в массив
+                    // state.projects.push(action.payload);
+                }                state.error = undefined
+            })
+            .addCase(getTasksByProjectId.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
                 console.log("записал ошибку")

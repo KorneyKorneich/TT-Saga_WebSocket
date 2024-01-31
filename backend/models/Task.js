@@ -1,10 +1,11 @@
 const {Schema, model} = require ('mongoose');
 
 const Task = new Schema({
-    title: {type: String},
+    taskName: {type: String},
+    flag: {String},
     projectId: {type: Schema.Types.ObjectId, ref: 'Project', required: true},
-    taskStatus: {type: String},
-    taskDetails: {type: String}
+    description: {type: String},
+    subTasks: [{type: String}]
 })
 
 module.exports = model('Task', Task);

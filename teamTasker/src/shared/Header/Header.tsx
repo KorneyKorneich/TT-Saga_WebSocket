@@ -3,28 +3,26 @@ import Logo from "../assets/kanban-logo.svg?react"
 import {Button, SVG} from "src/shared";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {getId, getIsAuth, getUsername} from "src/entities/User";
-import {useAppDispatch} from "src/hooks/storeHooks.ts";
-import {getProjectById} from "src/entities/Project/lib/services/getProjectById.ts";
-import {getState} from "src/entities/Project";
+import {getIsAuth} from "src/entities/User";
 export const Header = () => {
     const isAuth = useSelector(getIsAuth);
-    const username = useSelector(getUsername);
+    // const username = useSelector(getUsername);
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
-    const userId = useSelector(getId);
-    const state = useSelector(getState);
+    // const dispatch = useAppDispatch();
+    // const userId = useSelector(getId);
+    // const state = useSelector(getState);
+    const currentURL = window.location.pathname;
 
 
-    const onProjectFetch = () => {
-        dispatch(getProjectById(userId)).then((res) => {
-            console.log(res);
-        })
-    }
-
-    const handleClick = () => {
-        console.log(state.projects);
-    }
+    // const onProjectFetch = () => {
+    //     dispatch(getProjectById(userId)).then((res) => {
+    //         console.log(res);
+    //     })
+    // }
+    //
+    // const handleClick = () => {
+    //     console.log(state.projects);
+    // }
 
     // const onProjectCreate = () => {
     //
@@ -46,30 +44,36 @@ export const Header = () => {
             }
             {isAuth &&
                 <>
-                    <div className={styles.authedPanel}>
-                        <span>Hello {username}!</span>
-                        <Button className={styles.createNew} onClick={onProjectFetch}>
-                            + show projects
-                        </Button>
-                    </div>
+                    {/*<div className={styles.authedPanel}>*/}
+                    {/*    <span>Hello {username}!</span>*/}
+                    {/*    <Button className={styles.createNew} onClick={onProjectFetch}>*/}
+                    {/*        + show projects*/}
+                    {/*    </Button>*/}
+                    {/*</div>*/}
                     <div className={styles.authedPanel}>
                         <Button className={styles.createNew} onClick={() => navigate("/newProject")}>
                             + Create new project
                         </Button>
                     </div>
-                    <div className={styles.authedPanel}>
-                        <Button className={styles.createNew} onClick={handleClick}>
-                            + show state
-                        </Button>
-                    </div>
+                    {/*<div className={styles.authedPanel}>*/}
+                    {/*    <Button className={styles.createNew} onClick={handleClick}>*/}
+                    {/*        + show state*/}
+                    {/*    </Button>*/}
+                    {/*</div>*/}
                     <div className={styles.authedPanel}>
                         <Button className={styles.createNew} onClick={() => navigate('/workspace')}>
                             To workspace
                         </Button>
                     </div>
                 </>
-
             }
+            {currentURL.includes("workspace/") &&
+                <div className={styles.authedPanel}>
+                <Button className={styles.createNew} onClick={() => navigate(``)}>
+                + Task
+                </Button>
+                </div>
+        }
         </div>
     );
 };

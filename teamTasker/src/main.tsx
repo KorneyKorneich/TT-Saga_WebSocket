@@ -9,7 +9,7 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import {LandingPage, Login, ProjectCreatePage, SingIn} from "src/pages";
+import {LandingPage, Login, ProjectCreatePage, SingIn, TaskCreatePage} from "src/pages";
 import {ProjectsPage} from "src/pages/ProjectsPage/ProjectsPage.tsx";
 import {Project} from "src/entities/Project/ui/Project.tsx";
 
@@ -40,6 +40,10 @@ const router = createBrowserRouter([
             {
                 path: "newProject",
                 element: <ProjectCreatePage />
+            },
+            {
+                path: "addTasksToProject/:projectId",
+                element: <TaskCreatePage />
             },
             {
                 path: "workspace",

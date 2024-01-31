@@ -35,7 +35,7 @@ export const UserLogin = () => {
                 <Input
                     placeholder={"Type your username"}
                     value={username}
-                    setValue={setUsername}
+                    onChange={(e) => setUsername(e.target.value)}
                     type={"text"}
                 />
             </div>
@@ -43,7 +43,7 @@ export const UserLogin = () => {
                 <Input
                     placeholder={"Type your password"}
                     value={password}
-                    setValue={setPassword}
+                    onChange={(e) => setPassword(e.target.value)}
                     type={"password"}
                 />
             </div>

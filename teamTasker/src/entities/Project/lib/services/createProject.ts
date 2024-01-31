@@ -1,16 +1,12 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {ProjectSchema} from "../types/project.ts";
-import {ThunkConfig} from "src/schemas/config.ts";
+import {ProjectFetchData, ProjectSchema, ThunkConfig} from "src/schemas/config.ts";
 import axios from "axios";
 
-interface createProjectTypes{
-    userId: string,
-    projectTitle: string
-}
 
-export const createProject = createAsyncThunk<ProjectSchema, createProjectTypes, ThunkConfig<string>>(
+
+export const createProject = createAsyncThunk<ProjectSchema, ProjectFetchData, ThunkConfig<string>>(
     "project/createProject",
-    async ( projectInfo: createProjectTypes, thunkAPI)=> {
+    async ( projectInfo: ProjectFetchData, thunkAPI)=> {
         const {
             rejectWithValue,
         } = thunkAPI;
@@ -27,7 +23,7 @@ export const createProject = createAsyncThunk<ProjectSchema, createProjectTypes,
             if(!response){
                 throw new Error();
             }
-
+            console.log(response.data)
             const data: ProjectSchema = response.data;
             console.log(data);
             return data;
