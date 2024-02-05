@@ -2,10 +2,11 @@ import styles from "src/pages/TaskCreatePage/TaskCreatePage.module.scss";
 import { Button, Input } from "src/shared";
 import { useState } from "react";
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
-import {Flags, TaskFetchData} from "src/schemas/config.ts";
+import { Flags, TaskFetchData } from "src/schemas/config.ts";
 import { useParams } from "react-router";
 import { addTasksToProject } from "src/entities/Project/lib/services/addTasksToProject.ts";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksByProjectId.ts";
 
 export const TaskCreatePage = () => {
     const [taskList, setTaskList] = useState<TaskFetchData[]>([]);
@@ -13,7 +14,7 @@ export const TaskCreatePage = () => {
     const { projectId } = useParams();
     const navigate = useNavigate();
 
-    if(!projectId){
+    if (!projectId) {
         return 0
     }
 
@@ -21,6 +22,7 @@ export const TaskCreatePage = () => {
         console.log(projectId, taskList);
         await dispatch(addTasksToProject({ projectId, taskList }));
         console.log(projectId);
+        await dispatch(getTasksByProjectId(projectId))
         navigate(`/workspace/${projectId}`)
     };
 

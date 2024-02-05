@@ -57,9 +57,9 @@ h1{
     width: 5rem;
 }
 
-.authedPanel{
-    & span{
-        margin-right: 10px;
-    }
-}
+/*.authedPanel{*/
+/*    & span{*/
+/*        margin-right: 10px;*/
+/*    }*/
+/*}*/
 

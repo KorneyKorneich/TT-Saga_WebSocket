@@ -66,30 +66,6 @@ export const ProjectCreatePage = () => {
                     type={"text"}
                 />
             </div>
-            {/*<p>Tasks</p>*/}
-            {/*<div id={'taskList'} className={styles.tasks}>*/}
-            {/*    { newProjectData.taskList && newProjectData.taskList.map((el) => {*/}
-            {/*        return(*/}
-            {/*            <Input*/}
-            {/*                className={styles.task}*/}
-            {/*                key={el._id}*/}
-            {/*                value={el.taskName}*/}
-            {/*                onChange={(e) => handleTaskNameChange(e, el._id)}*/}
-            {/*                placeholder={"e.g. Create cool web-app"}*/}
-            {/*            />*/}
-            {/*        )*/}
-            {/*    })}*/}
-            {/*</div>*/}
-            {/*<Button onClick={() => {*/}
-            {/*    setNewProjectData({*/}
-            {/*        ...newProjectData,*/}
-            {/*        taskList: [*/}
-            {/*            ...newProjectData.taskList,*/}
-            {/*            { _id: new Date().getTime(), flag: Flags.TODO, taskName: "", description: "", subTasks: [] }*/}
-            {/*        ]*/}
-            {/*    });*/}
-            {/*}}>Add task</Button>*/}
-
             <Button className={styles.submitButton} onClick={handleClick}>Create new project</Button>
         </div>
     );

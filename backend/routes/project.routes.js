@@ -12,7 +12,7 @@ router.post('/createProject',
     authMiddleware,
     async (req, res) => {
         try {
-            const { userId, title, taskList } = req.body;
+            const {userId, title, taskList} = req.body;
 
             // Create a new Project instance
             const project = new Project({
@@ -31,16 +31,16 @@ router.post('/createProject',
             });
         } catch (e) {
             console.error(e);
-            return res.status(400).json({ message: "Something went wrong with creation" });
+            return res.status(400).json({message: "Something went wrong with creation"});
         }
     })
 
 router.post('/getProjects',
     authMiddleware,
-    async  (req, res) => {
-        try{
+    async (req, res) => {
+        try {
             Project.find({user: req.user.id}).then((projects) => {
-                if(!projects){
+                if (!projects) {
                     return res.status(400).json({message: 'No projects'})
                 }
                 res.json(projects)
@@ -57,17 +57,18 @@ router.post('/addTasksToProject/:projectId',
     authMiddleware,
     async (req, res) => {
         const projectId = req.params.projectId;
-        const { tasks } = req.body;
+        const {tasks} = req.body;
+        console.log("request", tasks);
 
         try {
             const project = await Project.findById(projectId);
             if (!project) {
-                return res.status(404).json({ error: 'Проект не найден' });
+                return res.status(404).json({error: 'Проект не найден'});
             }
 
             const newTasks = [];
             for (const taskData of tasks) {
-                let existingTask = await Task.findOne({ _id: taskData._id });
+                let existingTask = await Task.findOne({_id: taskData._id});
 
                 if (!existingTask) {
                     console.log(taskData, projectId);
@@ -91,18 +92,18 @@ router.post('/addTasksToProject/:projectId',
 
         } catch (e) {
             console.error(e);
-            res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+            res.status(500).json({error: 'Внутренняя ошибка сервера'});
         }
     });
 
 router.get('/getTasks/:projectId',
     authMiddleware,
-    async  (req, res) => {
+    async (req, res) => {
         const projectId = req.params.projectId;
         console.log(projectId)
-        try{
+        try {
             Task.find({projectId: projectId}).then((tasks) => {
-                if(!tasks){
+                if (!tasks) {
                     return res.status(400).json({message: 'No projects'})
                 }
                 console.log(tasks);
@@ -114,11 +115,6 @@ router.get('/getTasks/:projectId',
             res.send({message: 'Server error'})
         }
     })
-
-
-
-
-
 
 
 module.exports = router;

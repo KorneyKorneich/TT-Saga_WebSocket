@@ -1,5 +1,5 @@
-import {createAsyncThunk} from "@reduxjs/toolkit";
-import {TaskSchema} from "src/schemas/config.ts";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { TaskSchema } from "src/schemas/config.ts";
 import axios from "axios";
 
 export interface TaskResponseSchema {
@@ -9,19 +9,19 @@ export interface TaskResponseSchema {
 
 export const getTasksByProjectId = createAsyncThunk<TaskResponseSchema, string>(
     "project/getTasksByProjectId",
-    async (projectId, thunkAPI)=> {
+    async (projectId, thunkAPI) => {
         const {
             rejectWithValue,
         } = thunkAPI;
 
-        if(!projectId) {
+        if (!projectId) {
             return rejectWithValue("No id to find any projects");
         }
         try {
             const response = await axios.get(`http://localhost:4000/api/getTasks/${projectId}`,
-                {headers:{Authorization: `Bearer ${localStorage.getItem("token")}`}});
+                { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
-            if(!response.data){
+            if (!response.data) {
                 throw new Error();
             }
 
@@ -32,7 +32,7 @@ export const getTasksByProjectId = createAsyncThunk<TaskResponseSchema, string>(
             console.log(data)
             return data;
 
-        }catch (e) {
+        } catch (e) {
             return rejectWithValue("Something went wrong in projects thunk")
         }
     }

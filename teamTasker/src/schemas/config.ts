@@ -1,5 +1,4 @@
-import {UserSliceSchema} from "src/entities/User/lib/types/user.ts";
-
+import { UserSliceSchema } from "src/entities/User/lib/types/user.ts";
 
 
 export interface stateSchema {
@@ -13,6 +12,7 @@ export interface ThunkConfig<T> {
     state: stateSchema
     rejectValue: T
 }
+
 //TODO: Перенести User типы сюда
 export enum Flags {
     TODO = "todo",
@@ -23,18 +23,19 @@ export enum Flags {
 export interface ProjectSchema {
     _id?: string;
     title: string;
-    taskList?: TaskSchema[];
+    taskList: TaskSchema[];
     creatorId?: string;
 }
 
 export interface ProjectSliceSchema {
     projects: ProjectSchema[];
+    currentProject: ProjectSchema;
     isLoading: boolean;
     error?: string;
 }
 
 export interface TaskSchema {
-    _id: number,
+    _id: string,
     projectId: string,
     flag: Flags,
     taskName: string,
@@ -48,7 +49,7 @@ export interface SubTask {
     todo: string
 }
 
-export interface ProjectFetchData{
+export interface ProjectFetchData {
     title?: string,
     creatorId?: string,
     taskList: TaskSchema[]

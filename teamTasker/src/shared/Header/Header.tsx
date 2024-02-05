@@ -1,9 +1,11 @@
-import styles from  "./Header.module.css";
+import styles from "./Header.module.css";
 import Logo from "../assets/kanban-logo.svg?react"
-import {Button, SVG} from "src/shared";
-import {useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {getIsAuth} from "src/entities/User";
+import { Button, SVG } from "src/shared";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getIsAuth } from "src/entities/User";
+import { getCurrentProject } from "src/entities/Project";
+
 export const Header = () => {
     const isAuth = useSelector(getIsAuth);
     // const username = useSelector(getUsername);
@@ -12,6 +14,7 @@ export const Header = () => {
     // const userId = useSelector(getId);
     // const state = useSelector(getState);
     const currentURL = window.location.pathname;
+    const currentProject = useSelector(getCurrentProject);
 
 
     // const onProjectFetch = () => {
@@ -32,7 +35,7 @@ export const Header = () => {
         <div className={styles.header}>
             <div className={styles.logo} onClick={() => navigate("/")}>
                 <SVG size={40}>
-                    <Logo />
+                    <Logo/>
                 </SVG>
                 <h1>TeamTasker</h1>
             </div>
@@ -42,7 +45,7 @@ export const Header = () => {
                 </Button>
 
             }
-            {isAuth &&
+            {isAuth && !currentURL.includes("workspace") &&
                 <>
                     {/*<div className={styles.authedPanel}>*/}
                     {/*    <span>Hello {username}!</span>*/}
@@ -50,11 +53,6 @@ export const Header = () => {
                     {/*        + show projects*/}
                     {/*    </Button>*/}
                     {/*</div>*/}
-                    <div className={styles.authedPanel}>
-                        <Button className={styles.createNew} onClick={() => navigate("/newProject")}>
-                            + Create new project
-                        </Button>
-                    </div>
                     {/*<div className={styles.authedPanel}>*/}
                     {/*    <Button className={styles.createNew} onClick={handleClick}>*/}
                     {/*        + show state*/}
@@ -69,11 +67,9 @@ export const Header = () => {
             }
             {currentURL.includes("workspace/") &&
                 <div className={styles.authedPanel}>
-                <Button className={styles.createNew} onClick={() => navigate(``)}>
-                + Task
-                </Button>
+                    {currentProject.title}
                 </div>
-        }
+            }
         </div>
     );
 };
