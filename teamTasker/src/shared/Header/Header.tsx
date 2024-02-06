@@ -1,10 +1,10 @@
 import styles from "./Header.module.css";
 import Logo from "../assets/kanban-logo.svg?react"
-import { Button, SVG } from "src/shared";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { getIsAuth } from "src/entities/User";
-import { getCurrentProject } from "src/entities/Project";
+import {Button, SVG} from "src/shared";
+import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {getIsAuth} from "src/entities/User";
+import {getCurrentProject} from "src/entities/Project";
 
 export const Header = () => {
     const isAuth = useSelector(getIsAuth);
