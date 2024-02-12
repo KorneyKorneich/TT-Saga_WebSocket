@@ -1,13 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {ProjectSchema, TaskFetchData, ThunkConfig} from "src/schemas/config.ts";
+import { ProjectSchema, TaskFetchData, ThunkConfig } from "src/schemas/config.ts";
 import axios from "axios";
 
 interface AddTasksToProjectData {
     projectId: string;
-    taskList: TaskFetchData[];
+    task: TaskFetchData;
 }
 
-interface AddTasksResponseSchema{
+interface AddTasksResponseSchema {
     projectId: string,
     project: ProjectSchema;
 }
@@ -18,15 +18,17 @@ export const addTasksToProject = createAsyncThunk<AddTasksResponseSchema, AddTas
     async (data: AddTasksToProjectData, thunkAPI) => {
         const { rejectWithValue } = thunkAPI;
 
-        if (!data || !data.projectId || !data.taskList) {
+        if (!data || !data.projectId || !data.task) {
             return rejectWithValue("Invalid data for adding tasks to project");
         }
+
+        console.log(data)
 
         try {
             const response = await axios.post(
                 `http://localhost:4000/api/addTasksToProject/${data.projectId}`,
                 {
-                    tasks: data.taskList,
+                    task: data.task,
                 },
                 {
                     headers: {

@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 interface PopupProps {
     isPopupOpen: boolean;
-    selectedTaskId: string;
+    selectedTaskId?: string;
     closeModal: () => void;
     children: ReactNode;
 }

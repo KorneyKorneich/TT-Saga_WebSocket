@@ -45,7 +45,7 @@ export interface TaskSchema {
 
 
 export interface SubTask {
-    id: number,
+    _id: string,
     todo: string
 }
 

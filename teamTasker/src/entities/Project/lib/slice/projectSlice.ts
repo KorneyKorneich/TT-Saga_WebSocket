@@ -113,39 +113,6 @@ export const projectsSlice = createSlice({
                 state.error = action.payload;
                 console.log("записал ошибку")
             });
-
-        // Handling userLogin actions
-        //     builder
-        //         .addCase(userLogin.pending, (state) => {
-        //             state.isLoading = true;
-        //         })
-        //         .addCase(userLogin.fulfilled, (state, action) => {
-        //             state.isLoading = false;
-        //             state.data.username = action.payload.username;
-        //             state.data.id = action.payload.id;
-        //             state.error = undefined
-        //             state.data.isAuth = true;
-        //         })
-        //         .addCase(userLogin.rejected, (state, action) => {
-        //             state.isLoading = false;
-        //             state.error = action.payload as string;
-        //         });
-        //
-        //     builder
-        //         .addCase(userAuth.pending, (state) => {
-        //             state.isLoading = true;
-        //         })
-        //         .addCase(userAuth.fulfilled, (state, action) => {
-        //             state.isLoading = false;
-        //             state.data.username = action.payload.username;
-        //             state.data.isAuth = true;
-        //             state.data.id = action.payload.id;
-        //             state.error = undefined
-        //         })
-        //         .addCase(userAuth.rejected, (state, action) => {
-        //             state.isLoading = false;
-        //             state.error = action.payload as string;
-        //         });
     },
 
 })

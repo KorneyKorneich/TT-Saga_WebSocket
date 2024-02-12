@@ -12,7 +12,15 @@ const Task = new Schema({
         required: true
     },
     description: {type: String},
-    subTasks: [{type: String}]
+    subTasks: [{
+        _id: {
+            type: String,
+            required: true
+        },
+        todo: {
+            type: String,
+        }
+    }]
 })
 
 module.exports = model('Task', Task);

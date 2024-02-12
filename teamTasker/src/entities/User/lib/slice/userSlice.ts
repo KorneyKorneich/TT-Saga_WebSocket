@@ -1,13 +1,12 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {userReg} from "src/entities/User/lib/services/userReg.ts";
-import {UserSliceSchema} from "src/entities/User/lib/types/user.ts";
-import {userLogin} from "src/entities/User/lib/services/userLogin.ts";
-import {userAuth} from "src/entities/User/lib/services/userAuth.ts";
-
+import { createSlice } from "@reduxjs/toolkit";
+import { userReg } from "src/entities/User/lib/services/userReg.ts";
+import { UserSliceSchema } from "src/entities/User/lib/types/user.ts";
+import { userLogin } from "src/entities/User/lib/services/userLogin.ts";
+import { userAuth } from "src/entities/User/lib/services/userAuth.ts";
 
 
 const initialState: UserSliceSchema = {
-    data:{
+    data: {
         id: "",
         username: "",
         isAuth: false,
@@ -15,7 +14,6 @@ const initialState: UserSliceSchema = {
     isLoading: true,
     error: undefined
 }
-
 
 
 export const userSlice = createSlice({
@@ -71,6 +69,7 @@ export const userSlice = createSlice({
             .addCase(userAuth.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload as string;
+                state.data.isAuth = false;
             });
     },
 

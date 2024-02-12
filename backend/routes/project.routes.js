@@ -57,8 +57,8 @@ router.post('/addTasksToProject/:projectId',
     authMiddleware,
     async (req, res) => {
         const projectId = req.params.projectId;
-        const {tasks} = req.body;
-        console.log("request", tasks);
+        const {task} = req.body;
+        console.log("request", task);
 
         try {
             const project = await Project.findById(projectId);
@@ -66,35 +66,33 @@ router.post('/addTasksToProject/:projectId',
                 return res.status(404).json({error: 'Проект не найден'});
             }
 
-            const newTasks = [];
-            for (const taskData of tasks) {
-                let existingTask = await Task.findOne({_id: taskData._id});
+            let existingTask = await Task.findOne({_id: task._id});
 
-                if (!existingTask) {
-                    console.log(taskData, projectId);
-                    const newTask = new Task({
-                        ...taskData,
-                        projectId: projectId
-                    });
-                    await newTask.save();  // Сохраняем каждую задачу перед добавлением в массив
-                    newTasks.push(newTask._id);
-                } else {
-                    newTasks.push(existingTask._id);
+            if (!existingTask) {
+                // Задача не найдена в базе данных, создаем новую задачу и добавляем ее в массив задач проекта
+                const newTask = new Task({
+                    ...task,
+                    projectId: projectId
+                });
+                await newTask.save();
+                project.taskList.push(newTask._id);
+                await project.save();
+                return res.json(project);
+            } else {
+                // Задача уже существует в базе данных, проверяем, есть ли она в массиве задач проекта
+                if (!project.taskList.includes(existingTask._id)) {
+                    project.taskList.push(existingTask._id);
+                    await project.save();
                 }
+                return res.json(project);
             }
-
-            // Добавляем задачи к проекту
-            project.taskList = project.taskList.concat(newTasks);
-            await project.save();
-
-            console.log(project);
-            res.json(project);
 
         } catch (e) {
             console.error(e);
             res.status(500).json({error: 'Внутренняя ошибка сервера'});
         }
     });
+
 
 router.get('/getTasks/:projectId',
     authMiddleware,

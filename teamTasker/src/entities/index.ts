@@ -1,2 +1,3 @@
-export {UserRegistration} from "./User/index.ts"
+export { UserRegistration } from "./User/index.ts"
+
 

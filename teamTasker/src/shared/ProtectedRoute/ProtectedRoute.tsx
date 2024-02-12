@@ -12,7 +12,6 @@ export const ProtectedRoute = (props: ProtectedRouteProps) => {
     const {
         children
     } = props;
-    console.log(children);
     const isAuth = useSelector(getIsAuth);
 
 

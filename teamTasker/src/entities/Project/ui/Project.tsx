@@ -1,5 +1,5 @@
 import styles from "./Project.module.scss"
-import { Button, CustomPopup } from "src/shared";
+import { Button } from "src/shared";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -7,9 +7,8 @@ import { useAppDispatch } from "src/hooks/storeHooks.ts";
 import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksByProjectId.ts";
 import { useSelector } from "react-redux";
 import { getCurrentProject } from "src/entities/Project";
-import { Flags, stateSchema, TaskSchema } from "src/schemas/config.ts";
+import { Flags, TaskSchema } from "src/schemas/config.ts";
 import { setCurrentProject } from "src/entities/Project/lib/slice/projectSlice.ts";
-import { getTaskDetails } from "src/entities/Project/lib/selectors/getTaskDetails.ts";
 import { Popup } from "src/shared/Popup/ui/Popup.tsx";
 
 export const Project = () => {
@@ -107,7 +106,25 @@ export const Project = () => {
                 selectedTaskId={selectedTaskId}
                 closeModal={closeModal}
             >
-                {taskDetails && taskDetails.taskName}
+                <h3>{taskDetails && taskDetails.taskName}</h3>
+                <div className={styles.task_details}>
+                    <div className={styles.task_description}>
+                        {taskDetails?.description}
+                    </div>
+                    <h5>Subtasks</h5>
+                    <div className={styles.task_subtasks}>
+                        {taskDetails?.subTasks && taskDetails.subTasks.map((el) => {
+                            return (
+                                <div key={el._id}>
+                                    <input type={"checkbox"} name={el._id}/>
+                                    <label htmlFor={el._id}>{el.todo}</label>
+                                </div>
+
+                            )
+                        })}
+
+                    </div>
+                </div>
             </Popup>
         </div>
 
