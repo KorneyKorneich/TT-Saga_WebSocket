@@ -4,6 +4,7 @@ import { ProjectSliceSchema } from "src/schemas/config.ts";
 import { addTasksToProject } from "src/entities/Project/lib/services/addTasksToProject.ts";
 import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksByProjectId.ts";
 import { createProject } from "src/entities/Project/lib/services/createProject.ts";
+import { updateProject } from "src/entities/Project/lib/services/updateProject.ts";
 
 
 const initialState: ProjectSliceSchema = {
@@ -29,6 +30,10 @@ export const projectsSlice = createSlice({
             }
             // return state;
         },
+        updateCurrentProject: (state, action) => {
+            const updatedCurrentProject = action.payload;
+            if (updatedCurrentProject) state.currentProject = updatedCurrentProject;
+        }
 
     },
     extraReducers: (builder) => {
@@ -113,9 +118,38 @@ export const projectsSlice = createSlice({
                 state.error = action.payload;
                 console.log("записал ошибку")
             });
+
+        builder
+            .addCase(updateProject.pending, (state) => {
+                state.isLoading = true;
+                state.error = undefined;
+            })
+            .addCase(updateProject.fulfilled, (state, action) => {
+                state.isLoading = false;
+
+                // Найдите индекс проекта в массиве проектов
+                const projectId = state.projects.findIndex(el => el._id === action.payload.projectId);
+
+                // Найдите индекс задачи в массиве задач проекта
+                const taskId = state.projects[projectId].taskList.findIndex(el => el._id === action.payload._id);
+
+                // Если нашли индексы, обновите задачу
+                if (projectId !== -1 && taskId !== -1) {
+                    state.projects[projectId].taskList[taskId] = action.payload;
+                    state.currentProject = state.projects[projectId];
+                }
+
+                state.error = undefined;
+            })
+
+            .addCase(updateProject.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+                console.log("записал ошибку")
+            });
     },
 
 })
 
-export const { setCurrentProject } = projectsSlice.actions;
+export const { setCurrentProject, updateCurrentProject } = projectsSlice.actions;
 export const { reducer: projectsReducer } = projectsSlice;

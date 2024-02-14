@@ -46,7 +46,8 @@ export interface TaskSchema {
 
 export interface SubTask {
     _id: string,
-    todo: string
+    todo: string,
+    isDone: boolean;
 }
 
 export interface ProjectFetchData {

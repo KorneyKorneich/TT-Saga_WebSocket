@@ -16,7 +16,7 @@ export const Popup = (props: PopupProps) => {
         closeModal,
     } = props;
 
-    console.log(isPopupOpen);
+
     return (
         <div onClick={closeModal} className={`${isPopupOpen ? `${styles.modal} ${styles.active}` : `${styles.modal}`}`}>
             <div onClick={(e) => e.stopPropagation()}

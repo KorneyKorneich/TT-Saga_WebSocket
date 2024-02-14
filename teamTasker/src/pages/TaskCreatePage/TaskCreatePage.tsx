@@ -17,7 +17,7 @@ export const TaskCreatePage = () => {
         flag: Flags.TODO,
         description: "",
         subTasks: [
-            { _id: Date.now().toString(), todo: "" }, // Первая задача
+            { _id: Date.now().toString(), todo: "", isDone: false }, // Первая задача
         ]
     });
     const [isPopup, setIsPopup] = useState(false);
@@ -110,7 +110,7 @@ export const TaskCreatePage = () => {
                                     ...prevState,
                                     subTasks: [
                                         ...(prevState.subTasks) as [],
-                                        { _id: Date.now().toString(), todo: "" }
+                                        { _id: Date.now().toString(), todo: "", isDone: false }
                                     ]
                                 }));
                             }}

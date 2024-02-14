@@ -11,6 +11,10 @@
   opacity: 0;
   pointer-events: none;
   transition: 0.5s;
+
+  h3 {
+    margin-top: 0;
+  }
 }
 
 .modal.active {

@@ -1,18 +1,18 @@
 import styles from "src/pages/ProjectsPage/ProjectCreatePage.module.scss";
-import {Button, Input} from "src/shared";
-import {useSelector} from "react-redux";
-import {useState} from "react";
-import {useAppDispatch} from "src/hooks/storeHooks.ts";
-import {createProject} from "src/entities/Project/lib/services/createProject.ts";
-import {getId} from "src/entities/User";
-import {ProjectFetchData} from "src/schemas/config.ts";
-import {useNavigate} from "react-router-dom";
+import { Button, Input } from "src/shared";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useAppDispatch } from "src/hooks/storeHooks.ts";
+import { createProject } from "src/entities/Project/lib/services/createProject.ts";
+import { getId } from "src/entities/User";
+import { ProjectFetchData } from "src/schemas/config.ts";
+import { useNavigate } from "react-router-dom";
 
 export const ProjectCreatePage = () => {
     const [newProjectData, setNewProjectData] = useState<ProjectFetchData>({
         title: "",
         creatorId: "",
-        taskList:[]
+        taskList: []
     });
 
     const dispatch = useAppDispatch();
@@ -31,24 +31,23 @@ export const ProjectCreatePage = () => {
         navigate("/workspace")
     }
 
-    const handleTaskNameChange = (e: React.ChangeEvent<HTMLInputElement>, taskId: number) => {
-        const updatedTaskList = newProjectData.taskList?.map(task => {
-            if (task._id === taskId) {
-                // Обновляем taskName только для нужной задачи
-                return {
-                    ...task,
-                    taskName: e.target.value
-                };
-            }
-            return task;
-        });
-
-        setNewProjectData({
-            ...newProjectData,
-            taskList: updatedTaskList
-        });
-    };
-
+    // const handleTaskNameChange = (e: React.ChangeEvent<HTMLInputElement>, taskId: number) => {
+    //     const updatedTaskList = newProjectData.taskList?.map(task => {
+    //         if (task._id === taskId) {
+    //             // Обновляем taskName только для нужной задачи
+    //             return {
+    //                 ...task,
+    //                 taskName: e.target.value
+    //             };
+    //         }
+    //         return task;
+    //     });
+    //
+    //     setNewProjectData({
+    //         ...newProjectData,
+    //         taskList: updatedTaskList
+    //     });
+    // };
 
 
     //TODO: Через глобальный стейт.
@@ -59,10 +58,12 @@ export const ProjectCreatePage = () => {
                 <Input
                     placeholder={"Type title of your project"}
                     value={newProjectData.title}
-                    onChange={(e) => {setNewProjectData({
-                        ...newProjectData,
-                        title: e.target.value
-                    })}}
+                    onChange={(e) => {
+                        setNewProjectData({
+                            ...newProjectData,
+                            title: e.target.value
+                        })
+                    }}
                     type={"text"}
                 />
             </div>

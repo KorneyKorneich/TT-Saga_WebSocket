@@ -19,6 +19,10 @@ const Task = new Schema({
         },
         todo: {
             type: String,
+        },
+        isDone: {
+            type: Boolean,
+            required: true
         }
     }]
 })

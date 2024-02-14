@@ -40,6 +40,7 @@ router.post('/getProjects',
     async (req, res) => {
         try {
             Project.find({user: req.user.id}).then((projects) => {
+
                 if (!projects) {
                     return res.status(400).json({message: 'No projects'})
                 }
@@ -87,6 +88,28 @@ router.post('/addTasksToProject/:projectId',
                 return res.json(project);
             }
 
+        } catch (e) {
+            console.error(e);
+            res.status(500).json({error: 'Внутренняя ошибка сервера'});
+        }
+    });
+
+
+router.patch('/updateProject/:projectId',
+    authMiddleware,
+    async (req, res) => {
+        const projectId = req.params.projectId;
+
+
+        try {
+            const project = await Project.findById(projectId);
+            if (!project) {
+                return res.status(404).json({error: 'Проект не найден'});
+            }
+            const updatedTask = await Task.findOneAndUpdate({_id: req.body._id}, req.body, {
+                new: true
+            });
+            res.json(updatedTask);
         } catch (e) {
             console.error(e);
             res.status(500).json({error: 'Внутренняя ошибка сервера'});
