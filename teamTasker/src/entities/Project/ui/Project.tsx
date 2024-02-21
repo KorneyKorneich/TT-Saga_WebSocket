@@ -1,8 +1,8 @@
 import styles from "./Project.module.scss"
-import { Button, TaskCard } from "src/shared";
+import { Button, Dropdown, TaskCard } from "src/shared";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
 import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksByProjectId.ts";
 import { useSelector } from "react-redux";
@@ -13,6 +13,7 @@ import { Popup } from "src/shared/Popup/ui/Popup.tsx";
 import { updateProject } from "src/entities/Project/lib/services/updateProject.ts";
 
 export const Project = () => {
+
     const { projectId } = useParams();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -21,7 +22,7 @@ export const Project = () => {
     const [isChanged, setIsChanged] = useState(false);
     const [isPopup, setIsPopup] = useState(false);
     const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
-    const [taskDetails, setTaskDetails] = useState<TaskSchema | null>({
+    const [taskDetails, setTaskDetails] = useState<TaskSchema>({
         _id: "",
         taskName: "",
         flag: Flags.TODO,
@@ -33,11 +34,17 @@ export const Project = () => {
             console.log(taskDetails);
             await dispatch(updateProject(taskDetails));
         }
-        console.log(project)
         setIsChanged(false);
         setSelectedTaskId(null);
         setIsPopup(false);
-        setTaskDetails(null);
+        setTaskDetails(
+            {
+                _id: "",
+                taskName: "",
+                flag: Flags.TODO,
+                projectId: ""
+            }
+        );
     }
 
     const openModal = (taskId: string) => {
@@ -47,6 +54,15 @@ export const Project = () => {
             setTaskDetails(project?.taskList[selectedTask]);
             setIsPopup(true);
         }
+    }
+
+    function handleTaskFlagChange(e: ChangeEvent<HTMLSelectElement>) {
+        const updatedTask: TaskSchema = {
+            ...taskDetails,
+            flag: e.target.value as Flags
+        }
+        setTaskDetails(updatedTask);
+        setIsChanged(true);
     }
 
 
@@ -68,7 +84,6 @@ export const Project = () => {
         };
         setIsChanged(true);
         setTaskDetails(updatedTask)
-
     }
 
     useEffect(() => {
@@ -115,9 +130,9 @@ export const Project = () => {
                             )
                         })}
                     </div>
+                    <Dropdown taskStatus={taskDetails.flag} handleStatusSelect={(e) => handleTaskFlagChange(e)}/>
                 </div>
             </Popup>
         </div>
-
     )
 }

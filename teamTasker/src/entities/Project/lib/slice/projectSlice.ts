@@ -6,7 +6,6 @@ import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksB
 import { createProject } from "src/entities/Project/lib/services/createProject.ts";
 import { updateProject } from "src/entities/Project/lib/services/updateProject.ts";
 
-
 const initialState: ProjectSliceSchema = {
     projects: [],
     currentProject: {
@@ -16,7 +15,6 @@ const initialState: ProjectSliceSchema = {
     isLoading: true,
     error: undefined,
 }
-
 
 export const projectsSlice = createSlice({
     name: "projectSlice",
@@ -34,7 +32,6 @@ export const projectsSlice = createSlice({
             const updatedCurrentProject = action.payload;
             if (updatedCurrentProject) state.currentProject = updatedCurrentProject;
         }
-
     },
     extraReducers: (builder) => {
         builder
@@ -80,7 +77,6 @@ export const projectsSlice = createSlice({
             })
             .addCase(addTasksToProject.fulfilled, (state, action) => {
                 state.isLoading = false;
-                // console.log(action.payload)
                 const projectIndex = state.projects
                     .findIndex((el) => el._id === action.payload.projectId);
                 state.projects[projectIndex] = action.payload.project
@@ -148,7 +144,6 @@ export const projectsSlice = createSlice({
                 console.log("записал ошибку")
             });
     },
-
 })
 
 export const { setCurrentProject, updateCurrentProject } = projectsSlice.actions;

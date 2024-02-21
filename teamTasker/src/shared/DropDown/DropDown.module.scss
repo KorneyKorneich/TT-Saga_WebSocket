@@ -1,0 +1,41 @@
+.dropdown {
+  position: relative;
+  width: 200px; /* Измените ширину по вашему усмотрению */
+  margin: 0 auto; /* Центрируем компонент */
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--background-dark); /* Используем цвет фона для темной темы */
+  color: var(--text-color-light); /* Цвет текста для темной темы */
+  cursor: pointer;
+}
+
+select:hover {
+  background-color: var(--background-light); /* Изменение цвета при наведении для контраста */
+}
+
+select:focus {
+  outline: none; /* Убираем стандартный фокус */
+}
+
+p {
+  color: var(--text-color-light); /* Цвет текста для темной темы */
+  margin-top: 10px;
+}
+
+/* Стилизация опций */
+option {
+  background-color: var(--background-dark);
+  color: var(--text-color-light);
+}
+
+/* Стилизация выбранной опции */
+option:checked {
+  background-color: var(--primary-color); /* Цвет фона для выбранной опции */
+  color: var(--text-color-light); /* Цвет текста для выбранной опции */
+}

@@ -8,6 +8,10 @@ interface TaskCardProps {
     openModal: (id: string) => void
 }
 
+export function transformFlagToString(flag: Flags) {
+    return flag.replace('_', ' ');
+}
+
 export const TaskCard = (props: TaskCardProps) => {
 
     const {
@@ -18,10 +22,6 @@ export const TaskCard = (props: TaskCardProps) => {
 
 
     const project = useSelector(getCurrentProject);
-
-    function transformFlagToString(flag: Flags) {
-        return flag.replace('_', ' ');
-    }
 
     const taskList = project?.taskList?.filter((el) => {
         if (el.flag === flag) return el;
