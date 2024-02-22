@@ -1,8 +1,7 @@
 import styles from "./Project.module.scss"
-import { Button, Dropdown, TaskCard } from "src/shared";
+import { TaskCard } from "src/shared";
 import { useParams } from "react-router";
-import { useNavigate } from "react-router-dom";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
 import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksByProjectId.ts";
 import { useSelector } from "react-redux";
@@ -11,16 +10,16 @@ import { Flags, TaskSchema } from "src/schemas/config.ts";
 import { setCurrentProject } from "src/entities/Project/lib/slice/projectSlice.ts";
 import { Popup } from "src/shared/Popup/ui/Popup.tsx";
 import { updateProject } from "src/entities/Project/lib/services/updateProject.ts";
+import { TaskDetailsPopup } from "src/popups/TaskDetailsPopup/TaskDetailsPopup.tsx";
 
 export const Project = () => {
 
     const { projectId } = useParams();
-    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const project = useSelector(getCurrentProject);
 
     const [isChanged, setIsChanged] = useState(false);
-    const [isPopup, setIsPopup] = useState(false);
+    const [isTaskDetailsPopup, setIsTaskDetailsPopup] = useState(false);
     const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
     const [taskDetails, setTaskDetails] = useState<TaskSchema>({
         _id: "",
@@ -29,14 +28,14 @@ export const Project = () => {
         projectId: ""
     });
 
-    const closeModal = async () => {
+    const closeDetailsModal = async () => {
         if (taskDetails && isChanged) {
             console.log(taskDetails);
             await dispatch(updateProject(taskDetails));
         }
         setIsChanged(false);
         setSelectedTaskId(null);
-        setIsPopup(false);
+        setIsTaskDetailsPopup(false);
         setTaskDetails(
             {
                 _id: "",
@@ -52,39 +51,10 @@ export const Project = () => {
         const selectedTask = project?.taskList.findIndex((el) => el._id === taskId);
         if (selectedTask !== undefined && selectedTask !== -1) {
             setTaskDetails(project?.taskList[selectedTask]);
-            setIsPopup(true);
+            setIsTaskDetailsPopup(true);
         }
     }
 
-    function handleTaskFlagChange(e: ChangeEvent<HTMLSelectElement>) {
-        const updatedTask: TaskSchema = {
-            ...taskDetails,
-            flag: e.target.value as Flags
-        }
-        setTaskDetails(updatedTask);
-        setIsChanged(true);
-    }
-
-
-    function handleSubtaskStatusChange(elementId: string) {
-        if (!taskDetails || !taskDetails.subTasks) return;
-
-        const subtaskIndex = taskDetails.subTasks.findIndex((el) => el._id === elementId);
-        if (subtaskIndex === -1) return;
-
-        const updatedSubtasksList = [...taskDetails.subTasks];
-        updatedSubtasksList[subtaskIndex] = {
-            ...updatedSubtasksList[subtaskIndex],
-            isDone: !updatedSubtasksList[subtaskIndex].isDone
-        };
-
-        const updatedTask = {
-            ...taskDetails,
-            subTasks: updatedSubtasksList
-        };
-        setIsChanged(true);
-        setTaskDetails(updatedTask)
-    }
 
     useEffect(() => {
         if (projectId != null) {
@@ -94,45 +64,24 @@ export const Project = () => {
     }, [projectId, dispatch]);
 
     return (
-        <div className={styles.projectPage}>
-            <div className={styles.columns}>
-                <TaskCard flag={Flags.TODO} openModal={openModal}/>
-                <TaskCard flag={Flags.IN_PROGRESS} openModal={openModal}/>
-                <TaskCard flag={Flags.DONE} openModal={openModal}/>
-            </div>
-            <Button onClick={() => navigate(`/addTasksToProject/${projectId}`)}>+ Task</Button>
-
-            <Popup
-                isPopupOpen={isPopup}
-                selectedTaskId={selectedTaskId || undefined}
-                closeModal={closeModal}
-            >
-                <h3 className={styles.task_title}>{taskDetails && taskDetails.taskName}</h3>
-                <div className={styles.task_details}>
-                    <div className={styles.task_description}>
-                        <p>
-                            {taskDetails?.description}
-                        </p>
-                    </div>
-                    <h5>Subtasks</h5>
-                    <div className={styles.task_subtasks}>
-                        {taskDetails?.subTasks && taskDetails.subTasks.map((el) => {
-                            return (
-                                <div className={styles.subtask} key={el._id}>
-                                    <label className={el.isDone ? `${styles.task_done}` : ""}>
-                                        <input onChange={() => handleSubtaskStatusChange(el._id)}
-                                               checked={el.isDone}
-                                               type={"checkbox"}
-                                               name={el._id}/>
-                                        {el.todo}
-                                    </label>
-                                </div>
-                            )
-                        })}
-                    </div>
-                    <Dropdown taskStatus={taskDetails.flag} handleStatusSelect={(e) => handleTaskFlagChange(e)}/>
+        <>
+            <div className={styles.projectPage}>
+                <div className={styles.columns}>
+                    <TaskCard flag={Flags.TODO} openModal={openModal}/>
+                    <TaskCard flag={Flags.IN_PROGRESS} openModal={openModal}/>
+                    <TaskCard flag={Flags.DONE} openModal={openModal}/>
                 </div>
-            </Popup>
-        </div>
+
+                <Popup
+                    isPopupOpen={isTaskDetailsPopup}
+                    selectedTaskId={selectedTaskId || undefined}
+                    closeModal={closeDetailsModal}
+                >
+                    <TaskDetailsPopup taskDetails={taskDetails} setTaskDetails={setTaskDetails}
+                                      setIsChanged={setIsChanged}/>
+                </Popup>
+
+            </div>
+        </>
     )
 }

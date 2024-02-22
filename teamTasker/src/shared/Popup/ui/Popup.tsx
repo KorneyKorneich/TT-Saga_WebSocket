@@ -5,7 +5,7 @@ interface PopupProps {
     isPopupOpen: boolean;
     selectedTaskId?: string;
     closeModal: () => void;
-    children: ReactNode;
+    children?: ReactNode;
 }
 
 export const Popup = (props: PopupProps) => {
@@ -18,7 +18,8 @@ export const Popup = (props: PopupProps) => {
 
 
     return (
-        <div onClick={closeModal} className={`${isPopupOpen ? `${styles.modal} ${styles.active}` : `${styles.modal}`}`}>
+        <div onClick={closeModal}
+             className={`${isPopupOpen ? `${styles.modal} ${styles.active}` : `${styles.modal}`}`}>
             <div onClick={(e) => e.stopPropagation()}
                  className={`${isPopupOpen ? `${styles.modal_content} ${styles.active}` : `${styles.modal_content}`}`}>
                 {children}

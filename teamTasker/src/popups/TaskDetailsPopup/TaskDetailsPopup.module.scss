@@ -1,0 +1,41 @@
+.task_description {
+  color: var(--text-color-dark)
+}
+
+.subtask {
+  background: var(--background-dark);
+  padding: 10px 5px;
+  margin: 10px 0;
+  border-radius: 7px;
+
+  //input {
+  //  accent-color: var(--primary-color);
+  //}
+  label {
+    cursor: pointer;
+  }
+
+  .task_done {
+    color: var(--text-color-dark);
+    text-decoration: line-through;
+  }
+
+  input[type="checkbox"]::before {
+    cursor: pointer;
+    content: "";
+    display: block;
+    width: 13px;
+    height: 13px;
+    background-color: var(--text-color-dark); /* Change this to your desired background color when not checked */
+    border-radius: 3px;
+  }
+
+  /* Style the custom checkbox when checked */
+  input[type="checkbox"]:checked::before {
+    cursor: pointer;
+    content: "\2714"; /* Checkmark symbol */
+    background-color: var(--primary-color); /* Change this to your desired background color when checked */
+    color: white; /* Change this to your desired text color when checked */
+  }
+
+}

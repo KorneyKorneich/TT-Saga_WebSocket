@@ -1,0 +1,55 @@
+.createTasks {
+  background: var(--background-light);
+  border-radius: 15px;
+  padding: 20px;
+  margin-top: 20px;
+  width: 500px;
+  text-align: center;
+  height: fit-content;
+
+  p {
+    margin: 0;
+    text-align: center;
+  }
+
+  p, button {
+    margin-top: 10px;
+  }
+
+  input {
+    width: 94%;
+  }
+
+  button {
+    width: 100%;
+  }
+
+}
+
+.add_subtask_button {
+  margin: 20px 0 5px;
+  width: 100%;
+  color: var(--primary-color);
+  background: white;
+  font-weight: bolder;
+}
+
+.submit_button {
+  margin: 5px 0;
+  width: 100%;
+  font-weight: bolder;
+}
+
+.task_title, .task_subtasks, .task_description {
+
+  h4 {
+    margin-bottom: 0;
+  }
+
+}
+
+.task_subtasks {
+  div {
+    margin-top: 10px;
+  }
+}
