@@ -54,8 +54,7 @@ export const Project = () => {
             setIsTaskDetailsPopup(true);
         }
     }
-
-
+    
     useEffect(() => {
         if (projectId != null) {
             dispatch(getTasksByProjectId(projectId))
@@ -80,7 +79,6 @@ export const Project = () => {
                     <TaskDetailsPopup taskDetails={taskDetails} setTaskDetails={setTaskDetails}
                                       setIsChanged={setIsChanged}/>
                 </Popup>
-
             </div>
         </>
     )

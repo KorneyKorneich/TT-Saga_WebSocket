@@ -1,4 +1,4 @@
-import {memo, useEffect, useState} from "react";
+import { memo, useEffect, useState } from "react";
 import styles from "./UserRegistration.module.scss";
 import { Input } from "src/shared";
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
@@ -6,8 +6,8 @@ import { userReg } from "src/entities/User/lib/services/userReg.ts";
 import { Button } from "src/shared/Button/Button.tsx";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {getErrors} from "src/entities/User/lib/selectors/getErrors.ts";
-import {userAuth} from "src/entities/User/lib/services/userAuth.ts";
+import { getErrors } from "src/entities/User/lib/selectors/getErrors.ts";
+import { userAuth } from "src/entities/User/lib/services/userAuth.ts";
 
 export const UserRegistration = memo(() => {
     const [username, setUsername] = useState("");
@@ -37,14 +37,14 @@ export const UserRegistration = memo(() => {
             console.log(userPayload);
             if (res.meta.requestStatus === "fulfilled") {
                 // console.log("he he")
-               onSuccess();
+                onSuccess();
             }
         });
-}
+    }
 
 
     useEffect(() => {
-        if(error) {
+        if (error) {
             // alert("not hehe")
             console.log(error)
         }
@@ -57,7 +57,7 @@ export const UserRegistration = memo(() => {
                 <Input
                     placeholder={"Type your username"}
                     value={username}
-                    setValue={setUsername}
+                    onChange={(e) => setUsername(e.target.value)}
                     type={"text"}
                 />
             </div>
@@ -65,7 +65,7 @@ export const UserRegistration = memo(() => {
                 <Input
                     placeholder={"Type your password"}
                     value={password}
-                    setValue={setPassword}
+                    onChange={(e) => setPassword(e.target.value)}
                     type={"password"}
                 />
             </div>

@@ -15,8 +15,7 @@ export const Header = () => {
     const currentProject = useSelector(getCurrentProject);
 
     const [isTaskAddPopup, setIsTaskAddPopup] = useState(false);
-
-
+    
     //TODO: При регистрации удалить из хедера все кнопки и поставить лого в центр
     return (
         <>

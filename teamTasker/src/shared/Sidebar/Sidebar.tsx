@@ -16,10 +16,7 @@ export const Sidebar = memo(() => {
     const isAuth = useSelector(getIsAuth);
     const projects = useSelector(getProjects);
     const navigate = useNavigate();
-
-
-    // const [projects, setProjects] = useState<ProjectSchema[]>([]);
-
+    
     useEffect(() => {
         dispatch(getProjectById(userId));
     }, [isAuth]);
@@ -29,7 +26,7 @@ export const Sidebar = memo(() => {
             <h3>Your projects</h3>
             {projects && projects.map((el) => {
                 return (
-                    <div key={Date.now()} className={styles.projectLink}>
+                    <div key={el._id} className={styles.projectLink}>
                         <Link className={styles.project} key={el._id} to={`workspace/${el._id}`}>
                             <div className={styles.projectIcon}>
                                 <SVG size={20} color={"#ECEDF1"}>

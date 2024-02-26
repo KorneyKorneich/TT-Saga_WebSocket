@@ -1,17 +1,12 @@
-import style from './SingIn.module.scss'
-import {memo} from 'react'
-import {UserRegistration} from "src/entities";
-
-interface SingInProps {
-    className?: string;
-}
+import { memo } from 'react'
+import { UserRegistration } from "src/entities";
 
 
 export const SingIn = memo(() => {
 
     return (
         <div>
-            <UserRegistration />
+            <UserRegistration/>
         </div>
     );
 });

@@ -28,15 +28,19 @@ export const TaskCreationPopup = (props: TaskCreationProps) => {
     const dispatch = useAppDispatch();
     const { projectId } = useParams();
 
-
     if (!projectId) {
         return null
     }
 
     const handleClick = async () => {
-        await dispatch(addTasksToProject({ projectId, task }));
-        await dispatch(getTasksByProjectId(projectId))
-        setIsAddTaskPopup(false);
+        if (task.taskName === "" || task.description === "") {
+            setIsAddTaskPopup(false);
+        } else {
+            await dispatch(addTasksToProject({ projectId, task }));
+            await dispatch(getTasksByProjectId(projectId))
+            setIsAddTaskPopup(false);
+        }
+
     };
 
     return (
