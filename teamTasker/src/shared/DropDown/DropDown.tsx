@@ -27,7 +27,6 @@ export const Dropdown = (props: DropdownProps) => {
                     {transformFlagToString(Flags.DONE)}
                 </option>
             </select>
-            <p>Selected option: {transformFlagToString(taskStatus)}</p>
         </div>
     );
 

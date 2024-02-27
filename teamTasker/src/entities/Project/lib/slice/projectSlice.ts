@@ -5,6 +5,7 @@ import { addTasksToProject } from "src/entities/Project/lib/services/addTasksToP
 import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksByProjectId.ts";
 import { createProject } from "src/entities/Project/lib/services/createProject.ts";
 import { updateProject } from "src/entities/Project/lib/services/updateProject.ts";
+import { deleteTaskById } from "src/entities/Project/lib/services/deleteTaskById.ts";
 
 const initialState: ProjectSliceSchema = {
     projects: [],
@@ -139,6 +140,28 @@ export const projectsSlice = createSlice({
             })
 
             .addCase(updateProject.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+                console.log("записал ошибку")
+            });
+
+        builder
+            .addCase(deleteTaskById.pending, (state) => {
+                state.isLoading = true;
+                state.error = undefined;
+            })
+            .addCase(deleteTaskById.fulfilled, (state, action) => {
+                state.isLoading = false;
+                console.log(action.payload)
+                const projectId = state.projects.findIndex(el => el._id === action.payload.projectId);
+                state.projects[projectId].taskList = action.payload.project.taskList;
+                state.currentProject = state.projects[projectId];
+
+                state.error = undefined;
+
+            })
+
+            .addCase(deleteTaskById.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
                 console.log("записал ошибку")

@@ -30,7 +30,6 @@ export const Project = () => {
 
     const closeDetailsModal = async () => {
         if (taskDetails && isChanged) {
-            console.log(taskDetails);
             await dispatch(updateProject(taskDetails));
         }
         setIsChanged(false);
@@ -54,11 +53,11 @@ export const Project = () => {
             setIsTaskDetailsPopup(true);
         }
     }
-    
+
     useEffect(() => {
         if (projectId != null) {
-            dispatch(getTasksByProjectId(projectId))
-            dispatch(setCurrentProject(projectId))
+            dispatch(setCurrentProject(projectId));
+            dispatch(getTasksByProjectId(projectId));
         }
     }, [projectId, dispatch]);
 
@@ -76,7 +75,8 @@ export const Project = () => {
                     selectedTaskId={selectedTaskId || undefined}
                     closeModal={closeDetailsModal}
                 >
-                    <TaskDetailsPopup taskDetails={taskDetails} setTaskDetails={setTaskDetails}
+                    <TaskDetailsPopup setIsPopup={setIsTaskDetailsPopup} taskDetails={taskDetails}
+                                      setTaskDetails={setTaskDetails}
                                       setIsChanged={setIsChanged}/>
                 </Popup>
             </div>

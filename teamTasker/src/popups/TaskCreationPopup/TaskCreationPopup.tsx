@@ -33,12 +33,21 @@ export const TaskCreationPopup = (props: TaskCreationProps) => {
     }
 
     const handleClick = async () => {
-        if (task.taskName === "" || task.description === "") {
+        if (task.taskName === "" && task.description === "") {
             setIsAddTaskPopup(false);
         } else {
             await dispatch(addTasksToProject({ projectId, task }));
             await dispatch(getTasksByProjectId(projectId))
             setIsAddTaskPopup(false);
+            setTask({
+                taskName: "",
+                projectId: "",
+                flag: Flags.TODO,
+                description: "",
+                subTasks: [
+                    { _id: Date.now().toString(), todo: "", isDone: false }, // Первая задача
+                ]
+            })
         }
 
     };

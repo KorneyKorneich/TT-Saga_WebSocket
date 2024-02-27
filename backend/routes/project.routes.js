@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const Project = require('../models/Project')
 const Task = require('../models/Task')
 const authMiddleware = require('../middleware/auth.middleware');
+const {json} = require("express");
 
 router.post('/createProject',
     authMiddleware,
@@ -136,6 +137,32 @@ router.get('/getTasks/:projectId',
             res.send({message: 'Server error'})
         }
     })
+
+router.delete('/deleteTask/:projectId/:taskId', authMiddleware, async (req, res) => {
+    const projectId = req.params.projectId;
+    const taskId = req.params.taskId;
+
+    try {
+        // Удаление задачи
+        await Task.findOneAndDelete({_id: taskId});
+
+        // Найти проект по идентификатору
+        const project = await Project.findById(projectId);
+        if (!project) {
+            return res.status(404).json({message: 'Project not found'});
+        }
+
+        // Удалить удаленную задачу из списка задач проекта
+        project.taskList = project.taskList.filter(task => task.toString() !== taskId);
+        await project.save();
+
+        res.json(project);
+
+    } catch (e) {
+        console.error(e);
+        res.status(500).send({message: 'Server error'});
+    }
+});
 
 
 module.exports = router;

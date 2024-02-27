@@ -1,17 +1,23 @@
 import styles from "./TaskDetailsPopup.module.scss"
-import { Dropdown } from "src/shared";
+import { Dropdown, SVG } from "src/shared";
 import { Flags, TaskSchema } from "src/schemas/config.ts";
 import { ChangeEvent } from "react";
+import DeleteIcon from "src/shared/assets/delete_icon.svg?react"
+import { useAppDispatch } from "src/hooks/storeHooks.ts";
+import { deleteTaskById } from "src/entities/Project/lib/services/deleteTaskById.ts";
+import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksByProjectId.ts";
 
 interface TaskDetailsProps {
     taskDetails: TaskSchema
     setTaskDetails: (updatedTask: TaskSchema) => void;
     setIsChanged: (option: boolean) => void
+    setIsPopup?: (option: boolean) => void
 }
 
 export const TaskDetailsPopup = (props: TaskDetailsProps) => {
 
-    const { taskDetails, setTaskDetails, setIsChanged } = props;
+    const { taskDetails, setTaskDetails, setIsChanged, setIsPopup } = props;
+    const dispatch = useAppDispatch();
 
     function handleTaskFlagChange(e: ChangeEvent<HTMLSelectElement>) {
         const updatedTask: TaskSchema = {
@@ -43,9 +49,28 @@ export const TaskDetailsPopup = (props: TaskDetailsProps) => {
         setTaskDetails(updatedTask)
     }
 
+    const handleTaskDelete = async () => {
+        await dispatch(deleteTaskById({
+            projectId: taskDetails.projectId,
+            taskId: taskDetails._id
+        }));
+        await dispatch(getTasksByProjectId(taskDetails.projectId));
+        if (setIsPopup) {
+            setIsPopup(false);
+        }
+    }
+
     return (
         <>
-            <h3 className={styles.task_title}>{taskDetails && taskDetails.taskName}</h3>
+            <div className={styles.task_header}>
+                <h3 className={styles.task_title}>{taskDetails && taskDetails.taskName}</h3>
+                <div className={styles.task_delete} onClick={handleTaskDelete}>
+                    <SVG size={25} color={"#ECEDF1"}>
+                        <DeleteIcon/>
+                    </SVG>
+                </div>
+
+            </div>
             <div className={styles.task_details}>
                 <div className={styles.task_description}>
                     <p>
@@ -68,6 +93,7 @@ export const TaskDetailsPopup = (props: TaskDetailsProps) => {
                         )
                     })}
                 </div>
+                <p>Status</p>
                 <Dropdown taskStatus={taskDetails.flag} handleStatusSelect={(e) => handleTaskFlagChange(e)}/>
             </div>
         </>

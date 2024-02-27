@@ -1,6 +1,6 @@
 .dropdown {
   position: relative;
-  width: 200px; /* Измените ширину по вашему усмотрению */
+  width: 100%;
   margin: 0 auto; /* Центрируем компонент */
 }
 
@@ -16,7 +16,7 @@ select {
 }
 
 select:hover {
-  background-color: var(--background-light); /* Изменение цвета при наведении для контраста */
+  background-color: var(--primary-color); /* Изменение цвета при наведении для контраста */
 }
 
 select:focus {

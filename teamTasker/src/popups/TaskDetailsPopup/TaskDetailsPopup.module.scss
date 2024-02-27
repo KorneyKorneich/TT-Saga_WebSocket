@@ -39,3 +39,26 @@
   }
 
 }
+
+p {
+  margin-bottom: 5px;
+}
+
+h5, h3 {
+  margin: 10px 0;
+}
+
+.task_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.task_delete:hover {
+  cursor: pointer;
+
+  svg {
+    fill: var(--primary-color);
+  }
+
+}
+

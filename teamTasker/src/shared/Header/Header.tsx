@@ -1,4 +1,4 @@
-import styles from "./Header.module.css";
+import styles from "./Header.module.scss";
 import Logo from "../assets/kanban-logo.svg?react"
 import { Button, Popup, SVG } from "src/shared";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ export const Header = () => {
     const currentProject = useSelector(getCurrentProject);
 
     const [isTaskAddPopup, setIsTaskAddPopup] = useState(false);
-    
+
     //TODO: При регистрации удалить из хедера все кнопки и поставить лого в центр
     return (
         <>
@@ -26,33 +26,36 @@ export const Header = () => {
                     </SVG>
                     <h1>TeamTasker</h1>
                 </div>
-                {!isAuth &&
-                    <Button className={styles.link} onClick={() => navigate("/authorization/login")}>
-                        Login
-                    </Button>
+                <div className={styles.nav_panel}>
+                    {!isAuth &&
+                        <Button className={styles.link} onClick={() => navigate("/authorization/login")}>
+                            Login
+                        </Button>
 
-                }
-                {isAuth && !currentURL.includes("workspace") &&
-                    <>
+                    }
+                    {isAuth && !currentURL.includes("workspace") &&
+                        <>
+                            <div className={styles.authedPanel}>
+                                <Button className={styles.createNew} onClick={() => navigate('/workspace')}>
+                                    To workspace
+                                </Button>
+                            </div>
+                        </>
+                    }
+                    {currentURL.includes("workspace/") &&
                         <div className={styles.authedPanel}>
-                            <Button className={styles.createNew} onClick={() => navigate('/workspace')}>
-                                To workspace
+                            <div>{currentProject.title}</div>
+                            <Button
+                                onClick={() => {
+                                    setIsTaskAddPopup(true)
+                                }}
+                            >
+                                Add Task
                             </Button>
                         </div>
-                    </>
-                }
-                {currentURL.includes("workspace/") &&
-                    <div className={styles.authedPanel}>
-                        <div>{currentProject.title}</div>
-                        <Button
-                            onClick={() => {
-                                setIsTaskAddPopup(true)
-                            }}
-                        >
-                            Add Task
-                        </Button>
-                    </div>
-                }
+                    }
+                </div>
+
             </div>
 
             <Popup isPopupOpen={isTaskAddPopup} closeModal={() => setIsTaskAddPopup(false)}>

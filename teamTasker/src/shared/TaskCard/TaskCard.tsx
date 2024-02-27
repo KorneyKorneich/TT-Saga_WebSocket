@@ -9,6 +9,7 @@ interface TaskCardProps {
 }
 
 export function transformFlagToString(flag: Flags) {
+    flag[0].toUpperCase();
     return flag.replace('_', ' ');
 }
 

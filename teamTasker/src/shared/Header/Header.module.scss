@@ -1,0 +1,70 @@
+.header {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  //position: fixed;
+  height: 70px;
+  /*width: 99%;*/
+  right: 0;
+  padding: 0 10px 0 10px;
+  background: var(--background-light);
+  /*border-left: 1px solid var(--text-color-dark);*/
+  /*border-bottom: 1px solid var(--text-color-dark);*/
+  color: var(--text-color-light)
+
+}
+
+.logo {
+  /*padding: 20px 20px 0 10px;*/
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+h1 {
+  margin: 0;
+}
+
+.createNew, .link {
+
+  background: var(--primary-color);
+  border-radius: 40px;
+  color: var(--text-color-light);
+  height: 40px;
+  border: none;
+  transition: background 0.3s, color 0.3s; /* Adding transition for smooth effect */
+
+
+  &:hover {
+    cursor: pointer;
+    background: var(--primary-color-hover); /* Change to your desired hover color */
+    color: var(--text-color-hover); /* Change to your desired hover text color */
+  }
+
+  &:active {
+    background: var(--primary-color-active); /* Change to your desired active color */
+    color: var(--text-color-active); /* Change to your desired active text color */
+  }
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+}
+
+.authedPanel {
+  gap: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav_panel {
+  display: flex;
+  justify-content: space-between;
+}
+

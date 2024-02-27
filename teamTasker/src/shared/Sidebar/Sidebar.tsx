@@ -16,34 +16,36 @@ export const Sidebar = memo(() => {
     const isAuth = useSelector(getIsAuth);
     const projects = useSelector(getProjects);
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         dispatch(getProjectById(userId));
     }, [isAuth]);
 //TODO: поработать над цветом иконки в разных состояниях ссылки
     return (
-        <div className={styles.wrapper}>
-            <h3>Your projects</h3>
-            {projects && projects.map((el) => {
-                return (
-                    <div key={el._id} className={styles.projectLink}>
-                        <Link className={styles.project} key={el._id} to={`workspace/${el._id}`}>
-                            <div className={styles.projectIcon}>
-                                <SVG size={20} color={"#ECEDF1"}>
-                                    <ProjectIcon/>
-                                </SVG>
-                            </div>
-                            {el.title}
-                        </Link>
-                    </div>
-                )
-            })}
-            <div className={styles.newProject}>
-                <Button className={styles.createNew} onClick={() => navigate("/newProject")}>
-                    + Create new project
-                </Button>
+        <>
+            <div className={styles.wrapper}>
+                <h3>Your projects</h3>
+                {projects && projects.map((el) => {
+                    return (
+                        <div key={el._id} className={styles.projectLink}>
+                            <Link className={styles.project} key={el._id} to={`workspace/${el._id}`}>
+                                <div className={styles.projectIcon}>
+                                    <SVG size={20} color={"#ECEDF1"}>
+                                        <ProjectIcon/>
+                                    </SVG>
+                                </div>
+                                {el.title}
+                            </Link>
+                        </div>
+                    )
+                })}
+                <div className={styles.newProject}>
+                    <Button className={styles.createNew} onClick={() => navigate("/newProject")}>
+                        + Create new project
+                    </Button>
+                </div>
             </div>
-        </div>
+        </>
     );
 });
 
