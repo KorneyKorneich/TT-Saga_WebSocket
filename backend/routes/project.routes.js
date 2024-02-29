@@ -166,6 +166,7 @@ router.delete('/deleteProject/:projectId', authMiddleware,
 
         try {
             await Project.findOneAndDelete({_id: projectId});
+            await Task.deleteMany({projectId: projectId});
             res.json(projectId);
 
         } catch (e) {

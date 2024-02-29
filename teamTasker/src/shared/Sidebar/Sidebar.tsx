@@ -3,13 +3,14 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
 import { getProjectById } from "src/entities/Project/lib/services/getProjectById.ts";
 import { getId, getIsAuth } from "src/entities/User";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import { getProjects } from "src/entities/Project/lib/selectors/getProjects.ts";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, SVG } from "src/shared";
+import { Button, Popup, SVG } from "src/shared";
 import ProjectIcon from "../assets/project-icon.svg?react"
 import DeleteIcon from "../assets/delete_icon.svg?react"
-import { deleteProjectById } from "src/entities/Project/lib/services/deleteProjectById.ts";
+import { DeleteProjectPopup } from "src/shared/Sidebar/DeleteProjectPopup/DeleteProjectPopup.tsx";
+import { ProjectSchema } from "src/schemas/config.ts";
 
 
 export const Sidebar = memo(() => {
@@ -19,12 +20,16 @@ export const Sidebar = memo(() => {
     const projects = useSelector(getProjects);
     const navigate = useNavigate();
 
-    const handleProjectDelete = async (id: string | undefined) => {
-        if (id) {
-            await dispatch(deleteProjectById(id));
+    const [isDeleteProjectPopup, setIsDeleteProjectPopup] = useState(false);
+    const [projectToDelete, setProjectToDelete] = useState<ProjectSchema>();
+
+    const handleProjectDelete = async (project: ProjectSchema) => {
+        if (project) {
+            setProjectToDelete(project);
+            setIsDeleteProjectPopup(true);
+            // await dispatch(deleteProjectById(id));
         }
     }
-
 
     useEffect(() => {
         dispatch(getProjectById(userId));
@@ -45,7 +50,7 @@ export const Sidebar = memo(() => {
                                 </div>
                                 {el.title}
                             </Link>
-                            <div className={styles.project_delete} onClick={() => handleProjectDelete(el._id)}>
+                            <div className={styles.project_delete} onClick={() => handleProjectDelete(el)}>
                                 <SVG size={20} color={"#ECEDF1"}>
                                     <DeleteIcon/>
                                 </SVG>
@@ -59,6 +64,10 @@ export const Sidebar = memo(() => {
                     </Button>
                 </div>
             </div>
+            <Popup isPopupOpen={isDeleteProjectPopup} closeModal={() => setIsDeleteProjectPopup(false)}>
+                <DeleteProjectPopup setIsPopup={setIsDeleteProjectPopup} projectName={projectToDelete?.title}
+                                    projectId={projectToDelete?._id} isPopup={isDeleteProjectPopup}/>
+            </Popup>
         </>
     );
 });
