@@ -1,20 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ProjectSchema, ThunkConfig } from "src/schemas/config.ts";
+import { ThunkConfig } from "src/schemas/config.ts";
 import axios from "axios";
-
-
-interface AddTasksResponseSchema {
-    projectId: string,
-    project: ProjectSchema;
-}
 
 interface IDs {
     projectId: string;
     taskId: string;
 }
 
-
-export const deleteTaskById = createAsyncThunk<AddTasksResponseSchema, IDs, ThunkConfig<string>>(
+export const deleteTaskById = createAsyncThunk<IDs, IDs, ThunkConfig<string>>(
     "project/deleteTaskById",
     async (IDs: IDs, thunkAPI) => {
         const { rejectWithValue } = thunkAPI;
@@ -40,11 +33,10 @@ export const deleteTaskById = createAsyncThunk<AddTasksResponseSchema, IDs, Thun
             }
 
             // Assuming the actual data returned by the server is the updated project
-            const responseData: AddTasksResponseSchema = {
-                project: response.data,
+            const responseData: IDs = {
+                taskId: IDs.taskId,
                 projectId: IDs.projectId
             };
-            console.log(responseData)
 
             return responseData;
         } catch (error) {

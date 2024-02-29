@@ -155,7 +155,8 @@ export const projectsSlice = createSlice({
                 state.isLoading = false;
                 console.log(action.payload)
                 const projectId = state.projects.findIndex(el => el._id === action.payload.projectId);
-                state.projects[projectId].taskList = action.payload.project.taskList;
+                state.projects[projectId].taskList = state.projects[projectId]
+                    .taskList.filter(task => task._id !== action.payload.taskId);
                 state.currentProject = state.projects[projectId];
 
                 state.error = undefined;
