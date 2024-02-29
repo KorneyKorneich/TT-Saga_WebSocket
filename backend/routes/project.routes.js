@@ -150,8 +150,8 @@ router.delete('/deleteTask/:projectId/:taskId', authMiddleware, async (req, res)
         }
 
         // Удалить удаленную задачу из списка задач проекта
-        // project.taskList = project.taskList.filter(task => task.toString() !== taskId);
-        // await project.save();
+        project.taskList = project.taskList.filter(task => task.toString() !== taskId);
+        await project.save();
 
         res.json(taskId);
 
