@@ -22,15 +22,13 @@ export const Sidebar = memo(() => {
     const handleProjectDelete = async (id: string | undefined) => {
         if (id) {
             await dispatch(deleteProjectById(id));
-            // dispatch(getProjectById(userId));
-            //todo как не отправлять лишних запросов, а поменять проекты ответом от первой функции
         }
     }
 
 
     useEffect(() => {
         dispatch(getProjectById(userId));
-    }, [isAuth]);
+    }, [dispatch, isAuth, userId]);
 //TODO: поработать над цветом иконки в разных состояниях ссылки
     return (
         <>
@@ -48,7 +46,7 @@ export const Sidebar = memo(() => {
                                 {el.title}
                             </Link>
                             <div className={styles.project_delete} onClick={() => handleProjectDelete(el._id)}>
-                                <SVG size={25} color={"#ECEDF1"}>
+                                <SVG size={20} color={"#ECEDF1"}>
                                     <DeleteIcon/>
                                 </SVG>
                             </div>

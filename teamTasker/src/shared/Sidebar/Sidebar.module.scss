@@ -23,24 +23,46 @@
     }
   }
 
-  .project {
-    display: flex;
-    margin-top: 10px;
-    align-items: center;
-    gap: 5px;
-  }
 
   .newProject {
     margin-top: 10px;
   }
 
-}
+  .project_link {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
 
-.project_delete:hover {
-  cursor: pointer;
 
-  svg {
-    fill: var(--primary-color);
+    .project {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+
+      &:hover {
+        svg {
+          fill: var(--primary-color-hover);
+        }
+      }
+
+      &:active {
+        svg {
+          fill: var(--primary-color);
+        }
+      }
+    }
+
+
+    .project_delete:hover {
+      cursor: pointer;
+
+      svg {
+        fill: var(--primary-color);
+      }
+
+    }
   }
-
 }
+
+
