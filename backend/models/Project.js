@@ -1,9 +1,9 @@
-const {Schema, model} = require ('mongoose');
+const {Schema, model} = require('mongoose');
 
 const Project = new Schema({
-    text: {type: String},
-    user: {type: Schema.Types.ObjectId, required: true},
-    // projectList: [{type: Project, ref: 'Project'}]
+    title: {type: String},
+    user: {type: Schema.Types.ObjectId, ref: "User", required: true},
+    taskList: [{type: Schema.Types.ObjectId, ref: 'Task'}]
 })
 
 module.exports = model('Project', Project);

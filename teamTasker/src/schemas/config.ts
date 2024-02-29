@@ -1,11 +1,9 @@
-import {UserSliceSchema} from "src/entities/User/lib/types/user.ts";
-import {AppDispatch} from "src/App/providers/storeProvider/store.ts";
-import {ProjectSchema} from "src/entities/Project/lib/types/project.ts";
+import { UserSliceSchema } from "src/entities/User/lib/types/user.ts";
 
 
 export interface stateSchema {
     user: UserSliceSchema,
-    project: ProjectSchema,
+    projects: ProjectSliceSchema,
 
 }
 
@@ -15,28 +13,53 @@ export interface ThunkConfig<T> {
     rejectValue: T
 }
 
-
+//TODO: Перенести User типы сюда
 export enum Flags {
     TODO = "todo",
     IN_PROGRESS = "in_progress",
     DONE = "done",
 }
 
-
-
-
-
-
-
-export interface TaskSchema {
-    id: number,
-    flag: Flags,
-    taskName: string,
-    description: string,
-    subTasks: SubTask[],
+export interface ProjectSchema {
+    _id?: string;
+    title: string;
+    taskList: TaskSchema[];
+    creatorId?: string;
 }
 
+export interface ProjectSliceSchema {
+    projects: ProjectSchema[];
+    currentProject: ProjectSchema;
+    isLoading: boolean;
+    error?: string;
+}
+
+export interface TaskSchema {
+    _id: string,
+    projectId: string,
+    flag: Flags,
+    taskName: string,
+    description?: string,
+    subTasks?: SubTask[],
+}
+
+
 export interface SubTask {
-    id: number,
-    todo: string
+    _id: string,
+    todo: string,
+    isDone: boolean;
+}
+
+export interface ProjectFetchData {
+    title?: string,
+    creatorId?: string,
+    taskList: TaskSchema[]
+}
+
+export interface TaskFetchData {
+    projectId: string,
+    flag: Flags,
+    taskName: string,
+    description?: string,
+    subTasks?: SubTask[],
 }

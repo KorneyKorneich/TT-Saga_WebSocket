@@ -1,0 +1,10 @@
+.idea
+.gitignore
+node_modules
+package_json
+.idea_modules/
+*.iml
+.DS_Store
+.AppleDouble
+.LSOverride
+packages

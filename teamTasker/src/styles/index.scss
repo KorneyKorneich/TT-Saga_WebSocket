@@ -1,9 +1,9 @@
 @import "./themes/dark";
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
 
 
   font-synthesis: none;
@@ -12,11 +12,21 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body{
+body {
   margin: 0;
   color: #2C2C38;
 
-  a{
-    color: var(--text-color-light)
+  a {
+    color: var(--text-color-light);
+    text-decoration: none;
+
+
+    &:hover {
+      color: var(--primary-color-hover);
+    }
+
+    &:active {
+      color: var(--primary-color);
+    }
   }
 }

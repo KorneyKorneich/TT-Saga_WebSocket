@@ -3,7 +3,7 @@ import axios from "axios";
 import {UserRegistrationData, UserSchema} from "src/entities/User/lib/types/user.ts";
 import {ThunkConfig} from "src/schemas/config.ts";
 
-export const userReg = createAsyncThunk<UserSchema, UserRegistrationData, ThunkConfig<string>>(
+export const userReg = createAsyncThunk<UserSchema, UserRegistrationData>(
     "user/userReg",
     async (userdata: UserRegistrationData, thunkAPI) => {
         const {

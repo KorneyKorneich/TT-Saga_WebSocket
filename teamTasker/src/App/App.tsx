@@ -1,45 +1,41 @@
 import styles from './App.module.scss'
-import {Header, Sidebar} from "../shared";
-import {useTheme} from "src/App/providers/ThemeProvider/lib/useTheme.ts";
-import {UserRegistration} from "src/entities";
-import {getIsAuth, getState, UserLogin} from "src/entities/User";
-import {useAppDispatch} from "src/hooks/storeHooks.ts";
-import {useEffect} from "react";
-import {userAuth} from "src/entities/User/lib/services/userAuth.ts";
-import {useSelector} from "react-redux";
-import {Link, useNavigate} from "react-router-dom";
-import {Outlet} from "react-router-dom";
-import {LandingPage, SingIn} from "src/pages";
-import {userReg} from "src/entities/User/lib/services/userReg.ts";
+import { Header, Sidebar } from "../shared";
+import { useTheme } from "src/App/providers/ThemeProvider/lib/useTheme.ts";
+import { getId, getIsAuth } from "src/entities/User";
+import { useAppDispatch } from "src/hooks/storeHooks.ts";
+import { useEffect } from "react";
+import { userAuth } from "src/entities/User/lib/services/userAuth.ts";
+import { useSelector } from "react-redux";
+import { Outlet, useLocation } from "react-router-dom";
+import { getProjectById } from "src/entities/Project/lib/services/getProjectById.ts";
 
 function App() {
-
-
-
-
-
-
     const Theme = useTheme();
     const dispatch = useAppDispatch()
-    const isAuth = useSelector(getIsAuth);
-    const navigate = useNavigate()
-    console.log(localStorage.getItem('token'));
+    const location = useLocation();
 
 
     useEffect(() => {
         dispatch(userAuth())
-    }, [dispatch]);
+    }, []);
 
-    const state = useSelector(getState)
-    console.log(state.user);
-    console.log(state.user.data.isAuth);
-    console.log(state.user.data.username);
+    const isAuth = useSelector(getIsAuth);
+    const userId = useSelector(getId);
+    useEffect(() => {
+        dispatch(getProjectById(userId));
+    }, [dispatch, isAuth, userId]);
+
 
     return (
         <div className={`${styles.app} ${Theme.theme}`}>
-            <Header/>
-            <div className={styles.pageContent}>
-                <Outlet/>
+            <div className={styles.header}>
+                <Header/>
+            </div>
+            <div className={styles.page}>
+                {isAuth && location.pathname.includes("workspace") && <Sidebar/>}
+                <div className={styles.pageContent}>
+                    <Outlet/>
+                </div>
             </div>
         </div>
     )

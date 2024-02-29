@@ -1,0 +1,18 @@
+.input {
+  width: 94%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--background-dark); /* Цвет фона для темной темы */
+  color: var(--text-color-light); /* Цвет текста для темной темы */
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 5px var(--primary-color); /* Эффект тени при фокусе */
+  }
+
+  &::placeholder {
+    color: var(--text-color-dark); /* Цвет плейсхолдера для темной темы */
+  }
+}

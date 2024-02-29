@@ -1,4 +1,4 @@
-import {ProjectSchema} from "src/entities/Project/lib/types/project.ts";
+import {ProjectSchema} from "src/schemas/config.ts";
 
 export interface UserSchema{
     id: string,
