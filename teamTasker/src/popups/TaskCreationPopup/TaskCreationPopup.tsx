@@ -36,6 +36,9 @@ export const TaskCreationPopup = (props: TaskCreationProps) => {
         if (task.taskName === "" && task.description === "") {
             setIsAddTaskPopup(false);
         } else {
+            if (task.subTasks && task.subTasks[0].todo === "") {
+                task.subTasks = [];
+            }
             await dispatch(addTasksToProject({ projectId, task }));
             await dispatch(getTasksByProjectId(projectId))
             setIsAddTaskPopup(false);

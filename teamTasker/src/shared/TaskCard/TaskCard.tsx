@@ -36,7 +36,11 @@ export const TaskCard = (props: TaskCardProps) => {
                     return (
                         <div className={styles.task_card} key={el?._id} onClick={() => openModal(el._id)}>
                             <div>{el?.taskName}</div>
-                            <div>{el.subTasks?.filter(subtask => subtask.isDone).length} of {el?.subTasks?.length} subtasks</div>
+                            {
+                                el.subTasks?.length ?
+                                    <div>{el.subTasks?.filter(subtask => subtask.isDone).length} of {el?.subTasks?.length} subtasks</div>
+                                    : null
+                            }
                         </div>
                     )
                 }

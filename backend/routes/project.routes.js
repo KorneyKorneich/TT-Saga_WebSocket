@@ -13,7 +13,7 @@ router.post('/createProject',
     authMiddleware,
     async (req, res) => {
         try {
-            const {userId, title, taskList} = req.body;
+            const {title, taskList} = req.body;
 
             // Create a new Project instance
             const project = new Project({
@@ -101,7 +101,6 @@ router.patch('/updateProject/:projectId',
     async (req, res) => {
         const projectId = req.params.projectId;
 
-
         try {
             const project = await Project.findById(projectId);
             if (!project) {
@@ -122,13 +121,11 @@ router.get('/getTasks/:projectId',
     authMiddleware,
     async (req, res) => {
         const projectId = req.params.projectId;
-        console.log(projectId)
         try {
             Task.find({projectId: projectId}).then((tasks) => {
                 if (!tasks) {
                     return res.status(400).json({message: 'No projects'})
                 }
-                console.log(tasks);
                 res.json(tasks)
             });
 
@@ -163,6 +160,19 @@ router.delete('/deleteTask/:projectId/:taskId', authMiddleware, async (req, res)
         res.status(500).send({message: 'Server error'});
     }
 });
+router.delete('/deleteProject/:projectId', authMiddleware,
+    async (req, res) => {
+        const projectId = req.params.projectId;
+
+        try {
+            await Project.findOneAndDelete({_id: projectId});
+            res.json(projectId);
+
+        } catch (e) {
+            console.error(e);
+            res.status(500).send({message: 'Server error'});
+        }
+    });
 
 
 module.exports = router;

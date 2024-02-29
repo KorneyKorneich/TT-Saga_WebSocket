@@ -35,3 +35,12 @@
   }
 
 }
+
+.project_delete:hover {
+  cursor: pointer;
+
+  svg {
+    fill: var(--primary-color);
+  }
+
+}
