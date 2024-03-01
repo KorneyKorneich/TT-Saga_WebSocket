@@ -1,10 +1,11 @@
 import { memo } from 'react'
 import { useState } from "react";
 import styles from "./Login.module.scss";
-import { Button, Input } from "src/shared";
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
 import { userLogin } from "src/entities/User/lib/services/userLogin.ts";
 import { useNavigate } from "react-router-dom";
+import Input from "src/shared/Input/ui/Input.tsx";
+import Button from "src/shared/Button/Button.tsx";
 
 
 export const Login = memo(() => {
@@ -58,3 +59,4 @@ export const Login = memo(() => {
     );
 });
 
+export default Login;

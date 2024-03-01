@@ -1,7 +1,7 @@
 import styles from "./TaskCard.module.scss";
-import { Flags } from "src/schemas/config.ts";
-import { useSelector } from "react-redux";
-import { getCurrentProject } from "src/entities/Project";
+import {Flags} from "src/schemas/config.ts";
+import {useSelector} from "react-redux";
+import {getCurrentProject} from "src/entities/Project";
 
 interface TaskCardProps {
     flag: Flags,
@@ -13,7 +13,7 @@ export function transformFlagToString(flag: Flags) {
     return flag.replace('_', ' ');
 }
 
-export const TaskCard = (props: TaskCardProps) => {
+const TaskCard = (props: TaskCardProps) => {
 
     const {
         openModal,
@@ -48,3 +48,5 @@ export const TaskCard = (props: TaskCardProps) => {
         </div>
     )
 }
+
+export default TaskCard;

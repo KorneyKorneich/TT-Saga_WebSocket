@@ -1,14 +1,14 @@
 import { ChangeEvent } from 'react';
 import styles from "./DropDown.module.scss";
 import { Flags } from "src/schemas/config.ts";
-import { transformFlagToString } from "src/shared";
+import { transformFlagToString } from "src/shared/TaskCard/TaskCard.tsx";
 
 interface DropdownProps {
     handleStatusSelect: (e: ChangeEvent<HTMLSelectElement>) => void;
     taskStatus: Flags;
 }
 
-export const Dropdown = (props: DropdownProps) => {
+const Dropdown = (props: DropdownProps) => {
 
     const { handleStatusSelect, taskStatus } = props;
 
@@ -29,5 +29,6 @@ export const Dropdown = (props: DropdownProps) => {
             </select>
         </div>
     );
-
 };
+
+export default Dropdown;

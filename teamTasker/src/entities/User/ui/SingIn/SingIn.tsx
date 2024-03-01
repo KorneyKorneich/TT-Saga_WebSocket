@@ -1,13 +1,13 @@
 import { memo, useEffect, useState } from "react";
 import styles from "./SingIn.module.scss";
-import { Input } from "src/shared";
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
 import { userReg } from "src/entities/User/lib/services/userReg.ts";
-import { Button } from "src/shared/Button/Button.tsx";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getErrors } from "src/entities/User/lib/selectors/getErrors.ts";
 import { userAuth } from "src/entities/User/lib/services/userAuth.ts";
+import Input from "src/shared/Input/ui/Input.tsx";
+import Button from "src/shared/Button/Button.tsx";
 
 
 export const SingIn = memo(() => {
@@ -80,3 +80,4 @@ export const SingIn = memo(() => {
 
 });
 
+export default SingIn;

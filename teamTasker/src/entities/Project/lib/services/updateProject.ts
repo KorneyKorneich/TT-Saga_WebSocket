@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { TaskSchema, ThunkConfig } from "src/schemas/config.ts";
+import { BACK_URL, TaskSchema, ThunkConfig } from "src/schemas/config.ts";
 import axios from "axios";
 
 export const updateProject = createAsyncThunk<TaskSchema, TaskSchema, ThunkConfig<string>>(
@@ -11,7 +11,7 @@ export const updateProject = createAsyncThunk<TaskSchema, TaskSchema, ThunkConfi
         try {
 
 
-            const response = await axios.patch(`http://localhost:4000/api/updateProject/${projectInfo.projectId}`,
+            const response = await axios.patch(`${BACK_URL}/api/updateProject/${projectInfo.projectId}`,
                 projectInfo,
                 { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 

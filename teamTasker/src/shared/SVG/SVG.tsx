@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import {ReactNode} from "react";
 import styles from './SVG.module.scss'
 
 interface SVGProps {
@@ -8,7 +8,7 @@ interface SVGProps {
 }
 
 
-export const SVG = (props: SVGProps) => {
+const SVG = (props: SVGProps) => {
     const {
         size,
         children,
@@ -32,3 +32,4 @@ export const SVG = (props: SVGProps) => {
         </div>
     )
 }
+export default SVG;

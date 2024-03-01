@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ThunkConfig } from "src/schemas/config.ts";
+import { BACK_URL, ThunkConfig } from "src/schemas/config.ts";
 import axios from "axios";
 
 
@@ -15,7 +15,7 @@ export const deleteProjectById = createAsyncThunk<string, string, ThunkConfig<st
 
         try {
             const response = await axios.delete(
-                `http://localhost:4000/api/deleteProject/${projectId}`,
+                `${BACK_URL}/api/deleteProject/${projectId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,

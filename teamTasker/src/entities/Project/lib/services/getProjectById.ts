@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ProjectSchema } from "src/schemas/config.ts";
+import { BACK_URL, ProjectSchema } from "src/schemas/config.ts";
 import axios from "axios";
 
 export const getProjectById = createAsyncThunk<ProjectSchema[], string>(
@@ -13,7 +13,7 @@ export const getProjectById = createAsyncThunk<ProjectSchema[], string>(
             return rejectWithValue("No id to find any projects");
         }
         try {
-            const response = await axios.post("http://localhost:4000/api/getProjects", userId,
+            const response = await axios.post(`${BACK_URL}/api/getProjects`, userId,
                 { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
             if (!response.data) {

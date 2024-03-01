@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ProjectSchema, TaskFetchData, ThunkConfig } from "src/schemas/config.ts";
+import { BACK_URL, ProjectSchema, TaskFetchData, ThunkConfig } from "src/schemas/config.ts";
 import axios from "axios";
 
 interface AddTasksToProjectData {
@@ -26,7 +26,7 @@ export const addTasksToProject = createAsyncThunk<AddTasksResponseSchema, AddTas
 
         try {
             const response = await axios.post(
-                `http://localhost:4000/api/addTasksToProject/${data.projectId}`,
+                `${BACK_URL}/api/addTasksToProject/${data.projectId}`,
                 {
                     task: data.task,
                 },

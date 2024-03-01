@@ -1,16 +1,18 @@
 import styles from "./Header.module.scss";
 import Logo from "../assets/kanban-logo.svg?react"
-import { Button, Popup, SVG } from "src/shared";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { getIsAuth } from "src/entities/User";
-import { getCurrentProject } from "src/entities/Project";
-import { useState } from "react";
-import { TaskCreationPopup } from "src/popups"
-import { useAppDispatch } from "src/hooks/storeHooks.ts";
-import { onLogout } from "src/entities/User/lib/slice/userSlice.ts";
+import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {getIsAuth} from "src/entities/User";
+import {getCurrentProject} from "src/entities/Project";
+import {useState} from "react";
+import {TaskCreationPopup} from "src/popups"
+import {useAppDispatch} from "src/hooks/storeHooks.ts";
+import {onLogout} from "src/entities/User/lib/slice/userSlice.ts";
+import Button from "src/shared/Button/Button.tsx";
+import SVG from "src/shared/SVG/SVG.tsx";
+import Popup from "src/shared/Popup/ui/Popup.tsx";
 
-export const Header = () => {
+const Header = () => {
     const isAuth = useSelector(getIsAuth);
     const navigate = useNavigate();
     const currentURL = window.location.pathname;
@@ -83,3 +85,4 @@ export const Header = () => {
 
 };
 
+export default Header;

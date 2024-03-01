@@ -1,12 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getProjectById } from "src/entities/Project/lib/services/getProjectById.ts";
-import { ProjectSliceSchema } from "src/schemas/config.ts";
-import { addTasksToProject } from "src/entities/Project/lib/services/addTasksToProject.ts";
-import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksByProjectId.ts";
-import { createProject } from "src/entities/Project/lib/services/createProject.ts";
-import { updateProject } from "src/entities/Project/lib/services/updateProject.ts";
-import { deleteTaskById } from "src/entities/Project/lib/services/deleteTaskById.ts";
-import { deleteProjectById } from "src/entities/Project/lib/services/deleteProjectById.ts";
+import {createSlice} from "@reduxjs/toolkit";
+import {getProjectById} from "src/entities/Project/lib/services/getProjectById.ts";
+import {ProjectSliceSchema} from "src/schemas/config.ts";
+import {addTasksToProject} from "src/entities/Project/lib/services/addTasksToProject.ts";
+import {getTasksByProjectId} from "src/entities/Project/lib/services/getTasksByProjectId.ts";
+import {createProject} from "src/entities/Project/lib/services/createProject.ts";
+import {updateProject} from "src/entities/Project/lib/services/updateProject.ts";
+import {deleteTaskById} from "src/entities/Project/lib/services/deleteTaskById.ts";
+import {deleteProjectById} from "src/entities/Project/lib/services/deleteProjectById.ts";
 
 const initialState: ProjectSliceSchema = {
     projects: [],
@@ -50,7 +50,7 @@ export const projectsSlice = createSlice({
             .addCase(getProjectById.rejected, (state, action) => {
                 state.isLoading = false;
                 if (action.payload) {
-                    state.error = action.payload;
+                    state.error = action.payload as string;
                 }
 
             });
@@ -113,7 +113,7 @@ export const projectsSlice = createSlice({
             })
             .addCase(getTasksByProjectId.rejected, (state, action) => {
                 state.isLoading = false;
-                state.error = action.payload;
+                state.error = action.payload as string;
                 console.log("записал ошибку")
             });
 
@@ -189,5 +189,5 @@ export const projectsSlice = createSlice({
     },
 })
 
-export const { setCurrentProject, updateCurrentProject } = projectsSlice.actions;
-export const { reducer: projectsReducer } = projectsSlice;
+export const {setCurrentProject, updateCurrentProject} = projectsSlice.actions;
+export const {reducer: projectsReducer} = projectsSlice;

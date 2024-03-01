@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { userReg } from "src/entities/User/lib/services/userReg.ts";
-import { UserSliceSchema } from "src/entities/User/lib/types/user.ts";
 import { userLogin } from "src/entities/User/lib/services/userLogin.ts";
 import { userAuth } from "src/entities/User/lib/services/userAuth.ts";
+import { UserSliceSchema } from "src/schemas/config.ts";
 
 
 const initialState: UserSliceSchema = {

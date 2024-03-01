@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { TaskSchema } from "src/schemas/config.ts";
+import { BACK_URL, TaskSchema } from "src/schemas/config.ts";
 import axios from "axios";
 
 export interface TaskResponseSchema {
@@ -18,7 +18,7 @@ export const getTasksByProjectId = createAsyncThunk<TaskResponseSchema, string>(
             return rejectWithValue("No id to find any projects");
         }
         try {
-            const response = await axios.get(`http://localhost:4000/api/getTasks/${projectId}`,
+            const response = await axios.get(`${BACK_URL}/api/getTasks/${projectId}`,
                 { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
             if (!response.data) {

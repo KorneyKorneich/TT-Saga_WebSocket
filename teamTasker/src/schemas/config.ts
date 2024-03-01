@@ -1,5 +1,21 @@
-import { UserSliceSchema } from "src/entities/User/lib/types/user.ts";
+export interface UserSchema {
+    id: string,
+    username: string;
+    token?: string;
+    isAuth?: boolean;
+    projectList?: ProjectSchema[]
+}
 
+export interface UserSliceSchema {
+    data: UserSchema;
+    isLoading: boolean;
+    error?: string;
+}
+
+export interface UserRegistrationData {
+    username: string,
+    password: string
+}
 
 export interface stateSchema {
     user: UserSliceSchema,
@@ -63,3 +79,5 @@ export interface TaskFetchData {
     description?: string,
     subTasks?: SubTask[],
 }
+
+export const BACK_URL = "https://teamtasker-server.onrender.com";

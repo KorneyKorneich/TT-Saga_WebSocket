@@ -1,21 +1,21 @@
-import {createAsyncThunk} from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import {UserSchema} from "src/entities/User/lib/types/user.ts";
-import {ThunkConfig} from "src/schemas/config.ts";
+
+import { BACK_URL, UserSchema } from "src/schemas/config.ts";
 
 export const userAuth = createAsyncThunk<UserSchema, void>(
     "user/userAuth",
-    async (_, {rejectWithValue}) => {
+    async (_, { rejectWithValue }) => {
         try {
 
-            const response = await axios.get("http://localhost:4000/api/auth",
-                {headers:{Authorization: `Bearer ${localStorage.getItem("token")}`}}
+            const response = await axios.get(`${BACK_URL}/api/auth`,
+                { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
             );
-            if(!response){
+            if (!response) {
                 throw new Error();
             }
             const data: UserSchema = response.data;
-            if(!data.token){
+            if (!data.token) {
                 return rejectWithValue("No token")
             }
             localStorage.setItem("token", data.token)

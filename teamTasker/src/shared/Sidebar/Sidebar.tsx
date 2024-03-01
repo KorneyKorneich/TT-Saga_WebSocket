@@ -1,19 +1,21 @@
 import styles from "./Sidebar.module.scss"
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "src/hooks/storeHooks.ts";
-import { getProjectById } from "src/entities/Project/lib/services/getProjectById.ts";
-import { getId, getIsAuth } from "src/entities/User";
-import { memo, useEffect, useState } from "react";
-import { getProjects } from "src/entities/Project/lib/selectors/getProjects.ts";
-import { Link, useNavigate } from "react-router-dom";
-import { Button, Popup, SVG } from "src/shared";
+import {useSelector} from "react-redux";
+import {useAppDispatch} from "src/hooks/storeHooks.ts";
+import {getProjectById} from "src/entities/Project/lib/services/getProjectById.ts";
+import {getId, getIsAuth} from "src/entities/User";
+import {memo, useEffect, useState} from "react";
+import {getProjects} from "src/entities/Project/lib/selectors/getProjects.ts";
+import {Link, useNavigate} from "react-router-dom";
 import ProjectIcon from "../assets/project-icon.svg?react"
 import DeleteIcon from "../assets/delete_icon.svg?react"
-import { DeleteProjectPopup } from "src/shared/Sidebar/DeleteProjectPopup/DeleteProjectPopup.tsx";
-import { ProjectSchema } from "src/schemas/config.ts";
+import DeleteProjectPopup from "./DeleteProjectPopup/DeleteProjectPopup.tsx";
+import {ProjectSchema} from "src/schemas/config.ts";
+import SVG from "src/shared/SVG/SVG.tsx";
+import Button from "src/shared/Button/Button.tsx";
+import Popup from "../Popup/ui/Popup.tsx";
 
 
-export const Sidebar = memo(() => {
+const Sidebar = memo(() => {
     const dispatch = useAppDispatch()
     const userId = useSelector(getId);
     const isAuth = useSelector(getIsAuth);
@@ -72,6 +74,4 @@ export const Sidebar = memo(() => {
     );
 });
 
-
-
-
+export default Sidebar;

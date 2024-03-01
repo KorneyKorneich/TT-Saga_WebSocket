@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ProjectFetchData, ProjectSchema, ThunkConfig } from "src/schemas/config.ts";
+import { BACK_URL, ProjectFetchData, ProjectSchema, ThunkConfig } from "src/schemas/config.ts";
 import axios from "axios";
 
 
@@ -15,7 +15,7 @@ export const createProject = createAsyncThunk<ProjectSchema, ProjectFetchData, T
         }
         try {
 
-            const response = await axios.post("http://localhost:4000/api/createProject", projectInfo,
+            const response = await axios.post(`${BACK_URL}/api/createProject`, projectInfo,
                 { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
             if (!response) {
                 throw new Error();

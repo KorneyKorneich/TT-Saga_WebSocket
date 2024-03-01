@@ -1,14 +1,16 @@
 import styles from "src/pages/ProjectsPage/ProjectCreatePage.module.scss";
-import { Button, Input } from "src/shared";
-import { useSelector } from "react-redux";
-import { useState } from "react";
-import { useAppDispatch } from "src/hooks/storeHooks.ts";
-import { createProject } from "src/entities/Project/lib/services/createProject.ts";
-import { getId } from "src/entities/User";
-import { ProjectFetchData } from "src/schemas/config.ts";
-import { useNavigate } from "react-router-dom";
+import {useSelector} from "react-redux";
+import {useState} from "react";
+import {useAppDispatch} from "src/hooks/storeHooks.ts";
+import {createProject} from "src/entities/Project/lib/services/createProject.ts";
+import {getId} from "src/entities/User";
+import {ProjectFetchData} from "src/schemas/config.ts";
+import {useNavigate} from "react-router-dom";
+import Button from "src/shared/Button/Button.tsx";
+import Input from "src/shared/Input/ui/Input.tsx";
 
-export const ProjectCreatePage = () => {
+
+const ProjectCreatePage = () => {
     const [newProjectData, setNewProjectData] = useState<ProjectFetchData>({
         title: "",
         creatorId: "",
@@ -71,3 +73,5 @@ export const ProjectCreatePage = () => {
         </div>
     );
 }
+
+export default ProjectCreatePage;

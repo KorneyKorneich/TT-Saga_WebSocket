@@ -1,5 +1,5 @@
 import styles from "./Popup.module.scss";
-import { ReactNode } from "react";
+import {ReactNode} from "react";
 
 interface PopupProps {
     isPopupOpen: boolean;
@@ -8,7 +8,7 @@ interface PopupProps {
     children?: ReactNode;
 }
 
-export const Popup = (props: PopupProps) => {
+const Popup = (props: PopupProps) => {
     const {
         isPopupOpen,
         // setPopupStatus,
@@ -28,3 +28,4 @@ export const Popup = (props: PopupProps) => {
     )
 };
 
+export default Popup;

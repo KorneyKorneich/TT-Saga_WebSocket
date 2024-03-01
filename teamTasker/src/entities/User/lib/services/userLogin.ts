@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { UserRegistrationData, UserSchema } from "src/entities/User/lib/types/user.ts";
+
+import { BACK_URL, UserRegistrationData, UserSchema } from "src/schemas/config.ts";
 
 export const userLogin = createAsyncThunk<UserSchema, UserRegistrationData>(
     "user/userLogin",
@@ -15,7 +16,7 @@ export const userLogin = createAsyncThunk<UserSchema, UserRegistrationData>(
 
         try {
 
-            const response = await axios.post("http://localhost:4000/api/login", userdata,
+            const response = await axios.post(`${BACK_URL}/api/login`, userdata,
                 { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
             );
             if (!response) {
