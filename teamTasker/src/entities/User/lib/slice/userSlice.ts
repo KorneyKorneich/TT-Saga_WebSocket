@@ -19,7 +19,13 @@ const initialState: UserSliceSchema = {
 export const userSlice = createSlice({
     name: "userSlice",
     initialState,
-    reducers: {},
+    reducers: {
+        onLogout: (state) => {
+            localStorage.removeItem("token");
+            state.data = initialState.data;
+
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(userReg.pending, (state) => {
@@ -75,5 +81,5 @@ export const userSlice = createSlice({
 
 })
 
-export const { actions: userActions } = userSlice;
+export const { onLogout } = userSlice.actions;
 export const { reducer: userReducer } = userSlice;

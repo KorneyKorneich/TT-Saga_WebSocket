@@ -6,9 +6,6 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input: React.FC<InputProps> = ({ ...rest }) => {
-    // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     setValue(event.target.value); // Pass the input value to the setValue function
-    // };
-
     return <input className={styles.input} {...rest} />;
 };
+

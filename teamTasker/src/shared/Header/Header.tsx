@@ -7,14 +7,22 @@ import { getIsAuth } from "src/entities/User";
 import { getCurrentProject } from "src/entities/Project";
 import { useState } from "react";
 import { TaskCreationPopup } from "src/popups"
+import { useAppDispatch } from "src/hooks/storeHooks.ts";
+import { onLogout } from "src/entities/User/lib/slice/userSlice.ts";
 
 export const Header = () => {
     const isAuth = useSelector(getIsAuth);
     const navigate = useNavigate();
     const currentURL = window.location.pathname;
     const currentProject = useSelector(getCurrentProject);
+    const dispatch = useAppDispatch();
 
     const [isTaskAddPopup, setIsTaskAddPopup] = useState(false);
+
+    const handleLogout = () => {
+        dispatch(onLogout());
+        navigate("/");
+    }
 
     //TODO: При регистрации удалить из хедера все кнопки и поставить лого в центр
     return (
@@ -27,43 +35,51 @@ export const Header = () => {
                     <h1>TeamTasker</h1>
                 </div>
                 <div className={styles.nav_panel}>
-                    {!isAuth &&
+                    {isAuth && !currentURL.includes("workspace") && (
+                        <div className={styles.workspace_link}>
+                            <Button className={styles.createNew} onClick={() => navigate('/workspace')}>
+                                To workspace
+                            </Button>
+                        </div>
+                    )}
+
+                    {!isAuth && !currentURL.includes("login") && (
                         <Button className={styles.link} onClick={() => navigate("/authorization/login")}>
                             Login
                         </Button>
-
-                    }
-                    {isAuth && !currentURL.includes("workspace") &&
-                        <>
-                            <div className={styles.authedPanel}>
-                                <Button className={styles.createNew} onClick={() => navigate('/workspace')}>
-                                    To workspace
-                                </Button>
-                            </div>
-                        </>
-                    }
-                    {currentURL.includes("workspace/") &&
+                    )}
+                    {currentURL.includes("workspace/") && (
                         <div className={styles.authedPanel}>
-                            <div>{currentProject.title}</div>
-                            <Button
-                                onClick={() => {
-                                    setIsTaskAddPopup(true)
-                                }}
-                            >
-                                Add Task
-                            </Button>
+                            <div className={styles.project_title}>{currentProject.title}</div>
+                            <div className={styles.nav_right_side}>
+                                <Button
+                                    className={styles.add_task}
+                                    onClick={() => {
+                                        setIsTaskAddPopup(true)
+                                    }}
+                                >
+                                    Add Task
+                                </Button>
+                                {isAuth && (
+                                    <div className={styles.logout}>
+                                        <Button className={styles.logout_button} onClick={handleLogout}>Log out</Button>
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    }
+                    )}
                 </div>
-
             </div>
 
-            <Popup isPopupOpen={isTaskAddPopup} closeModal={() => setIsTaskAddPopup(false)}>
-                <TaskCreationPopup
-                    setIsAddTaskPopup={setIsTaskAddPopup}
-                />
-            </Popup>
+            {isTaskAddPopup && (
+                <Popup isPopupOpen={isTaskAddPopup} closeModal={() => setIsTaskAddPopup(false)}>
+                    <TaskCreationPopup
+                        setIsAddTaskPopup={setIsTaskAddPopup}
+                    />
+                </Popup>
+            )}
         </>
     );
+
 };
 
