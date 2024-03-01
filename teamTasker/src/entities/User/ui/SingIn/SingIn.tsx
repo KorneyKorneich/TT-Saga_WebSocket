@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from "react";
-import styles from "./UserRegistration.module.scss";
+import styles from "./SingIn.module.scss";
 import { Input } from "src/shared";
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
 import { userReg } from "src/entities/User/lib/services/userReg.ts";
@@ -9,7 +9,10 @@ import { useSelector } from "react-redux";
 import { getErrors } from "src/entities/User/lib/selectors/getErrors.ts";
 import { userAuth } from "src/entities/User/lib/services/userAuth.ts";
 
-export const UserRegistration = memo(() => {
+
+export const SingIn = memo(() => {
+
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -74,4 +77,6 @@ export const UserRegistration = memo(() => {
             </Button>
         </div>
     );
-})
+
+});
+

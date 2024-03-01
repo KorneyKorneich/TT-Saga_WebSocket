@@ -3,16 +3,17 @@
   border-radius: 15px;
   padding: 20px;
   margin-top: 20px;
+  height: fit-content;
 
-  .password, .username, button{
+  .password, .username, button {
     margin-top: 10px;
   }
 
-  input{
+  input {
     width: 94%;
   }
 
-  button{
+  button {
     width: 100%;
   }
 }

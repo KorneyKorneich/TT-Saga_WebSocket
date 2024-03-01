@@ -2,33 +2,28 @@
   margin: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  //position: fixed;
   height: 70px;
-  /*width: 99%;*/
-  right: 0;
+  gap: 20px;
+  justify-content: space-between;
   padding: 0 10px 0 10px;
   background: var(--background-light);
-  /*border-left: 1px solid var(--text-color-dark);*/
-  /*border-bottom: 1px solid var(--text-color-dark);*/
   color: var(--text-color-light)
-
 }
 
 .logo {
   /*padding: 20px 20px 0 10px;*/
   display: flex;
-  justify-content: space-around;
   align-items: center;
   gap: 10px;
   cursor: pointer;
+  max-width: var(--sidebar-width);
 }
 
 h1 {
   margin: 0;
 }
 
-.createNew, .link {
+.createNew, .link, .logout_button, .add_task {
 
   background: var(--primary-color);
   border-radius: 40px;
@@ -50,21 +45,32 @@ h1 {
   }
 }
 
-.link {
+.link, .createNew, .logout_button, .add_task {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 5rem;
+  width: fit-content;
+  padding: 15px 15px;
 }
 
 .authedPanel {
   gap: 10px;
   display: flex;
   justify-content: space-between;
+  width: 100%;
+
+  .project_title {
+    font-weight: bolder;
+  }
+
+  .nav_right_side {
+    display: flex;
+  }
 }
 
 .nav_panel {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
 }
 

@@ -1,7 +1,6 @@
-import {createAsyncThunk} from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import {UserRegistrationData, UserSchema} from "src/entities/User/lib/types/user.ts";
-import {ThunkConfig} from "src/schemas/config.ts";
+import { UserRegistrationData, UserSchema } from "src/entities/User/lib/types/user.ts";
 
 export const userLogin = createAsyncThunk<UserSchema, UserRegistrationData>(
     "user/userLogin",
@@ -10,22 +9,22 @@ export const userLogin = createAsyncThunk<UserSchema, UserRegistrationData>(
             rejectWithValue,
         } = thunkAPI;
 
-        if(!userdata) {
+        if (!userdata) {
             return rejectWithValue("No userdata");
         }
 
         try {
 
             const response = await axios.post("http://localhost:4000/api/login", userdata,
-                {headers:{Authorization: `Bearer ${localStorage.getItem("token")}`}}
+                { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
             );
-            if(!response){
+            if (!response) {
                 throw new Error();
             }
             const data: UserSchema = await response.data;
             console.log(data.token)
 
-            if(!data.token){
+            if (!data.token) {
                 return rejectWithValue("No token")
             }
             localStorage.setItem("token", data.token)
