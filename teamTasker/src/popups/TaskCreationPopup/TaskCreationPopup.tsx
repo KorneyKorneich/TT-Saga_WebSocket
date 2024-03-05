@@ -1,5 +1,5 @@
 import styles from "./TaskCreationPopup.module.scss";
-import { Flags, SubTask, TaskFetchData } from "src/schemas/config.ts";
+import { Status, SubTask, TaskFetchData } from "src/schemas/config.ts";
 import { useState } from "react";
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
 import { useParams } from "react-router";
@@ -19,7 +19,7 @@ export const TaskCreationPopup = (props: TaskCreationProps) => {
     const [task, setTask] = useState<TaskFetchData>({
         taskName: "",
         projectId: "",
-        flag: Flags.TODO,
+        flag: Status.TODO,
         description: "",
         subTasks: [
             { _id: Date.now().toString(), todo: "", isDone: false }, // Первая задача
@@ -46,7 +46,7 @@ export const TaskCreationPopup = (props: TaskCreationProps) => {
             setTask({
                 taskName: "",
                 projectId: "",
-                flag: Flags.TODO,
+                flag: Status.TODO,
                 description: "",
                 subTasks: [
                     { _id: Date.now().toString(), todo: "", isDone: false }, // Первая задача

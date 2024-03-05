@@ -1,11 +1,11 @@
 import styles from "./TaskDetailsPopup.module.scss"
-import { Flags, TaskSchema } from "src/schemas/config.ts";
+import { Status, TaskSchema } from "src/schemas/config.ts";
 import { ChangeEvent } from "react";
 import DeleteIcon from "src/shared/assets/delete_icon.svg?react"
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
 import { deleteTaskById } from "src/entities/Project/lib/services/deleteTaskById.ts";
 import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksByProjectId.ts";
-import SVG from "src/shared/SVG/SVG.tsx";
+import SVGComponent from "src/shared/SVGComponent/SVGComponent.tsx";
 import Dropdown from "src/shared/DropDown/DropDown.tsx";
 
 interface TaskDetailsProps {
@@ -23,7 +23,7 @@ export const TaskDetailsPopup = (props: TaskDetailsProps) => {
     function handleTaskFlagChange(e: ChangeEvent<HTMLSelectElement>) {
         const updatedTask: TaskSchema = {
             ...taskDetails,
-            flag: e.target.value as Flags
+            flag: e.target.value as Status
         }
         setTaskDetails(updatedTask);
         setIsChanged(true);
@@ -66,9 +66,9 @@ export const TaskDetailsPopup = (props: TaskDetailsProps) => {
             <div className={styles.task_header}>
                 <h3 className={styles.task_title}>{taskDetails && taskDetails.taskName}</h3>
                 <div className={styles.task_delete} onClick={handleTaskDelete}>
-                    <SVG size={25} color={"#ECEDF1"}>
+                    <SVGComponent size={25} color={"#ECEDF1"}>
                         <DeleteIcon/>
-                    </SVG>
+                    </SVGComponent>
                 </div>
 
             </div>

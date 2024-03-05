@@ -29,8 +29,7 @@ export interface ThunkConfig<T> {
     rejectValue: T
 }
 
-//TODO: Перенести User типы сюда
-export enum Flags {
+export enum Status {
     TODO = "todo",
     IN_PROGRESS = "in_progress",
     DONE = "done",
@@ -53,7 +52,7 @@ export interface ProjectSliceSchema {
 export interface TaskSchema {
     _id: string,
     projectId: string,
-    flag: Flags,
+    flag: Status,
     taskName: string,
     description?: string,
     subTasks?: SubTask[],
@@ -74,10 +73,11 @@ export interface ProjectFetchData {
 
 export interface TaskFetchData {
     projectId: string,
-    flag: Flags,
+    flag: Status,
     taskName: string,
     description?: string,
     subTasks?: SubTask[],
 }
 
-export const BACK_URL = "https://teamtasker-server.onrender.com";
+// export const BACK_URL = "https://teamtasker-server.onrender.com";
+export const BACK_URL = "http://localhost:4000";

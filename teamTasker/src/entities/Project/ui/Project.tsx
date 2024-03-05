@@ -5,11 +5,11 @@ import { useAppDispatch } from "src/hooks/storeHooks.ts";
 import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksByProjectId.ts";
 import { useSelector } from "react-redux";
 import { getCurrentProject } from "src/entities/Project";
-import { Flags, TaskSchema } from "src/schemas/config.ts";
+import { Status, TaskSchema } from "src/schemas/config.ts";
 import { setCurrentProject } from "src/entities/Project/lib/slice/projectSlice.ts";
 import { updateProject } from "src/entities/Project/lib/services/updateProject.ts";
 import { TaskDetailsPopup } from "src/popups/TaskDetailsPopup/TaskDetailsPopup.tsx";
-import TaskCard from "src/shared/TaskCard/TaskCard.tsx";
+import TaskColumn from "src/shared/TaskColumn/TaskColumn.tsx";
 import Popup from "src/shared/Popup/ui/Popup.tsx";
 
 
@@ -25,7 +25,7 @@ export const Project = () => {
     const [taskDetails, setTaskDetails] = useState<TaskSchema>({
         _id: "",
         taskName: "",
-        flag: Flags.TODO,
+        flag: Status.TODO,
         projectId: ""
     });
 
@@ -40,7 +40,7 @@ export const Project = () => {
             {
                 _id: "",
                 taskName: "",
-                flag: Flags.TODO,
+                flag: Status.TODO,
                 projectId: ""
             }
         );
@@ -63,25 +63,23 @@ export const Project = () => {
     }, [projectId, dispatch]);
 
     return (
-        <>
-            <div className={styles.projectPage}>
-                <div className={styles.columns}>
-                    <TaskCard flag={Flags.TODO} openModal={openModal}/>
-                    <TaskCard flag={Flags.IN_PROGRESS} openModal={openModal}/>
-                    <TaskCard flag={Flags.DONE} openModal={openModal}/>
-                </div>
-
-                <Popup
-                    isPopupOpen={isTaskDetailsPopup}
-                    selectedTaskId={selectedTaskId || undefined}
-                    closeModal={closeDetailsModal}
-                >
-                    <TaskDetailsPopup setIsPopup={setIsTaskDetailsPopup} taskDetails={taskDetails}
-                                      setTaskDetails={setTaskDetails}
-                                      setIsChanged={setIsChanged}/>
-                </Popup>
+        <div className={styles.projectPage}>
+            <div className={styles.columns}>
+                <TaskColumn status={Status.TODO} openModal={openModal}/>
+                <TaskColumn status={Status.IN_PROGRESS} openModal={openModal}/>
+                <TaskColumn status={Status.DONE} openModal={openModal}/>
             </div>
-        </>
+
+            <Popup
+                isPopupOpen={isTaskDetailsPopup}
+                selectedTaskId={selectedTaskId || undefined}
+                closeModal={closeDetailsModal}
+            >
+                <TaskDetailsPopup setIsPopup={setIsTaskDetailsPopup} taskDetails={taskDetails}
+                                  setTaskDetails={setTaskDetails}
+                                  setIsChanged={setIsChanged}/>
+            </Popup>
+        </div>
     )
 }
 

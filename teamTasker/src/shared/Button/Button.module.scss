@@ -1,19 +1,19 @@
-.button{
-    background: var(--primary-color);
-    border-radius: 40px;
-    color: var(--text-color-light);
-    height: 30px;
-    border: none;
-    transition: background 0.3s, color 0.3s; /* Adding transition for smooth effect */
+.button {
+  background: var(--primary-color);
+  border-radius: 40px;
+  color: var(--text-color-light);
+  height: 45px;
+  border: none;
+  transition: background 0.3s, color 0.3s; /* Adding transition for smooth effect */
 
-    &:hover {
-        cursor: pointer;
-        background: var(--primary-color-hover); /* Change to your desired hover color */
-        color: var(--text-color-hover); /* Change to your desired hover text color */
-    }
+  &:hover {
+    cursor: pointer;
+    background: var(--primary-color-hover); /* Change to your desired hover color */
+    color: var(--text-color-hover); /* Change to your desired hover text color */
+  }
 
-    &:active {
-        background: var(--primary-color-active); /* Change to your desired active color */
-        color: var(--text-color-active); /* Change to your desired active text color */
-    }
+  &:active {
+    background: var(--primary-color-active); /* Change to your desired active color */
+    color: var(--text-color-active); /* Change to your desired active text color */
+  }
 }

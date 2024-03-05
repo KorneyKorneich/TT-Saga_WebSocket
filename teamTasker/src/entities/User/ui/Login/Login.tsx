@@ -52,8 +52,8 @@ export const Login = memo(() => {
             </div>
             <Button onClick={handleClick}>Log in</Button>
             <p>If you not registered</p>
-            <Button onClick={() => navigate("/authorization/singIn")}>
-                Sign in
+            <Button onClick={() => navigate("/auth/singUp")}>
+                Sign Up
             </Button>
         </div>
     );
