@@ -1,21 +1,21 @@
 import styles from "./Project.module.scss"
-import {useParams} from "react-router";
-import {useEffect, useState} from "react";
-import {useAppDispatch} from "src/hooks/storeHooks.ts";
-import {getTasksByProjectId} from "src/entities/Project/lib/services/getTasksByProjectId.ts";
-import {useSelector} from "react-redux";
-import {getCurrentProject} from "src/entities/Project";
-import {Flags, TaskSchema} from "src/schemas/config.ts";
-import {setCurrentProject} from "src/entities/Project/lib/slice/projectSlice.ts";
-import {updateProject} from "src/entities/Project/lib/services/updateProject.ts";
-import {TaskDetailsPopup} from "src/popups/TaskDetailsPopup/TaskDetailsPopup.tsx";
+import { useParams } from "react-router";
+import { useEffect, useState } from "react";
+import { useAppDispatch } from "src/hooks/storeHooks.ts";
+import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksByProjectId.ts";
+import { useSelector } from "react-redux";
+import { getCurrentProject } from "src/entities/Project";
+import { Flags, TaskSchema } from "src/schemas/config.ts";
+import { setCurrentProject } from "src/entities/Project/lib/slice/projectSlice.ts";
+import { updateProject } from "src/entities/Project/lib/services/updateProject.ts";
+import { TaskDetailsPopup } from "src/popups/TaskDetailsPopup/TaskDetailsPopup.tsx";
 import TaskCard from "src/shared/TaskCard/TaskCard.tsx";
 import Popup from "src/shared/Popup/ui/Popup.tsx";
 
 
 export const Project = () => {
 
-    const {projectId} = useParams();
+    const { projectId } = useParams();
     const dispatch = useAppDispatch();
     const project = useSelector(getCurrentProject);
 

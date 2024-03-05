@@ -1,11 +1,10 @@
-import {ChangeEvent, useEffect, useState} from "react";
-import {useAppDispatch} from "src/hooks/storeHooks.ts";
-import {deleteProjectById} from "src/entities/Project/lib/services/deleteProjectById.ts";
-import {useNavigate} from "react-router-dom";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useAppDispatch } from "src/hooks/storeHooks.ts";
+import { deleteProjectById } from "src/entities/Project/lib/services/deleteProjectById.ts";
+import { useNavigate } from "react-router-dom";
 import styles from "./DeleteProjectPopup.module.scss";
 import Button from "src/shared/Button/Button.tsx";
 import Input from "src/shared/Input/ui/Input.tsx";
-
 
 interface DeleteProjectPopupProps {
     projectId?: string
@@ -16,7 +15,7 @@ interface DeleteProjectPopupProps {
 
 const DeleteProjectPopup = (props: DeleteProjectPopupProps) => {
 
-    const {projectName, projectId, setIsPopup, isPopup} = props
+    const { projectName, projectId, setIsPopup, isPopup } = props
 
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [inputValue, setInputValue] = useState("");

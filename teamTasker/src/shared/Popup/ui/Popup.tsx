@@ -1,5 +1,5 @@
 import styles from "./Popup.module.scss";
-import {ReactNode} from "react";
+import { ReactNode } from "react";
 
 interface PopupProps {
     isPopupOpen: boolean;

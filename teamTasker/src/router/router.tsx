@@ -7,7 +7,7 @@ const ProjectsPage = lazy(() => import("src/pages/ProjectsPage/ProjectsPage"));
 const Project = lazy(() => import("src/entities/Project/ui/Project.tsx"));
 const ProtectedRoute = lazy(() => import("src/shared/ProtectedRoute/ProtectedRoute.tsx"));
 const Login = lazy(() => import("src/entities/User/ui/Login/Login.tsx"));
-const SingIn = lazy(() => import("src/entities/User/ui/SingIn/SingIn.tsx"));
+const SingUp = lazy(() => import("src/entities/User/ui/SingUp/SingUp.tsx"));
 const ProjectCreatePage = lazy(() => import("src/pages/ProjectsPage/ProjectCreatePage"));
 
 
@@ -21,15 +21,15 @@ export const getRouter = () => {
                 </Suspense>,
             children: [
                 {
-                    path: "authorization",
+                    path: "auth",
                     children: [
                         {
                             path: "login",
                             element: <Suspense fallback={<>Loading...</>}><Login/></Suspense>
                         },
                         {
-                            path: "singIn",
-                            element: <Suspense fallback={<>Loading...</>}><SingIn/></Suspense>
+                            path: "singUp",
+                            element: <Suspense fallback={<>Loading...</>}><SingUp/></Suspense>
                         },
                     ]
                 },

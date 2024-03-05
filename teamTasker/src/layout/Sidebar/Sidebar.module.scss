@@ -23,7 +23,6 @@
     }
   }
 
-
   .newProject {
     margin-top: 10px;
   }
@@ -39,7 +38,6 @@
       align-items: center;
       gap: 5px;
 
-
       &:hover {
         svg {
           fill: var(--primary-color-hover);
@@ -53,14 +51,12 @@
       }
     }
 
-
     .project_delete:hover {
       cursor: pointer;
 
       svg {
         fill: var(--primary-color);
       }
-
     }
   }
 }

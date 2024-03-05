@@ -10,7 +10,7 @@ import Input from "src/shared/Input/ui/Input.tsx";
 import Button from "src/shared/Button/Button.tsx";
 
 
-export const SingIn = memo(() => {
+export const SingUp = memo(() => {
 
 
     const [username, setUsername] = useState("");
@@ -73,11 +73,11 @@ export const SingIn = memo(() => {
                 />
             </div>
             <Button onClick={handleClick}>
-                Sign in
+                Sign un
             </Button>
         </div>
     );
 
 });
 
-export default SingIn;
+export default SingUp;

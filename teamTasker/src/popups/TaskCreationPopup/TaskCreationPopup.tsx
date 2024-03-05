@@ -1,10 +1,10 @@
 import styles from "./TaskCreationPopup.module.scss";
-import {Flags, SubTask, TaskFetchData} from "src/schemas/config.ts";
-import {useState} from "react";
-import {useAppDispatch} from "src/hooks/storeHooks.ts";
-import {useParams} from "react-router";
-import {addTasksToProject} from "src/entities/Project/lib/services/addTasksToProject.ts";
-import {getTasksByProjectId} from "src/entities/Project/lib/services/getTasksByProjectId.ts";
+import { Flags, SubTask, TaskFetchData } from "src/schemas/config.ts";
+import { useState } from "react";
+import { useAppDispatch } from "src/hooks/storeHooks.ts";
+import { useParams } from "react-router";
+import { addTasksToProject } from "src/entities/Project/lib/services/addTasksToProject.ts";
+import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksByProjectId.ts";
 import Input from "src/shared/Input/ui/Input.tsx";
 import Button from "src/shared/Button/Button.tsx";
 
@@ -14,7 +14,7 @@ interface TaskCreationProps {
 
 export const TaskCreationPopup = (props: TaskCreationProps) => {
 
-    const {setIsAddTaskPopup} = props;
+    const { setIsAddTaskPopup } = props;
 
     const [task, setTask] = useState<TaskFetchData>({
         taskName: "",
@@ -22,12 +22,12 @@ export const TaskCreationPopup = (props: TaskCreationProps) => {
         flag: Flags.TODO,
         description: "",
         subTasks: [
-            {_id: Date.now().toString(), todo: "", isDone: false}, // Первая задача
+            { _id: Date.now().toString(), todo: "", isDone: false }, // Первая задача
         ]
     });
 
     const dispatch = useAppDispatch();
-    const {projectId} = useParams();
+    const { projectId } = useParams();
 
     if (!projectId) {
         return null
@@ -40,7 +40,7 @@ export const TaskCreationPopup = (props: TaskCreationProps) => {
             if (task.subTasks && task.subTasks[0].todo === "") {
                 task.subTasks = [];
             }
-            await dispatch(addTasksToProject({projectId, task}));
+            await dispatch(addTasksToProject({ projectId, task }));
             await dispatch(getTasksByProjectId(projectId))
             setIsAddTaskPopup(false);
             setTask({
@@ -49,7 +49,7 @@ export const TaskCreationPopup = (props: TaskCreationProps) => {
                 flag: Flags.TODO,
                 description: "",
                 subTasks: [
-                    {_id: Date.now().toString(), todo: "", isDone: false}, // Первая задача
+                    { _id: Date.now().toString(), todo: "", isDone: false }, // Первая задача
                 ]
             })
         }
@@ -94,7 +94,7 @@ export const TaskCreationPopup = (props: TaskCreationProps) => {
                                             ...updatedSubTasks[subtaskPosition],
                                             todo: e.target.value
                                         }; // Обновляем значение todo в нужном объекте в массиве subTasks
-                                        return {...task, subTasks: updatedSubTasks}; // Обновляем состояние task с обновленным массивом subTasks
+                                        return { ...task, subTasks: updatedSubTasks }; // Обновляем состояние task с обновленным массивом subTasks
                                     });
                                 }}
                             />}
@@ -108,7 +108,7 @@ export const TaskCreationPopup = (props: TaskCreationProps) => {
                                 ...prevState,
                                 subTasks: [
                                     ...(prevState.subTasks) as [],
-                                    {_id: Date.now().toString(), todo: "", isDone: false}
+                                    { _id: Date.now().toString(), todo: "", isDone: false }
                                 ]
                             }));
                         }}

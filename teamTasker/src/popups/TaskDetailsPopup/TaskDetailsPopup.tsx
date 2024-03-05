@@ -1,10 +1,10 @@
 import styles from "./TaskDetailsPopup.module.scss"
-import {Flags, TaskSchema} from "src/schemas/config.ts";
-import {ChangeEvent} from "react";
+import { Flags, TaskSchema } from "src/schemas/config.ts";
+import { ChangeEvent } from "react";
 import DeleteIcon from "src/shared/assets/delete_icon.svg?react"
-import {useAppDispatch} from "src/hooks/storeHooks.ts";
-import {deleteTaskById} from "src/entities/Project/lib/services/deleteTaskById.ts";
-import {getTasksByProjectId} from "src/entities/Project/lib/services/getTasksByProjectId.ts";
+import { useAppDispatch } from "src/hooks/storeHooks.ts";
+import { deleteTaskById } from "src/entities/Project/lib/services/deleteTaskById.ts";
+import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksByProjectId.ts";
 import SVG from "src/shared/SVG/SVG.tsx";
 import Dropdown from "src/shared/DropDown/DropDown.tsx";
 
@@ -17,7 +17,7 @@ interface TaskDetailsProps {
 
 export const TaskDetailsPopup = (props: TaskDetailsProps) => {
 
-    const {taskDetails, setTaskDetails, setIsChanged, setIsPopup} = props;
+    const { taskDetails, setTaskDetails, setIsChanged, setIsPopup } = props;
     const dispatch = useAppDispatch();
 
     function handleTaskFlagChange(e: ChangeEvent<HTMLSelectElement>) {

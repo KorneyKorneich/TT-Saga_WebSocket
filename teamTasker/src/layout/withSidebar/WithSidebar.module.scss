@@ -1,0 +1,16 @@
+.page {
+  padding-top: 70px;
+  display: flex;
+  height: calc(100vh - 70px);
+}
+
+.pageContent {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.tasks {
+  padding: 10px;
+}
