@@ -1,0 +1,105 @@
+.nav_panel {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+
+
+  .createNew, .login, .logout_button, .add_task {
+
+    background: var(--primary-color);
+    border-radius: 40px;
+    color: var(--text-color-light);
+    height: 40px;
+    border: none;
+    transition: background 0.3s, color 0.3s; /* Adding transition for smooth effect */
+
+
+    &:hover {
+      cursor: pointer;
+      background: var(--primary-color-hover); /* Change to your desired hover color */
+      color: var(--text-color-hover); /* Change to your desired hover text color */
+    }
+
+    &:active {
+      background: var(--primary-color-active); /* Change to your desired active color */
+      color: var(--text-color-active); /* Change to your desired active text color */
+    }
+  }
+
+  .login, .createNew, .logout_button, .add_task, {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    height: auto;
+    padding: 15px 15px;
+  }
+
+  .authedPanel {
+    gap: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    .project_title {
+      font-weight: bolder;
+    }
+
+    .nav_right_side {
+      display: flex;
+    }
+
+    .more_options {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      svg {
+        fill: var(--text-color-dark)
+      }
+    }
+  }
+
+  .dropdown {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.5s;
+  }
+
+  .dropdown.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .options {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    border-radius: 12px;
+    background: var(--background-light);
+    width: 250px;
+  }
+
+  .options.active {
+    transform: scale(1);
+  }
+
+  .option {
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    border-radius: 12px;
+
+    &:hover {
+      background: var(--primary-color-hover);
+    }
+  }
+}

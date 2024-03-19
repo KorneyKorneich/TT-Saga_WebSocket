@@ -3,16 +3,14 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
 import { getProjectById } from "src/entities/Project/lib/services/getProjectById.ts";
 import { getId, getIsAuth } from "src/entities/User";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect } from "react";
 import { getProjects } from "src/entities/Project/lib/selectors/getProjects.ts";
 import { Link, useNavigate } from "react-router-dom";
 import ProjectIcon from "../../shared/assets/project-icon.svg?react"
-import DeleteIcon from "../../shared/assets/delete_icon.svg?react"
-import DeleteProjectPopup from "./DeleteProjectPopup/DeleteProjectPopup.tsx";
+
 import { ProjectSchema } from "src/schemas/config.ts";
 import SVGComponent from "src/shared/SVGComponent/SVGComponent.tsx";
 import Button from "src/shared/Button/Button.tsx";
-import Popup from "../../shared/Popup/ui/Popup.tsx";
 
 
 const Sidebar = memo(() => {
@@ -21,16 +19,6 @@ const Sidebar = memo(() => {
     const isAuth = useSelector(getIsAuth);
     const projects = useSelector(getProjects);
     const navigate = useNavigate();
-
-    const [isDeleteProjectPopup, setIsDeleteProjectPopup] = useState(false);
-    const [projectToDelete, setProjectToDelete] = useState<ProjectSchema>();
-
-    const handleProjectDelete = async (project: ProjectSchema) => {
-        if (project) {
-            setProjectToDelete(project);
-            setIsDeleteProjectPopup(true);
-        }
-    }
 
     const renderProjectsNames = (projectsList: ProjectSchema[]) => {
         return (
@@ -45,11 +33,7 @@ const Sidebar = memo(() => {
                             </div>
                             {el.title}
                         </Link>
-                        <div className={styles.project_delete} onClick={() => handleProjectDelete(el)}>
-                            <SVGComponent size={20} color={"#ECEDF1"}>
-                                <DeleteIcon/>
-                            </SVGComponent>
-                        </div>
+
                     </div>
                 )
             })
@@ -71,10 +55,6 @@ const Sidebar = memo(() => {
                     </Button>
                 </div>
             </div>
-            <Popup isPopupOpen={isDeleteProjectPopup} closeModal={() => setIsDeleteProjectPopup(false)}>
-                <DeleteProjectPopup setIsPopup={setIsDeleteProjectPopup} projectName={projectToDelete?.title}
-                                    projectId={projectToDelete?._id} isPopup={isDeleteProjectPopup}/>
-            </Popup>
         </>
     );
 });

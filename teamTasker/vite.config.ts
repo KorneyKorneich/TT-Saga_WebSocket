@@ -5,16 +5,16 @@ import * as path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), svgr()],
-  css:{
-    modules:{
-      localsConvention: "camelCase"
-    }
-  },
-  resolve:{
-    alias: {
-      src: "/src/",
-      shared: "/src/shared"
+    plugins: [react(), svgr()],
+    css: {
+        modules: {
+            localsConvention: "camelCase"
+        }
     },
-  }
+    resolve: {
+        alias: {
+            src: "/src/",
+            shared: "/src/shared"
+        },
+    }
 })

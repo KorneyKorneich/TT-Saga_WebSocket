@@ -5,12 +5,13 @@ import { useAppDispatch } from "src/hooks/storeHooks.ts";
 import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksByProjectId.ts";
 import { useSelector } from "react-redux";
 import { getCurrentProject } from "src/entities/Project";
-import { Status, TaskSchema } from "src/schemas/config.ts";
+import { Status } from "src/schemas/config.ts";
 import { setCurrentProject } from "src/entities/Project/lib/slice/projectSlice.ts";
 import { updateProject } from "src/entities/Project/lib/services/updateProject.ts";
 import { TaskDetailsPopup } from "src/popups/TaskDetailsPopup/TaskDetailsPopup.tsx";
 import TaskColumn from "src/shared/TaskColumn/TaskColumn.tsx";
 import Popup from "src/shared/Popup/ui/Popup.tsx";
+import { TaskSchema } from "src/entities/Project/lib/schema/schema.ts";
 
 
 export const Project = () => {
