@@ -6,6 +6,5 @@ export const Loader = () => {
             <div className={styles.loader_title}>Please wait</div>
             <div className={styles.loader}></div>
         </div>
-
     )
 }

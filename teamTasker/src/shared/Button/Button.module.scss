@@ -1,4 +1,4 @@
-.button {
+.primary {
   background: var(--primary-color);
   border-radius: 40px;
   color: var(--text-color-light);
@@ -17,3 +17,28 @@
     color: var(--text-color-active); /* Change to your desired active text color */
   }
 }
+
+.outline {
+  background: none;
+  border: 2px solid var(--primary-color); /* Use primary color for border */
+  border-radius: 40px;
+  color: var(--primary-color); /* Use primary color for text */
+  height: 45px;
+  padding: 0 20px; /* Add padding to match primary button */
+  transition: background 0.3s, color 0.3s, border-color 0.3s; /* Adding transition for smooth effect */
+  font-weight: bolder;
+
+  &:hover {
+    cursor: pointer;
+    background: var(--primary-color); /* Change to your desired hover color */
+    color: var(--text-color-light); /* Change to your desired hover text color */
+  }
+
+  &:active {
+    background: var(--primary-color-active); /* Change to your desired active color */
+    color: var(--text-color-active); /* Change to your desired active text color */
+    border-color: var(--primary-color-active); /* Change border color on active */
+  }
+}
+
+

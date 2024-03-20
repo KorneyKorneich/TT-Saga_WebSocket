@@ -37,6 +37,31 @@
       display: flex;
       align-items: center;
       gap: 5px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+
+      &:hover {
+        svg {
+          fill: var(--primary-color-hover);
+        }
+      }
+
+      &:active {
+        svg {
+          fill: var(--primary-color);
+        }
+      }
+    }
+
+    .selected_project {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      background: var(--primary-color);
 
       &:hover {
         svg {

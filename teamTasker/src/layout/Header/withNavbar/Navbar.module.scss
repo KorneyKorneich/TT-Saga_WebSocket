@@ -7,7 +7,7 @@
   .createNew, .login, .logout_button, .add_task {
 
     background: var(--primary-color);
-    border-radius: 40px;
+    border-radius: 10px;
     color: var(--text-color-light);
     height: 40px;
     border: none;
@@ -55,7 +55,13 @@
       cursor: pointer;
 
       svg {
-        fill: var(--text-color-dark)
+        fill: var(--text-color-dark);
+      }
+
+      &:hover {
+        svg {
+          fill: var(--primary-color);
+        }
       }
     }
   }

@@ -59,6 +59,12 @@ h5, h3 {
   svg {
     fill: var(--primary-color);
   }
-
 }
 
+.controls {
+  margin-top: 10px;
+
+  .close_btn {
+    width: 12rem;
+  }
+}

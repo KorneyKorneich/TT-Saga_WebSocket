@@ -25,6 +25,10 @@
 
   h1 {
     margin: 0;
+
+    &:hover {
+      color: var(--primary-color);
+    }
   }
 }
 
