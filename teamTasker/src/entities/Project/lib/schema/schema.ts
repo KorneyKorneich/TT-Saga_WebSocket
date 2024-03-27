@@ -16,8 +16,9 @@ export interface ProjectSliceSchema {
 
 export interface TaskSchema {
     _id: string,
+    renderIndex?: number,
     projectId: string,
-    flag: Status,
+    status: Status | string,
     taskName: string,
     description?: string,
     subTasks?: SubTask[],
@@ -38,8 +39,9 @@ export interface ProjectFetchData {
 
 export interface TaskFetchData {
     projectId: string,
-    flag: Status,
+    status: Status,
     taskName: string,
+    renderIndex: number
     description?: string,
     subTasks?: SubTask[],
 }

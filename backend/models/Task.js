@@ -2,7 +2,7 @@ const {Schema, model} = require('mongoose');
 
 const Task = new Schema({
     taskName: {type: String},
-    flag: {
+    status: {
         type: String,
         required: true
     },
@@ -11,6 +11,7 @@ const Task = new Schema({
         ref: 'Project',
         required: true
     },
+    renderIndex: {type: Number},
     description: {type: String},
     subTasks: [{
         _id: {

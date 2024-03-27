@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { BACK_URL, TaskSchema } from "src/schemas/config.ts";
+import { BACK_URL } from "src/schemas/config.ts";
 import axios from "axios";
+import { TaskSchema } from "src/entities/Project/lib/schema/schema.ts";
 
 export interface TaskResponseSchema {
     taskList: TaskSchema[];

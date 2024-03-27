@@ -1,11 +1,20 @@
 import styles from "./TaskColumn.module.scss";
-import { Status, TaskSchema } from "src/schemas/config.ts";
-import { useSelector } from "react-redux";
-import { getCurrentProject } from "src/entities/Project";
+import { Status } from "src/schemas/config.ts";
+import { TaskSchema } from "src/entities/Project/lib/schema/schema.ts";
+import { TaskCard } from "src/entities/Project/ui/TaskCard/TaskCard.tsx";
+import {
+    SortableContext,
+    verticalListSortingStrategy
+} from "@dnd-kit/sortable";
+import { useDroppable } from "@dnd-kit/core";
+
 
 interface TaskCardProps {
+    openModal: (id: string) => void,
     status: Status,
-    openModal: (id: string) => void
+    id: string,
+    tasks: TaskSchema[]
+
 }
 
 export function transformFlagToString(status: Status) {
@@ -17,40 +26,40 @@ const TaskColumn = (props: TaskCardProps) => {
     const {
         openModal,
         // closeModal,
+        id,
+        tasks,
         status
     } = props
 
 
-    const project = useSelector(getCurrentProject);
-
-    const taskList = project?.taskList?.filter((el) => {
-        if (el.flag === status) return el;
-    });
-
-    const renderTasks = (taskList: TaskSchema[]) => {
+    const renderTasks = (tasks: TaskSchema[]) => {
         return (
-            taskList?.map((el) => {
+            tasks?.map((el) => {
                 if (el) {
-                    return (
-                        <div className={styles.task_card} key={el?._id} onClick={() => openModal(el._id)}>
-                            <div>{el?.taskName}</div>
-                            {
-                                el.subTasks?.length ?
-                                    <div>{el.subTasks?.filter(subtask => subtask.isDone).length} of {el?.subTasks?.length} subtasks</div>
-                                    : null
-                            }
-                        </div>
-                    )
+                    return <TaskCard openModal={openModal} task={el}/>
                 }
             })
         )
     }
 
+
+    const { setNodeRef } = useDroppable({
+        id
+    });
+
     return (
-        <div className={`${styles.column}`}>
-            <h6>{transformFlagToString(status)} ({taskList?.length})</h6>
-            {renderTasks(taskList)}
-        </div>
+        <SortableContext
+            id={id}
+            items={tasks?.map((el) => el._id)}
+            strategy={verticalListSortingStrategy}
+        >
+            <div ref={setNodeRef} className={`${styles.column}`}>
+                <h6>{transformFlagToString(status)} ({tasks?.length})</h6>
+                <div className={styles.task_list}>
+                    {renderTasks(tasks)}
+                </div>
+            </div>
+        </SortableContext>
     )
 }
 

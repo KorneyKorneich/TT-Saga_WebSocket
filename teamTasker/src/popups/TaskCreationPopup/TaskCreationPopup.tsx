@@ -8,6 +8,8 @@ import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksB
 import Input from "src/shared/Input/ui/Input.tsx";
 import Button, { ButtonStyles } from "src/shared/Button/Button.tsx";
 import { SubTask, TaskFetchData } from "src/entities/Project/lib/schema/schema.ts";
+import { useSelector } from "react-redux";
+import { getCurrentProject } from "src/entities/Project";
 
 interface TaskCreationProps {
     setIsAddTaskPopup: (option: boolean) => void
@@ -16,12 +18,14 @@ interface TaskCreationProps {
 export const TaskCreationPopup = (props: TaskCreationProps) => {
 
     const { setIsAddTaskPopup } = props;
+    const project = useSelector(getCurrentProject);
 
     const [task, setTask] = useState<TaskFetchData>({
         taskName: "",
         projectId: "",
-        flag: Status.TODO,
+        status: Status.TODO,
         description: "",
+        renderIndex: project.taskList.length,
         subTasks: [
             { _id: Date.now().toString(), todo: "", isDone: false }, // Первая задача
         ]
@@ -47,7 +51,8 @@ export const TaskCreationPopup = (props: TaskCreationProps) => {
             setTask({
                 taskName: "",
                 projectId: "",
-                flag: Status.TODO,
+                status: Status.TODO,
+                renderIndex: project.taskList.length,
                 description: "",
                 subTasks: [
                     { _id: Date.now().toString(), todo: "", isDone: false }, // Первая задача

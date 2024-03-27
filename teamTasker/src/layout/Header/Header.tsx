@@ -8,6 +8,8 @@ import Popup from "src/shared/Popup/ui/Popup.tsx";
 import DeleteProjectPopup from "src/layout/Sidebar/DeleteProjectPopup/DeleteProjectPopup.tsx";
 import { Navbar } from "src/layout/Header/withNavbar/Navbar.tsx";
 import { ProjectSchema } from "../../entities/Project/lib/schema/schema.ts";
+import { updateCurrentProject } from "src/entities/Project/lib/slice/projectSlice.ts";
+import { useAppDispatch } from "src/hooks/storeHooks.ts";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -15,17 +17,21 @@ const Header = () => {
 
     const [isTaskAddPopup, setIsTaskAddPopup] = useState(false);
     const [isDeleteProjectPopup, setIsDeleteProjectPopup] = useState(false);
-
-
     const [projectToDelete, setProjectToDelete] = useState<ProjectSchema>();
 
+    const dispatch = useAppDispatch();
+
+    const handleLogoClick = () => {
+        dispatch(updateCurrentProject({}))
+        navigate("/");
+    }
 
     //TODO: При регистрации удалить из хедера все кнопки и поставить лого в центр
     return (
         <>
             <div className={styles.header_wrapper}>
                 <div className={styles.header_content}>
-                    <div className={styles.logo} onClick={() => navigate("/")}>
+                    <div className={styles.logo} onClick={handleLogoClick}>
                         <SVGComponent size={40}>
                             <Logo/>
                         </SVGComponent>

@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { BACK_URL, ProjectFetchData, ProjectSchema, ThunkConfig } from "src/schemas/config.ts";
+import { BACK_URL, ThunkConfig } from "src/schemas/config.ts";
 import axios from "axios";
+import { ProjectFetchData, ProjectSchema } from "src/entities/Project/lib/schema/schema.ts";
 
 
 export const createProject = createAsyncThunk<ProjectSchema, ProjectFetchData, ThunkConfig<string>>(

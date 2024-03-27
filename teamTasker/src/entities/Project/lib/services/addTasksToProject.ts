@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { BACK_URL, ProjectSchema, TaskFetchData, ThunkConfig } from "src/schemas/config.ts";
+import { BACK_URL, ThunkConfig } from "src/schemas/config.ts";
 import axios from "axios";
+import { ProjectSchema, TaskFetchData } from "src/entities/Project/lib/schema/schema.ts";
 
 interface AddTasksToProjectData {
     projectId: string;

@@ -20,6 +20,7 @@ const Sidebar = memo(() => {
     const projects = useSelector(getProjects);
     const navigate = useNavigate();
     const currentProject = useSelector(getCurrentProject);
+    
 
     const renderProjectsNames = (projectsList: ProjectSchema[]) => {
         return (

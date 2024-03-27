@@ -25,7 +25,7 @@ export const TaskDetailsPopup = (props: TaskDetailsProps) => {
     function handleTaskFlagChange(e: ChangeEvent<HTMLSelectElement>) {
         const updatedTask: TaskSchema = {
             ...taskDetails,
-            flag: e.target.value as Status
+            status: e.target.value as Status
         }
         setTaskDetails(updatedTask);
         setIsChanged(true);
@@ -104,7 +104,7 @@ export const TaskDetailsPopup = (props: TaskDetailsProps) => {
                     </div>
                     <div className={styles.status}>
                         <p>Status</p>
-                        <Dropdown taskStatus={taskDetails.flag} handleStatusSelect={(e) => handleTaskFlagChange(e)}/>
+                        <Dropdown taskStatus={taskDetails.status} handleStatusSelect={(e) => handleTaskFlagChange(e)}/>
                     </div>
                     <div className={styles.controls}>
                         <Button className={styles.close_btn} buttonStyle={ButtonStyles.OUTLINE}

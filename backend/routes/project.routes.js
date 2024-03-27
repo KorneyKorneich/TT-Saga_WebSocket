@@ -60,7 +60,6 @@ router.post('/addTasksToProject/:projectId',
     async (req, res) => {
         const projectId = req.params.projectId;
         const {task} = req.body;
-        console.log("request", task);
 
         try {
             const project = await Project.findById(projectId);
@@ -95,8 +94,7 @@ router.post('/addTasksToProject/:projectId',
         }
     });
 
-
-router.patch('/updateProject/:projectId',
+router.patch('/updateTask/:projectId',
     authMiddleware,
     async (req, res) => {
         const projectId = req.params.projectId;
@@ -110,6 +108,60 @@ router.patch('/updateProject/:projectId',
                 new: true
             });
             res.json(updatedTask);
+        } catch (e) {
+            console.error(e);
+            res.status(500).json({error: 'Внутренняя ошибка сервера'});
+        }
+    });
+
+router.patch('/swapTasks/:projectId',
+    authMiddleware,
+    async (req, res) => {
+        const projectId = req.params.projectId;
+        const {activeTask, overTask} = req.body
+
+        try {
+            const project = await Project.findById(projectId);
+            if (!project) {
+                return res.status(404).json({error: 'Проект не найден'});
+            }
+
+            // Проверяем, является ли tasksToUpdate объектом
+            if (activeTask && overTask) {
+                await Task.findOneAndUpdate({_id: activeTask._id}, activeTask, {new: true});
+                await Task.findOneAndUpdate({_id: overTask._id}, overTask, {new: true});
+            }
+
+            // Преобразуем вложенные объекты в массив и обрабатываем каждый объект
+            await Task.findOneAndUpdate({_id: activeTask._id}, activeTask, {new: true});
+            await Task.findOneAndUpdate({_id: overTask._id}, overTask, {new: true});
+
+
+            const allTasks = await Task.find({projectId: projectId});
+
+            console.log({taskList: allTasks, projectId: projectId})
+            res.json({taskList: allTasks, projectId: projectId});
+        } catch (e) {
+            console.error(e);
+            res.status(500).json({error: 'Внутренняя ошибка сервера'});
+        }
+    });
+
+
+router.patch('/updateProject/:projectId',
+    authMiddleware,
+    async (req, res) => {
+        const projectId = req.params.projectId;
+
+        try {
+            const updatedProject = await Project.findOneAndUpdate({_id: projectId}, req.body);
+            if (!updatedProject) {
+                return res.status(404).json({error: 'Проект не найден'});
+            }
+            // const updatedTask = await Task.findOneAndUpdate({_id: req.body._id}, req.body, {
+            //     new: true
+            // });
+            res.json(updatedProject);
         } catch (e) {
             console.error(e);
             res.status(500).json({error: 'Внутренняя ошибка сервера'});
