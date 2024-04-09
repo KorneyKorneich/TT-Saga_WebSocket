@@ -119,6 +119,7 @@ router.patch('/swapTasks/:projectId',
     async (req, res) => {
         const projectId = req.params.projectId;
         const {activeTask, overTask} = req.body
+        console.log(activeTask, overTask)
 
         try {
             const project = await Project.findById(projectId);
@@ -133,13 +134,12 @@ router.patch('/swapTasks/:projectId',
             }
 
             // Преобразуем вложенные объекты в массив и обрабатываем каждый объект
-            await Task.findOneAndUpdate({_id: activeTask._id}, activeTask, {new: true});
-            await Task.findOneAndUpdate({_id: overTask._id}, overTask, {new: true});
+            // await Task.findOneAndUpdate({_id: activeTask._id}, activeTask, {new: true});
+            // await Task.findOneAndUpdate({_id: overTask._id}, overTask, {new: true});
 
 
             const allTasks = await Task.find({projectId: projectId});
-
-            console.log({taskList: allTasks, projectId: projectId})
+            console.log(allTasks)
             res.json({taskList: allTasks, projectId: projectId});
         } catch (e) {
             console.error(e);

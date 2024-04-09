@@ -16,9 +16,9 @@ export interface ProjectSliceSchema {
 
 export interface TaskSchema {
     _id: string,
-    renderIndex?: number,
+    renderIndex: number,
     projectId: string,
-    status: Status | string,
+    status: Status,
     taskName: string,
     description?: string,
     subTasks?: SubTask[],

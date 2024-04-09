@@ -3,7 +3,9 @@
   width: var(--sidebar-width);
   background: var(--background-light);
   text-align: center;
-  //height: calc(100vh - 70px);
+  //overflow: scroll;
+  max-height: calc(100vh - 90px);
+
   //overflow: hidden;
   //border-right: 1px solid var(--text-color-dark);
 
@@ -77,5 +79,48 @@
     }
   }
 }
+
+.create_new {
+  width: 100%;
+}
+
+.customVirtuoso {
+  width: var(--sidebar-width);
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  scrollbar-color: var(--primary-color) var(--background-dark);
+}
+
+.list_container {
+  width: var(--sidebar-width);
+  height: 90%;
+}
+
+.list_container::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+}
+
+.list_container::-webkit-scrollbar-track {
+  background: var(--background-dark);
+}
+
+.project_skeleton_wrapper {
+  margin: 20px 0;
+  display: flex;
+  gap: 20px;
+
+  .project_name_skeleton {
+    height: 20px;
+    background: var(--background-dark);
+    width: 200px;
+  }
+
+  .project_logo_skeleton {
+    height: 20px;
+    background: var(--background-dark);
+    width: 20px;
+  }
+}
+
 
 

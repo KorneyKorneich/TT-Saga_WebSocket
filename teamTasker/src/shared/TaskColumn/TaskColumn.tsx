@@ -36,7 +36,7 @@ const TaskColumn = (props: TaskCardProps) => {
         return (
             tasks?.map((el) => {
                 if (el) {
-                    return <TaskCard openModal={openModal} task={el}/>
+                    return <TaskCard key={el._id} openModal={openModal} task={el}/>
                 }
             })
         )

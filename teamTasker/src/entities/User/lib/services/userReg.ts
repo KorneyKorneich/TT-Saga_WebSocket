@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-import { BACK_URL, UserRegistrationData, UserSchema } from "src/schemas/config.ts";
+import { BACK_URL } from "src/schemas/config.ts";
+import { UserRegistrationData, UserSchema } from "src/entities/User/lib/schema/schema.ts";
 
 export const userReg = createAsyncThunk<UserSchema, UserRegistrationData>(
     "user/userReg",

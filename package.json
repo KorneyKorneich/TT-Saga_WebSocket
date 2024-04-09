@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "react-virtuoso": "^4.7.7"
+  },
+  "devDependencies": {
+    "json-server": "^1.0.0-alpha.23"
+  }
+}

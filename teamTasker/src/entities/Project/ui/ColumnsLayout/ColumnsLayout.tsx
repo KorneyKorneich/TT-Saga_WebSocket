@@ -7,10 +7,8 @@ import { getCurrentProject } from "src/entities/Project";
 import styles from "src/entities/Project/ui/Project.module.scss";
 import { closestCorners, DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { TaskCard } from "src/entities/Project/ui/TaskCard/TaskCard.tsx";
-import { arrayMove } from "@dnd-kit/sortable";
 import { DragEndEvent, DragOverEvent, DragStartEvent } from "@dnd-kit/core";
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
-import { updateTask } from "src/entities/Project/lib/services/updateTask.ts";
 import { swapTasks } from "src/entities/Project/lib/services/swapTasks.ts";
 
 
@@ -22,9 +20,9 @@ export interface tasksType {
     [key: string]: TaskSchema[]; // Индексная сигнатура, позволяющая использовать строки в качестве ключей
 }
 
-
 export const ColumnsLayout = (props: ColumnLayoutProps) => {
     const { openModal } = props;
+
 
     const project = useSelector(getCurrentProject);
 
@@ -56,7 +54,13 @@ export const ColumnsLayout = (props: ColumnLayoutProps) => {
         // Проверка на существование project и его свойства taskList
         if (project && Array.isArray(project.taskList)) {
             // Сортировка задач в каждом статусе по renderIndex
-            project.taskList.forEach(el => {
+            project.taskList.forEach((el) => {
+                if (!el.renderIndex) {
+                    el = {
+                        ...el,
+                        renderIndex: Date.now(),
+                    }
+                }
                 switch (el.status) {
                     case Status.TODO:
                         updatedTasks[Status.TODO].push(el);
@@ -77,19 +81,16 @@ export const ColumnsLayout = (props: ColumnLayoutProps) => {
                 return (a.renderIndex || 0) - (b.renderIndex || 0);
             });
         });
-
+        console.log(updatedTasks)
         return updatedTasks;
     };
-
 
     function findContainer(id: string) {
         if (id in tasks) {
             return id;
         }
-
         return Object.keys(tasks).find((key) => tasks[key].some((task) => task._id === id));
     }
-
 
     function handleDragStart(event: DragStartEvent) {
         const { active } = event;
@@ -111,9 +112,6 @@ export const ColumnsLayout = (props: ColumnLayoutProps) => {
         const activeContainer = findContainer(String(id));
         const overContainer = findContainer(String(overId));
 
-        console.log(overContainer)
-
-
         if (
             !activeContainer ||
             !overContainer ||
@@ -133,16 +131,14 @@ export const ColumnsLayout = (props: ColumnLayoutProps) => {
                 updatedTasks[activeContainer] = updatedTasks[activeContainer].filter(task => task._id !== id);
 
                 // Create a new task object with the updated status
-                const updatedTask = { ...taskToMove, status: overContainer };
+                const updatedTask = { ...taskToMove, status: overContainer as Status };
 
                 // Add the updated task to the over container
                 updatedTasks[overContainer] = [...updatedTasks[overContainer], updatedTask];
             }
-
             return updatedTasks;
         });
     }
-
 
     async function handleDragEnd(event: DragEndEvent) {
         const { active, over } = event;
@@ -151,10 +147,8 @@ export const ColumnsLayout = (props: ColumnLayoutProps) => {
             return;
         }
         const { id: overId } = over;
-
         const activeContainer = findContainer(String(id));
         const overContainer = findContainer(String(overId));
-
 
         if (
             !activeContainer ||
@@ -192,15 +186,25 @@ export const ColumnsLayout = (props: ColumnLayoutProps) => {
                     ...task,
                     renderIndex: index
                 }));
-  
                 return updatedTasks;
             });
-
         }
+
+        // Обновление порядка задач в колонках
+        const updatedTasksInColumns = {
+            ...tasks,
+            [activeContainer]: [...tasks[activeContainer]],
+            [overContainer]: [...tasks[overContainer]]
+        };
+
+        // Перемещаем задачу из одной колонки в другую
+        const [removedTask] = updatedTasksInColumns[activeContainer].splice(activeIndex, 1);
+        updatedTasksInColumns[overContainer].splice(overIndex, 0, removedTask);
+
+        setTasks(updatedTasksInColumns);
 
         const activeTask = tasks[activeContainer][activeIndex];
         const overTask = tasks[overContainer][overIndex];
-        console.log(activeTask);
 
         if (overTask && activeTask && project._id) {
             await dispatch(
@@ -211,15 +215,6 @@ export const ColumnsLayout = (props: ColumnLayoutProps) => {
             );
         }
 
-
-        // if (activeTask) {
-        //     await dispatch(updateTask(activeTask));
-        // }
-        // if (overTask) {
-        //     await dispatch(updateTask(overTask));
-        // }
-
-
         setActiveId("");
     }
 
@@ -229,7 +224,6 @@ export const ColumnsLayout = (props: ColumnLayoutProps) => {
             setTasks(updateTasks());
         }
     }, [project]);
-
 
     return (
         <>
@@ -242,6 +236,7 @@ export const ColumnsLayout = (props: ColumnLayoutProps) => {
                     onDragEnd={handleDragEnd}
                 >
                     <TaskColumn
+                        key={Status.TODO}
                         tasks={tasks[Status.TODO]}
                         id={Status.TODO}
                         status={Status.TODO}
@@ -249,6 +244,7 @@ export const ColumnsLayout = (props: ColumnLayoutProps) => {
                     />
 
                     <TaskColumn
+                        key={Status.IN_PROGRESS}
                         tasks={tasks[Status.IN_PROGRESS]}
                         id={Status.IN_PROGRESS}
                         status={Status.IN_PROGRESS}
@@ -256,14 +252,19 @@ export const ColumnsLayout = (props: ColumnLayoutProps) => {
                     />
 
                     <TaskColumn
+                        key={Status.DONE}
                         tasks={tasks[Status.DONE]}
                         id={Status.DONE}
                         status={Status.DONE}
                         openModal={openModal}
                     />
-                    <DragOverlay>{activeId ?
-                        <TaskCard
-                            task={Array.isArray(project.taskList) ? project.taskList.find((el) => el._id === activeId) : null}/> : null}</DragOverlay>
+                    <DragOverlay>
+                        {activeId ?
+                            <TaskCard
+                                task={Array.isArray(project.taskList) ? project.taskList.find((el) => el._id === activeId) || null : null}
+                            />
+                            : null}
+                    </DragOverlay>
                 </DndContext>
             </div>
         </>

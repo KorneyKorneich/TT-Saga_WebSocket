@@ -27,6 +27,7 @@ export const Project = () => {
         _id: "",
         taskName: "",
         status: Status.TODO,
+        renderIndex: project.taskList.length,
         projectId: ""
     });
 
@@ -42,6 +43,7 @@ export const Project = () => {
                 _id: "",
                 taskName: "",
                 status: Status.TODO,
+                renderIndex: project.taskList.length,
                 projectId: ""
             }
         );
