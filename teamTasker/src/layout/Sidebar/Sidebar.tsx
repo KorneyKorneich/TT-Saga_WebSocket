@@ -3,78 +3,87 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
 import { getProjectById } from "src/entities/Project/lib/services/getProjectById.ts";
 import { getId, getIsAuth } from "src/entities/User";
-import { memo, useEffect, useState } from "react";
-import { getProjects } from "src/entities/Project/lib/selectors/getProjects.ts";
+import { memo, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ProjectIcon from "../../shared/assets/project-icon.svg?react"
-import DeleteIcon from "../../shared/assets/delete_icon.svg?react"
-import DeleteProjectPopup from "./DeleteProjectPopup/DeleteProjectPopup.tsx";
-import { ProjectSchema } from "src/schemas/config.ts";
 import SVGComponent from "src/shared/SVGComponent/SVGComponent.tsx";
 import Button from "src/shared/Button/Button.tsx";
-import Popup from "../../shared/Popup/ui/Popup.tsx";
+import { ProjectSchema } from "src/entities/Project/lib/schema/schema.ts";
+import { getCurrentProject } from "src/entities/Project";
+import { Virtuoso } from "react-virtuoso";
+import { getProjects } from "src/entities/Project/lib/selectors/getProjects.ts";
 
 
 const Sidebar = memo(() => {
     const dispatch = useAppDispatch()
     const userId = useSelector(getId);
     const isAuth = useSelector(getIsAuth);
+    const currentProject = useSelector(getCurrentProject);
     const projects = useSelector(getProjects);
-    const navigate = useNavigate();
 
-    const [isDeleteProjectPopup, setIsDeleteProjectPopup] = useState(false);
-    const [projectToDelete, setProjectToDelete] = useState<ProjectSchema>();
-
-    const handleProjectDelete = async (project: ProjectSchema) => {
-        if (project) {
-            setProjectToDelete(project);
-            setIsDeleteProjectPopup(true);
-        }
+    const ScrollSeekPlaceholder = () => {
+        return (
+            <div className={styles.project_skeleton_wrapper}>
+                <div className={styles.project_logo_skeleton}></div>
+                <div className={styles.project_name_skeleton}></div>
+            </div>
+        )
     }
+
+    const navigate = useNavigate();
 
     const renderProjectsNames = (projectsList: ProjectSchema[]) => {
         return (
-            Array.isArray(projectsList) && projectsList.map((el) => {
-                return (
-                    <div key={el._id} className={styles.projectLink}>
-                        <Link className={styles.project} key={el._id} to={`workspace/${el._id}`}>
-                            <div className={styles.projectIcon}>
-                                <SVGComponent size={20} color={"#ECEDF1"}>
-                                    <ProjectIcon/>
-                                </SVGComponent>
-                            </div>
-                            {el.title}
-                        </Link>
-                        <div className={styles.project_delete} onClick={() => handleProjectDelete(el)}>
-                            <SVGComponent size={20} color={"#ECEDF1"}>
-                                <DeleteIcon/>
-                            </SVGComponent>
+            Array.isArray(projectsList) &&
+            <Virtuoso
+                style={{
+                    height: "86%"
+                }}
+                className={styles.customVirtuoso}
+                data={projects}
+                totalCount={projects.length}
+                components={{ ScrollSeekPlaceholder }}
+                scrollSeekConfiguration={{
+                    enter: (velocity) => Math.abs(velocity) > 50,
+                    exit: (velocity) => {
+                        return Math.abs(velocity) < 10;
+                    },
+                }}
+                itemContent={(_index, user) => {
+                    return (
+                        <div key={user._id} className={styles.projectLink}>
+                            <Link
+                                className={user._id === currentProject._id ? `${styles.selected_project}` : `${styles.project}`}
+                                key={user._id} to={`workspace/${user._id}`}>
+                                <div className={styles.projectIcon}>
+                                    <SVGComponent size={20} color={"#ECEDF1"}>
+                                        <ProjectIcon/>
+                                    </SVGComponent>
+                                </div>
+                                {user.title}
+                            </Link>
                         </div>
-                    </div>
-                )
-            })
-        )
-    }
+                    )
+                }}
+            />
+        );
+    };
 
     useEffect(() => {
         dispatch(getProjectById(userId));
     }, [dispatch, isAuth, userId]);
-//TODO: поработать над цветом иконки в разных состояниях ссылки
+
     return (
         <>
             <div className={styles.wrapper}>
                 <h3>Your projects</h3>
-                {renderProjectsNames(projects)}
                 <div className={styles.newProject}>
-                    <Button className={styles.createNew} onClick={() => navigate("/newProject")}>
+                    <Button className={styles.create_new} onClick={() => navigate("/newProject")}>
                         + Create new project
                     </Button>
                 </div>
+                {renderProjectsNames(projects)}
             </div>
-            <Popup isPopupOpen={isDeleteProjectPopup} closeModal={() => setIsDeleteProjectPopup(false)}>
-                <DeleteProjectPopup setIsPopup={setIsDeleteProjectPopup} projectName={projectToDelete?.title}
-                                    projectId={projectToDelete?._id} isPopup={isDeleteProjectPopup}/>
-            </Popup>
         </>
     );
 });

@@ -23,15 +23,11 @@
   button {
     width: 100%;
   }
-
 }
 
 .add_subtask_button {
-  margin: 20px 0 5px;
+  margin: 10px 0 5px;
   width: 100%;
-  color: var(--primary-color);
-  background: white;
-  font-weight: bolder;
 }
 
 .submit_button {
@@ -44,12 +40,5 @@
 
   h4 {
     margin-bottom: 0;
-  }
-
-}
-
-.task_subtasks {
-  div {
-    margin-top: 10px;
   }
 }

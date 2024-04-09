@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getProjectById } from "src/entities/Project/lib/services/getProjectById.ts";
-import { ProjectSliceSchema } from "src/schemas/config.ts";
 import { addTasksToProject } from "src/entities/Project/lib/services/addTasksToProject.ts";
 import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksByProjectId.ts";
 import { createProject } from "src/entities/Project/lib/services/createProject.ts";
 import { updateProject } from "src/entities/Project/lib/services/updateProject.ts";
 import { deleteTaskById } from "src/entities/Project/lib/services/deleteTaskById.ts";
 import { deleteProjectById } from "src/entities/Project/lib/services/deleteProjectById.ts";
+import { ProjectSliceSchema } from "src/entities/Project/lib/schema/schema.ts";
+import { updateTask } from "src/entities/Project/lib/services/updateTask.ts";
+import { swapTasks } from "src/entities/Project/lib/services/swapTasks.ts";
 
 const initialState: ProjectSliceSchema = {
     projects: [],
@@ -28,11 +30,12 @@ export const projectsSlice = createSlice({
             if (project !== -1) {
                 state.currentProject = state.projects[project];
             }
-            // return state;
         },
+
         updateCurrentProject: (state, action) => {
             const updatedCurrentProject = action.payload;
             if (updatedCurrentProject) state.currentProject = updatedCurrentProject;
+            // updateProject(state.currentProject);
         }
     },
     extraReducers: (builder) => {
@@ -118,11 +121,11 @@ export const projectsSlice = createSlice({
             });
 
         builder
-            .addCase(updateProject.pending, (state) => {
+            .addCase(updateTask.pending, (state) => {
                 state.isLoading = true;
                 state.error = undefined;
             })
-            .addCase(updateProject.fulfilled, (state, action) => {
+            .addCase(updateTask.fulfilled, (state, action) => {
                 state.isLoading = false;
 
                 // Найдите индекс проекта в массиве проектов
@@ -138,6 +141,56 @@ export const projectsSlice = createSlice({
                 }
 
                 state.error = undefined;
+            })
+            .addCase(updateTask.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+                console.log("записал ошибку")
+            });
+        builder
+            .addCase(swapTasks.pending, (state) => {
+                state.isLoading = true;
+                state.error = undefined;
+            })
+            .addCase(swapTasks.fulfilled, (state, action) => {
+                state.isLoading = false;
+
+                const projectIndex = state.projects.findIndex((project) => project._id === action.payload.projectId);
+                if (action.payload) state.projects[projectIndex].taskList = action.payload.taskList;
+
+                state.currentProject = state.projects[projectIndex];
+
+                state.error = undefined;
+            })
+            .addCase(swapTasks.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+                console.log("записал ошибку")
+            });
+
+
+        builder
+            .addCase(updateProject.pending, (state) => {
+                state.isLoading = true;
+                state.error = undefined;
+            })
+            .addCase(updateProject.fulfilled, (state, action) => {
+                state.isLoading = false;
+
+
+                // Найдите индекс проекта в массиве проектов
+                const projectId = state.projects.findIndex(el => el._id === action.payload._id);
+                //
+                // // Найдите индекс задачи в массиве задач проекта
+                // const taskId = state.projects[projectId].taskList.findIndex(el => el._id === action.payload._id);
+                //
+                // // Если нашли индексы, обновите задачу
+                if (projectId !== -1) {
+                    state.projects[projectId] = action.payload;
+                    state.currentProject = action.payload;
+                }
+                //
+                // state.error = undefined;
             })
 
             .addCase(updateProject.rejected, (state, action) => {

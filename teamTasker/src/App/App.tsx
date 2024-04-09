@@ -1,18 +1,30 @@
-import styles from './App.module.scss'
+import styles from "./App.module.scss"
 import { useTheme } from "src/App/providers/ThemeProvider/lib/useTheme.ts";
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
 import { useEffect } from "react";
 import { userAuth } from "src/entities/User/lib/services/userAuth.ts";
 import Header from "src/layout/Header/Header.tsx";
 import WithSidebar from "src/layout/withSidebar/WithSidebar.tsx";
+// import { useSelector } from "react-redux";
+// import { getIsAuth } from "src/entities/User";
+// import { useNavigate } from "react-router-dom";
 
 function App() {
     const Theme = useTheme();
-    const dispatch = useAppDispatch()
-
+    const dispatch = useAppDispatch();
+    // const isAuth = useSelector(getIsAuth);
+    // const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(userAuth());
+        //TODO landing?
+
+        // if (isAuth) {
+        //     navigate("workspace")
+        // } else {
+        //     navigate("auth/login");
+        // }
+
     }, []);
 
 
@@ -24,4 +36,4 @@ function App() {
     )
 }
 
-export default App
+export default App;
