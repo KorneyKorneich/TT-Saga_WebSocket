@@ -50,7 +50,7 @@ const TaskColumn = (props: TaskCardProps) => {
     return (
         <SortableContext
             id={id}
-            items={tasks?.map((el) => el._id)}
+            items={tasks?.map((el) => el.renderIndex)}
             strategy={verticalListSortingStrategy}
         >
             <div ref={setNodeRef} className={`${styles.column}`}>

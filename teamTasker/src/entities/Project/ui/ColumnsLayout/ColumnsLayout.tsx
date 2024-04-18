@@ -1,41 +1,51 @@
-import TaskColumn from "src/shared/TaskColumn/TaskColumn.tsx";
-import { Status } from "src/schemas/config.ts";
 import { useEffect, useState } from "react";
 import { TaskSchema } from "src/entities/Project/lib/schema/schema.ts";
 import { useSelector } from "react-redux";
 import { getCurrentProject } from "src/entities/Project";
 import styles from "src/entities/Project/ui/Project.module.scss";
-import { closestCorners, DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import {
+    closestCorners,
+    DndContext,
+    DragEndEvent,
+    DragOverlay,
+    DragStartEvent,
+    PointerSensor,
+    useSensor,
+    useSensors
+} from "@dnd-kit/core";
 import { TaskCard } from "src/entities/Project/ui/TaskCard/TaskCard.tsx";
-import { DragEndEvent, DragOverEvent, DragStartEvent } from "@dnd-kit/core";
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
+import { arrayMove } from "@dnd-kit/sortable";
 import { swapTasks } from "src/entities/Project/lib/services/swapTasks.ts";
-
+import _ from 'lodash';
+import TaskColumn from "src/shared/TaskColumn/TaskColumn.tsx";
+import { Status } from "src/schemas/config.ts";
+import { Loader } from "src/shared/Loader/Loader.tsx";
+import { getIsLoading } from "src/entities/Project/lib/selectors/getIsLoading.ts";
 
 export interface ColumnLayoutProps {
-    openModal: (id: string) => void
-}
-
-export interface tasksType {
-    [key: string]: TaskSchema[]; // Индексная сигнатура, позволяющая использовать строки в качестве ключей
+    openModal: (id: string) => void,
 }
 
 export const ColumnsLayout = (props: ColumnLayoutProps) => {
     const { openModal } = props;
-
-
     const project = useSelector(getCurrentProject);
-
-    const [tasks, setTasks] = useState<tasksType>({
-        [Status.TODO]: [],
-        [Status.IN_PROGRESS]: [],
-        [Status.DONE]: [],
-    });
-
-    const [activeId, setActiveId] = useState<string>("");
-
+    const [tasks, setTasks] = useState<TaskSchema[]>([]);
+    const [activeId, setActiveId] = useState<number>();
     const dispatch = useAppDispatch();
+    const isLoading = useSelector(getIsLoading);
 
+    console.log(isLoading);
+
+
+    const debouncedUpdateTasks = _.debounce((updatedTasks: TaskSchema[]) => {
+        if(project._id){
+            dispatch(swapTasks({
+                projectId: project._id,
+                taskList: updatedTasks
+            }));
+        }
+    }, 300);
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
@@ -44,229 +54,123 @@ export const ColumnsLayout = (props: ColumnLayoutProps) => {
         })
     )
 
-    const updateTasks = () => {
-        const updatedTasks: tasksType = {
-            [Status.TODO]: [],
-            [Status.IN_PROGRESS]: [],
-            [Status.DONE]: [],
-        };
-
-        // Проверка на существование project и его свойства taskList
-        if (project && Array.isArray(project.taskList)) {
-            // Сортировка задач в каждом статусе по renderIndex
-            project.taskList.forEach((el) => {
-                if (!el.renderIndex) {
-                    el = {
-                        ...el,
-                        renderIndex: Date.now(),
-                    }
-                }
-                switch (el.status) {
-                    case Status.TODO:
-                        updatedTasks[Status.TODO].push(el);
-                        break;
-                    case Status.IN_PROGRESS:
-                        updatedTasks[Status.IN_PROGRESS].push(el);
-                        break;
-                    case Status.DONE:
-                        updatedTasks[Status.DONE].push(el);
-                        break;
-                }
-            });
-        }
-
-        // Сортировка задач в каждом статусе по renderIndex
-        Object.keys(updatedTasks).forEach(status => {
-            updatedTasks[status as Status] = updatedTasks[status as Status].sort((a, b) => {
-                return (a.renderIndex || 0) - (b.renderIndex || 0);
-            });
-        });
-        console.log(updatedTasks)
-        return updatedTasks;
-    };
-
-    function findContainer(id: string) {
-        if (id in tasks) {
-            return id;
-        }
-        return Object.keys(tasks).find((key) => tasks[key].some((task) => task._id === id));
-    }
-
     function handleDragStart(event: DragStartEvent) {
         const { active } = event;
         const { id } = active;
-
-        setActiveId(String(id));
+        console.log(typeof(id));
+        if(typeof(id) === "number"){
+            setActiveId(id);
+        }else return;
     }
 
-    function handleDragOver(event: DragOverEvent) {
+    function handleDragEnd(event: DragEndEvent) {
         const { active, over } = event;
-        const { id } = active;
-        if (!over) {
-            return;
-        }
-
-        const overId = over.id; // Assuming over is not null
-
-        // Find the containers
-        const activeContainer = findContainer(String(id));
-        const overContainer = findContainer(String(overId));
-
-        if (
-            !activeContainer ||
-            !overContainer ||
-            activeContainer === overContainer
-        ) {
-            return;
-        }
-
-        setTasks(prevTasks => {
-            const updatedTasks = { ...prevTasks };
-
-            // Find the task to move
-            const taskToMove = updatedTasks[activeContainer].find(task => task._id === id);
-
-            if (taskToMove) {
-                // Remove the task from the active container
-                updatedTasks[activeContainer] = updatedTasks[activeContainer].filter(task => task._id !== id);
-
-                // Create a new task object with the updated status
-                const updatedTask = { ...taskToMove, status: overContainer as Status };
-
-                // Add the updated task to the over container
-                updatedTasks[overContainer] = [...updatedTasks[overContainer], updatedTask];
-            }
-            return updatedTasks;
-        });
-    }
-
-    async function handleDragEnd(event: DragEndEvent) {
-        const { active, over } = event;
-        const { id } = active;
-        if (!over) {
-            return;
-        }
-        const { id: overId } = over;
-        const activeContainer = findContainer(String(id));
-        const overContainer = findContainer(String(overId));
-
-        if (
-            !activeContainer ||
-            !overContainer ||
-            activeContainer !== overContainer
-        ) {
-            return;
-        }
-
-        const activeIndex = tasks[activeContainer].findIndex(task => task._id === String(active.id));
-        const overIndex = tasks[overContainer].findIndex(task => task._id === String(overId));
-
-        setTasks((prevTasks) => {
-            const updatedTasks = { ...prevTasks };
-
-            // Find the task to move
-            const taskToMove = { ...updatedTasks[activeContainer][activeIndex] };
-            const taskToReplace = { ...updatedTasks[overContainer][overIndex] };
-
-            if (taskToMove && taskToReplace) {
-                updatedTasks[activeContainer][activeIndex] = { ...taskToReplace, renderIndex: taskToMove.renderIndex };
-                updatedTasks[overContainer][overIndex] = { ...taskToMove, renderIndex: taskToReplace.renderIndex };
-            }
-
-            return updatedTasks;
-        });
-
-        if (activeContainer === overContainer) {
-            // If tasks are moved within the same column, update renderIndex for all tasks in that column
-            setTasks((prevTasks) => {
-                const updatedTasks = { ...prevTasks };
-
-                // Update renderIndex for all tasks in the active container
-                updatedTasks[activeContainer] = updatedTasks[activeContainer].map((task, index) => ({
-                    ...task,
-                    renderIndex: index
-                }));
+        if (typeof (over?.id) === "string") {
+            const updatedTasks = [...tasks];
+            const activeIndexTask = tasks.find(el => el.renderIndex === active.id);
+            setTasks((tasks) => {
+                if (activeIndexTask) {
+                    const activeIndex = tasks.indexOf(activeIndexTask);
+                    updatedTasks[activeIndex] = {
+                        ...activeIndexTask,
+                        status: over.id as Status
+                    };
+                    const movedTasks = arrayMove(updatedTasks, activeIndex, activeIndex);
+                    localStorage.setItem(`${project._id}`, JSON.stringify(movedTasks.map(el => el._id)))
+                    console.log(localStorage.getItem(`${project._id}`));
+                    return movedTasks;
+                }
                 return updatedTasks;
             });
+            debouncedUpdateTasks(updatedTasks);
+        } else if (typeof (over?.id) === "number") {
+            const updatedTasks = [...tasks];
+            setTasks((tasks) => {
+                const oldIndexTask = tasks.find(el => el.renderIndex === active.id);
+                const newIndexTask = tasks.find(el => el.renderIndex === over.id);
+                if (oldIndexTask && newIndexTask) {
+                    const oldIndex = tasks.indexOf(oldIndexTask);
+                    const newIndex = tasks.indexOf(newIndexTask);
+                    if (oldIndexTask.status !== newIndexTask.status) {
+                        updatedTasks[oldIndex] = {
+                            ...oldIndexTask,
+                            status: newIndexTask.status,
+                        };
+                        const movedTasks = arrayMove(updatedTasks, oldIndex, oldIndex - 1);
+                        localStorage.setItem(`${project._id}`, JSON.stringify(movedTasks.map(el => el._id)))
+                        console.log(localStorage.getItem(`${project._id}`));
+                        return movedTasks;
+                    }
+                    const movedTasks = arrayMove(updatedTasks, oldIndex, newIndex);
+                    localStorage.setItem(`${project._id}`, JSON.stringify(movedTasks.map(el => el._id)))
+                    console.log(localStorage.getItem(`${project._id}`));
+                    return movedTasks;
+
+                } else {
+                    return tasks;
+                }
+            });
+            debouncedUpdateTasks(updatedTasks);
+        } else {
+            return
         }
-
-        // Обновление порядка задач в колонках
-        const updatedTasksInColumns = {
-            ...tasks,
-            [activeContainer]: [...tasks[activeContainer]],
-            [overContainer]: [...tasks[overContainer]]
-        };
-
-        // Перемещаем задачу из одной колонки в другую
-        const [removedTask] = updatedTasksInColumns[activeContainer].splice(activeIndex, 1);
-        updatedTasksInColumns[overContainer].splice(overIndex, 0, removedTask);
-
-        setTasks(updatedTasksInColumns);
-
-        const activeTask = tasks[activeContainer][activeIndex];
-        const overTask = tasks[overContainer][overIndex];
-
-        if (overTask && activeTask && project._id) {
-            await dispatch(
-                swapTasks({
-                    activeTask: activeTask,
-                    overTask: overTask
-                })
-            );
-        }
-
-        setActiveId("");
     }
 
-
     useEffect(() => {
-        if (project && project.taskList) { // Добавляем проверку на существование project и его свойства taskList
-            setTasks(updateTasks());
+        if (!isLoading) {
+            const localStorageItemString = localStorage.getItem(`${project._id}`);
+            if (localStorageItemString !== null) {
+                const localStorageItem: string[] = JSON.parse(localStorageItemString);
+                const newTasks: TaskSchema[] = localStorageItem
+                    .map((localStorageEl: string) =>
+                        project.taskList.find((el) => el._id === localStorageEl)
+                    )
+                    .filter((el): el is TaskSchema => el !== undefined);
+                setTasks(newTasks);
+            } else {
+                setTasks(project.taskList);
+            }
         }
-    }, [project]);
+    }, [isLoading, project._id, project.taskList]);
 
     return (
-        <>
-            <div className={styles.columns}>
-                <DndContext
-                    sensors={sensors}
-                    collisionDetection={closestCorners}
-                    onDragStart={handleDragStart}
-                    onDragOver={handleDragOver}
-                    onDragEnd={handleDragEnd}
-                >
-                    <TaskColumn
-                        key={Status.TODO}
-                        tasks={tasks[Status.TODO]}
-                        id={Status.TODO}
-                        status={Status.TODO}
-                        openModal={openModal}
-                    />
-
-                    <TaskColumn
-                        key={Status.IN_PROGRESS}
-                        tasks={tasks[Status.IN_PROGRESS]}
-                        id={Status.IN_PROGRESS}
-                        status={Status.IN_PROGRESS}
-                        openModal={openModal}
-                    />
-
-                    <TaskColumn
-                        key={Status.DONE}
-                        tasks={tasks[Status.DONE]}
-                        id={Status.DONE}
-                        status={Status.DONE}
-                        openModal={openModal}
-                    />
-                    <DragOverlay>
-                        {activeId ?
-                            <TaskCard
-                                task={Array.isArray(project.taskList) ? project.taskList.find((el) => el._id === activeId) || null : null}
-                            />
-                            : null}
-                    </DragOverlay>
-                </DndContext>
-            </div>
-        </>
-    )
+        <div className={styles.columns}>
+            {isLoading ? <Loader/> : null}
+            <DndContext
+                sensors={sensors}
+                collisionDetection={closestCorners}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+            >
+                <TaskColumn
+                    key={Status.TODO}
+                    tasks={tasks.filter(el => el.status === Status.TODO)}
+                    id={Status.TODO}
+                    status={Status.TODO}
+                    openModal={openModal}
+                />
+                <TaskColumn
+                    key={Status.IN_PROGRESS}
+                    tasks={tasks.filter(el => el.status === Status.IN_PROGRESS)}
+                    id={Status.IN_PROGRESS}
+                    status={Status.IN_PROGRESS}
+                    openModal={openModal}
+                />
+                <TaskColumn
+                    key={Status.DONE}
+                    tasks={tasks.filter(el => el.status === Status.DONE)}
+                    id={Status.DONE}
+                    status={Status.DONE}
+                    openModal={openModal}
+                />
+                <DragOverlay>
+                    {activeId ?
+                        <TaskCard
+                            task={Array.isArray(project.taskList) ? project.taskList.find((el) => el.renderIndex === activeId) || null : null}
+                        />
+                        : null}
+                </DragOverlay>
+            </DndContext>
+        </div>
+    );
 }

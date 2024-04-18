@@ -1,6 +1,6 @@
 import styles from "./TaskCreationPopup.module.scss";
 import { Status } from "src/schemas/config.ts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "src/hooks/storeHooks.ts";
 import { useParams } from "react-router";
 import { addTasksToProject } from "src/entities/Project/lib/services/addTasksToProject.ts";
@@ -8,6 +8,7 @@ import { getTasksByProjectId } from "src/entities/Project/lib/services/getTasksB
 import Input from "src/shared/Input/ui/Input.tsx";
 import Button, { ButtonStyles } from "src/shared/Button/Button.tsx";
 import { SubTask, TaskFetchData } from "src/entities/Project/lib/schema/schema.ts";
+import project from "src/entities/Project/ui/Project.tsx";
 import { useSelector } from "react-redux";
 import { getCurrentProject } from "src/entities/Project";
 
@@ -16,51 +17,84 @@ interface TaskCreationProps {
 }
 
 export const TaskCreationPopup = (props: TaskCreationProps) => {
-
     const { setIsAddTaskPopup } = props;
     const project = useSelector(getCurrentProject);
-
-    const [task, setTask] = useState<TaskFetchData>({
-        taskName: "",
-        projectId: "",
-        status: Status.TODO,
-        description: "",
-        renderIndex: project.taskList.length,
-        subTasks: [
-            { _id: Date.now().toString(), todo: "", isDone: false }, // Первая задача
-        ]
-    });
-
     const dispatch = useAppDispatch();
     const { projectId } = useParams();
 
-    if (!projectId) {
-        return null
-    }
+    const [task, setTask] = useState<TaskFetchData>({
+        taskName: "",
+        projectId: projectId || "",
+        status: Status.TODO,
+        renderIndex: Date.now(),
+        description: "",
+        subTasks: [
+            { _id: Date.now().toString(), todo: "", isDone: false },
+        ]
+    });
 
-    const handleClick = async () => {
-        if (task.taskName === "" && task.description === "") {
-            setIsAddTaskPopup(false);
-        } else {
-            if (task.subTasks && task.subTasks[0].todo === "") {
-                task.subTasks = [];
-            }
-            await dispatch(addTasksToProject({ projectId, task }));
-            await dispatch(getTasksByProjectId(projectId))
-            setIsAddTaskPopup(false);
-            setTask({
-                taskName: "",
-                projectId: "",
-                status: Status.TODO,
-                renderIndex: project.taskList.length,
-                description: "",
-                subTasks: [
-                    { _id: Date.now().toString(), todo: "", isDone: false }, // Первая задача
-                ]
-            })
+    useEffect(() => {
+        if (!projectId) {
+            return;
         }
 
+        // Add project ID to the dependency array of the useEffect to ensure it's triggered when projectId changes
+        dispatch(getTasksByProjectId(projectId));
+    }, [projectId, dispatch]);
+
+    const handleClick = async () => {
+        if (!projectId) {
+            // Handle the case where projectId is undefined
+            console.error("Project ID is undefined");
+            return;
+        }
+
+        if (task.taskName === "" && task.description === "") {
+            setIsAddTaskPopup(false);
+            return;
+        }
+
+        if (task.subTasks && task.subTasks[0].todo === "") {
+            task.subTasks = [];
+        }
+
+        await dispatch(addTasksToProject({ projectId, task }));
+        await dispatch(getTasksByProjectId(projectId));
+
+
+        // Update localStorage with the new task order
+
+        // console.log(project.taskList, project.taskList.length)
+        //
+        // const newTask = project.taskList[project.taskList.length - 1];
+        // console.log(newTask)
+        // if (newTask) {
+        //     const newTaskId = newTask._id;
+        //     const localStorageItem = localStorage.getItem(projectId);
+        //     console.log(localStorage.getItem(`${project._id}`));
+        //
+        //     if (localStorageItem) {
+        //         console.log(localStorage.getItem(`${project._id}`));
+        //         const taskOrder: string[] = JSON.parse(localStorageItem);
+        //         taskOrder.push(newTaskId);
+        //         localStorage.setItem(projectId, JSON.stringify(taskOrder));
+        //     } else {
+        //         console.log(localStorage.getItem(`${project._id}`));
+        //         localStorage.setItem(projectId, JSON.stringify([newTaskId]));
+        //     }
+        // }
+
+        setIsAddTaskPopup(false);
+        setTask({
+            taskName: "",
+            projectId: projectId,
+            status: Status.TODO,
+            renderIndex: Date.now(),
+            description: "",
+            subTasks: [{ _id: Date.now().toString(), todo: "", isDone: false }]
+        });
     };
+
 
     const renderCreationPopup = () => {
         return (

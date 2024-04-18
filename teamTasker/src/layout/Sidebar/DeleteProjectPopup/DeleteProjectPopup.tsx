@@ -31,6 +31,7 @@ const DeleteProjectPopup = (props: DeleteProjectPopupProps) => {
 
     const handleProjectDelete = async () => {
         if (projectId) {
+            localStorage.removeItem(projectId);
             await dispatch(deleteProjectById(projectId));
         }
         setIsPopup(false);

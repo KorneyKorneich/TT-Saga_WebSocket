@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { userAuth } from "src/entities/User/lib/services/userAuth.ts";
 import Header from "src/layout/Header/Header.tsx";
 import WithSidebar from "src/layout/withSidebar/WithSidebar.tsx";
+import { useSelector } from "react-redux";
+import { getIsLoading } from "src/entities/Project/lib/selectors/getIsLoading.ts";
 // import { useSelector } from "react-redux";
 // import { getIsAuth } from "src/entities/User";
 // import { useNavigate } from "react-router-dom";
@@ -12,8 +14,7 @@ import WithSidebar from "src/layout/withSidebar/WithSidebar.tsx";
 function App() {
     const Theme = useTheme();
     const dispatch = useAppDispatch();
-    // const isAuth = useSelector(getIsAuth);
-    // const navigate = useNavigate();
+    const isLoading = useSelector(getIsLoading);
 
     useEffect(() => {
         dispatch(userAuth());
@@ -29,7 +30,7 @@ function App() {
 
 
     return (
-        <div className={`${styles.app} ${Theme.theme}`}>
+        <div className={`${styles.app} ${Theme.theme} ${isLoading ? styles.loading : ""}`}>
             <Header/>
             <WithSidebar/>
         </div>

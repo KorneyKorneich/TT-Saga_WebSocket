@@ -3,25 +3,27 @@ import { BACK_URL, ThunkConfig } from "src/schemas/config.ts";
 import axios from "axios";
 import { TaskSchema } from "src/entities/Project/lib/schema/schema.ts";
 
-export interface swapThunkArg {
-    activeTask: TaskSchema,
-    overTask: TaskSchema,
+
+export interface swapReq {
+    projectId: string,
+    taskList: TaskSchema[]
 }
 
 export interface swapRes {
-    taskList: TaskSchema[],
     projectId: string,
+    taskList: TaskSchema[]
 }
 
 
-export const swapTasks = createAsyncThunk<swapRes, swapThunkArg, ThunkConfig<string>>(
+export const swapTasks = createAsyncThunk<swapRes, swapReq, ThunkConfig<string>>(
     "project/swapTasks",
-    async (projectInfo: swapThunkArg, thunkAPI) => {
+    async (projectInfo: swapReq, thunkAPI) => {
         const { rejectWithValue } = thunkAPI;
         if (!projectInfo) return rejectWithValue("There is no project");
+        console.log(projectInfo);
 
         try {
-            const response = await axios.patch(`${BACK_URL}/api/swapTasks/${projectInfo.activeTask.projectId}`,
+            const response = await axios.patch(`${BACK_URL}/api/swapTasks/${projectInfo.projectId}`,
                 projectInfo,
                 { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
             console.log(response);

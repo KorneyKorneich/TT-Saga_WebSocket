@@ -8,6 +8,7 @@ const Project = require('../models/Project')
 const Task = require('../models/Task')
 const authMiddleware = require('../middleware/auth.middleware');
 const {json} = require("express");
+const {up} = require("yarn/lib/cli");
 
 router.post('/createProject',
     authMiddleware,
@@ -114,38 +115,88 @@ router.patch('/updateTask/:projectId',
         }
     });
 
-router.patch('/swapTasks/:projectId',
-    authMiddleware,
-    async (req, res) => {
-        const projectId = req.params.projectId;
-        const {activeTask, overTask} = req.body
-        console.log(activeTask, overTask)
+router.patch('/swapTasks/:projectId', authMiddleware, async (req, res) => {
+    const projectId = req.params.projectId;
 
-        try {
-            const project = await Project.findById(projectId);
-            if (!project) {
-                return res.status(404).json({error: 'Проект не найден'});
-            }
+    try {
+        // const project = await Project.findById(projectId);
+        // if (!project) {
+        //     return res.status(404).json({error: 'Проект не найден'});
+        // }
 
-            // Проверяем, является ли tasksToUpdate объектом
-            if (activeTask && overTask) {
-                await Task.findOneAndUpdate({_id: activeTask._id}, activeTask, {new: true});
-                await Task.findOneAndUpdate({_id: overTask._id}, overTask, {new: true});
-            }
-
-            // Преобразуем вложенные объекты в массив и обрабатываем каждый объект
-            // await Task.findOneAndUpdate({_id: activeTask._id}, activeTask, {new: true});
-            // await Task.findOneAndUpdate({_id: overTask._id}, overTask, {new: true});
+        // Extract the updated task list from req.body
+        const {taskList, projectId} = req.body;
 
 
-            const allTasks = await Task.find({projectId: projectId});
-            console.log(allTasks)
-            res.json({taskList: allTasks, projectId: projectId});
-        } catch (e) {
-            console.error(e);
-            res.status(500).json({error: 'Внутренняя ошибка сервера'});
+        // Iterate through the taskList and update each task
+        for (const updatedTask of taskList) {
+            console.log(updatedTask._id)
+            await Task.findByIdAndUpdate(updatedTask._id, updatedTask, {new: true});
+            console.log(updatedTask)
         }
-    });
+
+
+        // Fetch all tasks for the project after the update
+        const allTasks = await Task.find({projectId});
+        console.log(allTasks)
+
+        res.json({taskList: allTasks, projectId});
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({error: 'Внутренняя ошибка сервера'});
+    }
+});
+
+// router.patch('/swapTasks/:projectId',
+//     authMiddleware,
+//     async (req, res) => {
+//         const projectId = req.params.projectId;
+//         // {projectId
+//         // ActiveTAsk
+//         // ovevrTask}
+//
+//         try {
+//             const project = await Project.findById(projectId);
+//             if (!project) {
+//                 return res.status(404).json({error: 'Проект не найден'});
+//             }
+//             console.log(req.body)
+//
+//             await Task.updateMany({
+//                 projectId: req.body.projectId
+//             }, req.body.taskList)
+//
+//             // await Task.updateOne({
+//             //     _id: req.body.activeTask._id
+//             // }, {
+//             //     ...activeTask,
+//             // });
+//             // await Task.updateOne({
+//             //     _id: req.body.overTask._id
+//             // }, {
+//             //     ...overTask,
+//             // });
+//
+//
+//             // Проверяем, является ли tasksToUpdate объектом
+//             // if (activeTask && overTask) {
+//             //     await Task.findOneAndUpdate({_id: activeTask._id}, activeTask, {new: true});
+//             //     await Task.findOneAndUpdate({_id: overTask._id}, overTask, {new: true});
+//             // }
+//
+//             // Преобразуем вложенные объекты в массив и обрабатываем каждый объект
+//             // await Task.findOneAndUpdate({_id: activeTask._id}, activeTask, {new: true});
+//             // await Task.findOneAndUpdate({_id: overTask._id}, overTask, {new: true});
+//
+//
+//             const allTasks = await Task.find({projectId: projectId});
+//             console.log(allTasks)
+//             res.json({taskList: allTasks, projectId: projectId});
+//         } catch (e) {
+//             console.error(e);
+//             res.status(500).json({error: 'Внутренняя ошибка сервера'});
+//         }
+//     });
 
 
 router.patch('/updateProject/:projectId',
