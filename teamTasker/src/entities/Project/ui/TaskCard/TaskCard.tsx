@@ -9,11 +9,12 @@ export interface TaskCardProps {
 }
 
 export const TaskCard = (props: TaskCardProps) => {
-
     const { task, openModal } = props;
+
+
     if (task === null) return null;
     return (
-        <SortableItem id={task._id} key={task?._id}>
+        <SortableItem task={task} key={task?._id}>
             <div className={styles.task_card} key={task?._id} onClick={() => openModal ? openModal(task._id) : null}>
                 <div>{task?.taskName}</div>
                 {

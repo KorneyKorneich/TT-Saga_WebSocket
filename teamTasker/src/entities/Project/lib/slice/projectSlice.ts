@@ -16,7 +16,7 @@ const initialState: ProjectSliceSchema = {
         title: "",
         taskList: [],
     },
-    isLoading: true,
+    isLoading: false,
     error: undefined,
 }
 
@@ -45,10 +45,10 @@ export const projectsSlice = createSlice({
                 state.error = undefined;
             })
             .addCase(getProjectById.fulfilled, (state, action) => {
-                state.isLoading = false;
                 // console.log(action.payload)
                 state.projects = action.payload;
                 state.error = undefined
+                state.isLoading = false;
             })
             .addCase(getProjectById.rejected, (state, action) => {
                 state.isLoading = false;
@@ -64,10 +64,10 @@ export const projectsSlice = createSlice({
                 state.error = undefined;
             })
             .addCase(createProject.fulfilled, (state, action) => {
-                state.isLoading = false;
                 // console.log(action.payload)
                 state.projects.push(action.payload);
                 state.error = undefined
+                state.isLoading = false;
             })
             .addCase(createProject.rejected, (state, action) => {
                 state.isLoading = false;
@@ -81,12 +81,13 @@ export const projectsSlice = createSlice({
                 state.error = undefined;
             })
             .addCase(addTasksToProject.fulfilled, (state, action) => {
-                state.isLoading = false;
+
                 const projectIndex = state.projects
                     .findIndex((el) => el._id === action.payload.projectId);
                 state.projects[projectIndex] = action.payload.project
                 state.currentProject = action.payload.project
                 state.error = undefined
+                state.isLoading = false;
             })
             .addCase(addTasksToProject.rejected, (state, action) => {
                 state.isLoading = false;
@@ -100,7 +101,6 @@ export const projectsSlice = createSlice({
                 state.error = undefined;
             })
             .addCase(getTasksByProjectId.fulfilled, (state, action) => {
-                state.isLoading = false;
                 console.log(action.payload)
                 const projectIndex = state.projects.findIndex((el) => el._id === action.payload.projectId);
 
@@ -113,6 +113,8 @@ export const projectsSlice = createSlice({
                     // state.projects.push(action.payload);
                 }
                 state.error = undefined
+                state.isLoading = false;
+
             })
             .addCase(getTasksByProjectId.rejected, (state, action) => {
                 state.isLoading = false;
@@ -126,7 +128,6 @@ export const projectsSlice = createSlice({
                 state.error = undefined;
             })
             .addCase(updateTask.fulfilled, (state, action) => {
-                state.isLoading = false;
 
                 // Найдите индекс проекта в массиве проектов
                 const projectId = state.projects.findIndex(el => el._id === action.payload.projectId);
@@ -141,6 +142,7 @@ export const projectsSlice = createSlice({
                 }
 
                 state.error = undefined;
+                state.isLoading = false;
             })
             .addCase(updateTask.rejected, (state, action) => {
                 state.isLoading = false;
@@ -153,7 +155,6 @@ export const projectsSlice = createSlice({
                 state.error = undefined;
             })
             .addCase(swapTasks.fulfilled, (state, action) => {
-                state.isLoading = false;
 
                 const projectIndex = state.projects.findIndex((project) => project._id === action.payload.projectId);
                 if (action.payload) state.projects[projectIndex].taskList = action.payload.taskList;
@@ -161,6 +162,7 @@ export const projectsSlice = createSlice({
                 state.currentProject = state.projects[projectIndex];
 
                 state.error = undefined;
+                state.isLoading = false;
             })
             .addCase(swapTasks.rejected, (state, action) => {
                 state.isLoading = false;
@@ -175,7 +177,6 @@ export const projectsSlice = createSlice({
                 state.error = undefined;
             })
             .addCase(updateProject.fulfilled, (state, action) => {
-                state.isLoading = false;
 
 
                 // Найдите индекс проекта в массиве проектов
@@ -190,7 +191,8 @@ export const projectsSlice = createSlice({
                     state.currentProject = action.payload;
                 }
                 //
-                // state.error = undefined;
+                state.error = undefined;
+                state.isLoading = false;
             })
 
             .addCase(updateProject.rejected, (state, action) => {
@@ -205,15 +207,13 @@ export const projectsSlice = createSlice({
                 state.error = undefined;
             })
             .addCase(deleteTaskById.fulfilled, (state, action) => {
-                state.isLoading = false;
                 console.log(action.payload)
                 const projectId = state.projects.findIndex(el => el._id === action.payload.projectId);
                 state.projects[projectId].taskList = state.projects[projectId]
                     .taskList.filter(task => task._id !== action.payload.taskId);
                 state.currentProject = state.projects[projectId];
-
                 state.error = undefined;
-
+                state.isLoading = false;
             })
 
             .addCase(deleteTaskById.rejected, (state, action) => {
@@ -228,10 +228,9 @@ export const projectsSlice = createSlice({
                 state.error = undefined;
             })
             .addCase(deleteProjectById.fulfilled, (state, action) => {
-                state.isLoading = false;
                 state.projects = state.projects.filter(project => project._id !== action.payload);
                 state.error = undefined;
-
+                state.isLoading = false;
             })
 
             .addCase(deleteProjectById.rejected, (state, action) => {
